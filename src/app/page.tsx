@@ -1,3 +1,6 @@
+import { auth } from "@clerk/nextjs/server";
+
 export default function HomePage() {
-  return <div>Hello</div>;
+  const user = auth();
+  return <div>Hello {user.userId}</div>;
 }

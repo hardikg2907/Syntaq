@@ -6,6 +6,6 @@
 - [x] Actually set up db (supabase postgres)
 - [x] ShadUI
 - [x] Add authentication(Clerk)
+- [x] Complete the webhook to create new user and update user details through clerk
 - [] Make schemas for Users
-- [] Complete the webhook to create new user
 - [] Scaffold basic ui with mock data

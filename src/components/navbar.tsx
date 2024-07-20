@@ -5,7 +5,7 @@ import { Button } from "./ui/button";
 
 const Navbar = () => {
   return (
-    <nav className="flex w-full items-center justify-between border-b bg-slate-100 p-4 text-xl font-semibold dark:bg-black">
+    <nav className="flex w-full items-center justify-between border-b border-gray-300 bg-slate-100 p-4 text-xl font-semibold dark:border-gray-700 dark:bg-black">
       <Link href="/" className="text-3xl">
         Syntaq
       </Link>

@@ -19,25 +19,12 @@ import {
  */
 export const createTable = pgTableCreator((name) => `syntaq_${name}`);
 
-export const posts = createTable(
-  "post",
-  {
-    id: serial("id").primaryKey(),
-    name: varchar("name", { length: 256 }),
-    createdAt: timestamp("created_at", { withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
-    updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
-      () => new Date(),
-    ),
-  },
-  (example) => ({
-    nameIndex: index("name_idx").on(example.name),
-  }),
-);
-
 export const users = createTable("users", {
-  id: serial("id").primaryKey(),
-  fullName: text("full_name"),
-  phone: varchar("phone", { length: 256 }),
+  id: varchar("id", { length: 36 }).primaryKey(),
+  email: varchar("email", { length: 256 }).unique().notNull(),
+  username: varchar("username", { length: 256 }).unique(),
+  firstName: varchar("first_name", { length: 256 }),
+  lastName: varchar("last_name", { length: 256 }),
+  bio: text("bio"),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });
