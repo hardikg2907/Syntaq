@@ -1,3 +1,4 @@
+import Link from "next/link";
 import HackathonsCarousel from "~/components/HackathonsCarousel";
 import { discoverUpcomingHackathons } from "~/server/db/queries";
 
@@ -6,7 +7,15 @@ const Discover = async () => {
 
   return (
     <div className="w-full">
-      <h1 className="text-2xl font-bold">Upcoming Hackathons,</h1>
+      <div className="flex w-full items-end justify-between">
+        <h1 className="text-2xl font-bold">Upcoming Hackathons,</h1>
+        <Link
+          href="/hackathons"
+          className="text-sm text-blue-500 hover:underline"
+        >
+          View all
+        </Link>
+      </div>
       <HackathonsCarousel hackathons={hackathons || []} />
     </div>
   );

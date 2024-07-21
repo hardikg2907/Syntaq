@@ -7,13 +7,13 @@ import { ChevronRight } from "lucide-react";
 const Navbar = () => {
   return (
     <nav className="flex w-full items-center justify-between border-b border-gray-300 bg-slate-100 p-3 pl-5 text-xl font-semibold dark:border-gray-700 dark:bg-black">
-      <div className="flex h-full items-center justify-between gap-3">
+      <div className="flex h-full items-end justify-between gap-3">
         <Link href="/" className="text-2xl">
           Syntaq
         </Link>
         <Link
           href="/discover"
-          className="group mt-1.5 flex w-full items-center gap-2 text-sm"
+          className="group flex w-full items-center gap-2 text-sm"
         >
           {/* <Button variant="ghost" className="group flex w-full gap-2"> */}
           <p className="text-gray-500 transition-colors duration-150 ease-in-out group-hover:text-gray-900 dark:group-hover:text-gray-100">

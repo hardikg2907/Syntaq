@@ -24,21 +24,15 @@ const HackathonsCarousel = ({ hackathons }: HackathonsCarouselProps) => {
           stopOnFocusIn: true,
         }),
       ]}
-      opts={{ loop: true, align: "start" }}
-      className="ml-10 w-full max-w-6xl"
+      opts={{ loop: true, align: "center" }}
+      className="ml-10 mt-4 h-72 w-full max-w-6xl"
     >
-      <CarouselContent className="ml-20">
-        {[
-          ...hackathons!,
-          ...hackathons!,
-          ...hackathons!,
-          ...hackathons!,
-          ...hackathons!,
-          ...hackathons!,
-          ...hackathons!,
-          ...hackathons!,
-        ]?.map((hackathon) => (
-          <CarouselItem key={hackathon.id} className="-pl-10 basis-1/3">
+      <CarouselContent className="ml-20 h-72">
+        {hackathons?.map((hackathon) => (
+          <CarouselItem
+            key={hackathon.id}
+            className="-pl-10 md:basis-1/2 lg:basis-1/3"
+          >
             <HackathonCard
               id={hackathon.id}
               name={hackathon.name}
