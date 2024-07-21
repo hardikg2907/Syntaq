@@ -5,7 +5,7 @@ const Discover = async () => {
   const hackathons = await discoverUpcomingHackathons();
 
   return (
-    <div>
+    <div className="w-full">
       <h1 className="text-2xl font-bold">Upcoming Hackathons,</h1>
       <HackathonsCarousel hackathons={hackathons || []} />
     </div>

@@ -20,15 +20,25 @@ const HackathonsCarousel = ({ hackathons }: HackathonsCarouselProps) => {
     <Carousel
       plugins={[
         AutoPlay({
-          delay: 2000,
+          //   delay: 2000,
           stopOnFocusIn: true,
         }),
       ]}
-      className="w-full max-w-xs"
+      opts={{ loop: true, align: "start" }}
+      className="ml-10 w-full max-w-6xl"
     >
-      <CarouselContent>
-        {[...hackathons!, ...hackathons!]?.map((hackathon) => (
-          <CarouselItem key={hackathon.id}>
+      <CarouselContent className="ml-20">
+        {[
+          ...hackathons!,
+          ...hackathons!,
+          ...hackathons!,
+          ...hackathons!,
+          ...hackathons!,
+          ...hackathons!,
+          ...hackathons!,
+          ...hackathons!,
+        ]?.map((hackathon) => (
+          <CarouselItem key={hackathon.id} className="-pl-10 basis-1/3">
             <HackathonCard
               id={hackathon.id}
               name={hackathon.name}
@@ -38,7 +48,7 @@ const HackathonsCarousel = ({ hackathons }: HackathonsCarouselProps) => {
           </CarouselItem>
         ))}
       </CarouselContent>
-      <CarouselPrevious />
+      <CarouselPrevious className="-left-12" />
       <CarouselNext />
     </Carousel>
   );

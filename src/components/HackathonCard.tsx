@@ -15,7 +15,7 @@ const HackathonCard = ({ id, name, startDate, photo }: HackathonCardProps) => {
         alt={name}
         width={200}
         height={150}
-        className="h-40 w-full rounded-t-xl border object-contain"
+        className="h-40 w-full rounded-t-xl object-contain"
       />
       <div className="p-3">
         <h1 className="text-xl font-semibold transition-colors duration-100 group-hover:text-blue-400">
