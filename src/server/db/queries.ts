@@ -1,7 +1,9 @@
 import type { UserJSON, UserWebhookEvent } from "@clerk/nextjs/server";
 import { db } from ".";
-import { users } from "./schema";
+import { hackathons, users } from "./schema";
 import { eq } from "drizzle-orm";
+
+// users
 
 export const createNewUser = async (payload: UserWebhookEvent) => {
   try {
@@ -30,5 +32,24 @@ export const updateUser = async (payload: UserWebhookEvent) => {
       .where(eq(users.id, data.id));
   } catch (err) {
     console.error(err);
+  }
+};
+
+// hackathons
+
+export const discoverUpcomingHackathons = async () => {
+  try {
+    const res = await db
+      .select({
+        id: hackathons.id,
+        name: hackathons.name,
+        startDate: hackathons.startDate,
+        photo: hackathons.photo,
+      })
+      .from(hackathons);
+    // console.log(res);
+    return res;
+  } catch (error) {
+    console.log(error);
   }
 };

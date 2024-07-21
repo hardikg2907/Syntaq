@@ -33,12 +33,12 @@ export default function RootLayout({
         >
           <body
             className={cn(
-              "bg-background min-h-screen w-full font-sans antialiased",
+              "min-h-screen w-full bg-background font-sans antialiased",
               fontSans.variable,
             )}
           >
             <Navbar />
-            <main className="flex min-h-screen w-full flex-col items-center justify-center bg-slate-100 text-slate-950 dark:bg-black dark:text-white">
+            <main className="min-h-screen w-full bg-slate-100 p-3 text-slate-950 dark:bg-black dark:text-white">
               {children}
             </main>
           </body>
