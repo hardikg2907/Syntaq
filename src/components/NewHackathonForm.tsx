@@ -1,22 +1,14 @@
 "use client";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { z } from "zod";
 import { Button } from "~/components/ui/button";
-import { Calendar as CalendarIcon } from "lucide-react";
-import { Calendar } from "~/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "~/components/ui/popover";
 
 // import { format } from "date-fns"
 
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -24,10 +16,7 @@ import {
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { Textarea } from "./ui/textarea";
-import { DateTimePicker } from "./ui/date-time-picker/date-time-picker";
-import { cn } from "~/lib/utils";
-import { format } from "date-fns";
-import { TimePicker12Demo } from "./ui/date-time-picker/time-picker-12h-demo";
+import DatePickerForm from "./createHackathon/DatePickerForm";
 
 const formSchema = z.object({
   name: z
@@ -85,50 +74,59 @@ const NewHackathonForm = () => {
             </FormItem>
           )}
         />
+        <div className="flex w-full justify-between">
+          <FormField
+            control={form.control}
+            name="startDate"
+            render={({ field }) => (
+              <DatePickerForm field={field} label="Start Time:" side="right" />
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="endDate"
+            render={({ field }) => (
+              <DatePickerForm field={field} label="End Time:" side="left" />
+            )}
+          />
+        </div>
         <FormField
           control={form.control}
-          name="startDate"
+          name="location"
           render={({ field }) => (
-            <FormItem className="flex flex-col">
-              <FormLabel className="text-left">Start Time</FormLabel>
-              <Popover>
-                <FormControl>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      className={cn(
-                        "w-[280px] justify-start text-left font-normal",
-                        !field.value && "text-muted-foreground",
-                      )}
-                    >
-                      <CalendarIcon className="mr-2 h-4 w-4" />
-                      {field.value ? (
-                        format(field.value, "PPP HH:mm:ss")
-                      ) : (
-                        <span>Pick a date</span>
-                      )}
-                    </Button>
-                  </PopoverTrigger>
-                </FormControl>
-                <PopoverContent className="w-auto p-0">
-                  <Calendar
-                    mode="single"
-                    selected={new Date(field.value)}
-                    onSelect={field.onChange}
-                    initialFocus
-                  />
-                  <div className="border-t border-border p-3">
-                    <TimePicker12Demo
-                      setDate={field.onChange}
-                      date={new Date(field.value)}
-                    />
-                  </div>
-                </PopoverContent>
-              </Popover>
+            <FormItem>
+              <FormLabel>Location</FormLabel>
+              <FormControl>
+                <Input placeholder="Location" {...field} />
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
+        <div className="flex w-full justify-between">
+          <FormField
+            control={form.control}
+            name="registrationOpen"
+            render={({ field }) => (
+              <DatePickerForm
+                field={field}
+                label="Registration opens at:"
+                side="right"
+              />
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="registrationClose"
+            render={({ field }) => (
+              <DatePickerForm
+                field={field}
+                label="Registration closes at:"
+                side="left"
+              />
+            )}
+          />
+        </div>
         <Button
           type="submit"
           onClick={() => {
