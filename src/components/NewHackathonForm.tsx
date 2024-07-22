@@ -115,7 +115,7 @@ const NewHackathonForm = () => {
                     mode="single"
                     selected={new Date(field.value)}
                     onSelect={field.onChange}
-                    autoFocus
+                    initialFocus
                   />
                   <div className="border-t border-border p-3">
                     <TimePicker12Demo

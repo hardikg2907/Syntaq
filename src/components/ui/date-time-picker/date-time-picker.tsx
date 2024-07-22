@@ -52,7 +52,7 @@ export function DateTimePicker() {
           mode="single"
           selected={date}
           onSelect={(d) => handleSelect(d)}
-          autoFocus
+          initialFocus
         />
         <div className="border-t border-border p-3">
           <TimePicker12Demo setDate={setDate} date={date} />
