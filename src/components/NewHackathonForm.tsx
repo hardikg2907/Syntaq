@@ -4,8 +4,6 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "~/components/ui/button";
 
-// import { format } from "date-fns"
-
 import {
   Form,
   FormControl,
@@ -29,17 +27,20 @@ const formSchema = z.object({
   location: z.string().max(256, "Location must be less than 256 characters"),
   registrationOpen: z.date(),
   registrationClose: z.date(),
-  maxTeamSize: z.number().min(1, "Max team size must be at least 1"),
-  minTeamSize: z.number().min(1, "Min team size must be at least 1"),
-  photo: z.string(),
+  maxTeamSize: z.coerce.number().min(1, "Max team size must be at least 1"),
+  minTeamSize: z.coerce.number().min(1, "Min team size must be at least 1"),
+  photo: z.string().default(""),
 });
 const NewHackathonForm = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const res = await fetch("/api/create-hackathon", {
+      method: "POST",
+      body: JSON.stringify(values),
+    });
   }
 
   return (
@@ -127,14 +128,46 @@ const NewHackathonForm = () => {
             )}
           />
         </div>
-        <Button
-          type="submit"
-          onClick={() => {
-            console.log(form.getValues());
-          }}
-        >
-          Submit
-        </Button>
+        <div className="flex w-full justify-between">
+          <FormField
+            control={form.control}
+            name="minTeamSize"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Minimum Team Size: </FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    placeholder="Minimum Team Size"
+                    {...field}
+                    className=""
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="maxTeamSize"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Maximum Team Size: </FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    placeholder="Maximum Team Size"
+                    {...field}
+                    className=""
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        <Button type="submit">Submit</Button>
       </form>
     </Form>
   );
