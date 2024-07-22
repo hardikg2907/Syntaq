@@ -23,7 +23,7 @@ const HackathonCard = ({ id, name, startDate, photo }: HackathonCardProps) => {
   return (
     <div
       onClick={() => router.push(`/hackathons/${id}`)}
-      className="group h-60 w-[250px] cursor-pointer rounded-xl border border-gray-300 bg-gray-50 transition-shadow duration-200 hover:shadow-md dark:bg-gray-900/40 dark:hover:shadow-slate-900"
+      className="group h-60 w-[250px] cursor-pointer rounded-xl border border-gray-300 bg-gray-50 transition-shadow duration-200 hover:shadow-md dark:border-0 dark:bg-gray-900/40 dark:hover:shadow-slate-900"
     >
       <Image
         src={photo || ""}
@@ -36,9 +36,9 @@ const HackathonCard = ({ id, name, startDate, photo }: HackathonCardProps) => {
         <h1 className="text-xl font-semibold transition-colors duration-150 group-hover:text-blue-500">
           {name}
         </h1>
-        <p className="gap-1/2 flex items-center text-sm text-gray-500">
-          <Clock size={13} className="mr-1 inline text-black" />
-          <span className="font-medium text-black">
+        <p className="gap-1/2 flex items-center text-sm text-black dark:text-gray-500">
+          <Clock size={13} className="mr-1 inline text-black dark:text-white" />
+          <span className="font-medium">
             {weeksLeft > 0
               ? `${weeksLeft} weeks`
               : daysLeft > 0

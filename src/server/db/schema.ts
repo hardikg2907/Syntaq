@@ -1,7 +1,7 @@
 // Example model schema from the Drizzle docs
 // https://orm.drizzle.team/docs/sql-schema-declaration
 
-import { sql } from "drizzle-orm";
+import { InferInsertModel, sql } from "drizzle-orm";
 import {
   integer,
   pgTableCreator,
@@ -66,3 +66,5 @@ export const teamHackathon = createTable("team_hackathon", {
   hackathonId: integer("hackathon_id").references(() => hackathons.id),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });
+
+export type InsertHackathon = InferInsertModel<typeof hackathons>;

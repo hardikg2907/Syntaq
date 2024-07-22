@@ -1,7 +1,7 @@
 import type { UserJSON, UserWebhookEvent } from "@clerk/nextjs/server";
 import { db } from ".";
 import { hackathons, users } from "./schema";
-import { eq } from "drizzle-orm";
+import { and, eq, gte } from "drizzle-orm";
 
 // users
 
@@ -46,7 +46,8 @@ export const discoverUpcomingHackathons = async () => {
         startDate: hackathons.startDate,
         photo: hackathons.photo,
       })
-      .from(hackathons);
+      .from(hackathons)
+      .where(gte(hackathons.registrationClose, new Date()));
     // console.log(res);
     return res;
   } catch (error) {
