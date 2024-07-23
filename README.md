@@ -15,5 +15,6 @@
 - [x] Start developing the UI
 - [x] Make Discover page for Hackathons
 - [x] Make New Hackathon page
-- [] Use uploadthing for photo upload
+- [x] Use uploadthing for photo upload
+- [x] Make route for photo deletion
 - [] Start making queries and linking to the backend

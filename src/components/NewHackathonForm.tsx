@@ -4,6 +4,9 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "~/components/ui/button";
 
+import { Trash, X } from "lucide-react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 import {
   Form,
   FormControl,
@@ -13,9 +16,11 @@ import {
   FormMessage,
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
-import { Textarea } from "./ui/textarea";
 import DatePickerForm from "./createHackathon/DatePickerForm";
-import { useRouter } from "next/navigation";
+import { SimpleUploadButton } from "./simple-upload-button";
+import { Textarea } from "./ui/textarea";
+import { deleteFile } from "~/utils/uploadthing";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   name: z
@@ -47,6 +52,16 @@ const NewHackathonForm = () => {
       router.push("/discover");
     }
   }
+
+  const deletePhoto = async () => {
+    try {
+      await deleteFile(form.getValues("photo"));
+      form.setValue("photo", "");
+      toast.success("Photo deleted successfully");
+    } catch (e) {
+      toast.error("Failed to delete photo");
+    }
+  };
 
   return (
     <Form {...form}>
@@ -171,6 +186,38 @@ const NewHackathonForm = () => {
             )}
           />
         </div>
+        <FormField
+          control={form.control}
+          name="photo"
+          render={({ field }) => (
+            <FormItem className="flex items-center gap-2">
+              <FormLabel>Banner image: </FormLabel>
+              <FormControl>
+                {!form.getValues("photo") ? (
+                  <SimpleUploadButton
+                    uploadComplete={(url) => form.setValue("photo", url)}
+                  />
+                ) : (
+                  <div className="relative">
+                    <Image
+                      src={form.getValues("photo")}
+                      alt="Banner Image"
+                      width={400}
+                      height={200}
+                    />
+                    <Trash
+                      className="absolute right-0 top-0 h-8 w-8 cursor-pointer rounded-full bg-red-700 p-1.5 text-white"
+                      onClick={deletePhoto}
+                      width={15}
+                      height={15}
+                    />
+                  </div>
+                )}
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         <Button type="submit">Submit</Button>
       </form>
