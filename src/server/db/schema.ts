@@ -45,6 +45,7 @@ export const teams = createTable("teams", {
 export const hackathons = createTable("hackathons", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 256 }).notNull(),
+  subtitle: varchar("subtitle", { length: 256 }),
   description: text("description"),
   startDate: timestamp("start_date", { withTimezone: true }).notNull(),
   endDate: timestamp("end_date", { withTimezone: true }).notNull(),

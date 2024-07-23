@@ -54,3 +54,29 @@ export const discoverUpcomingHackathons = async () => {
     console.log(error);
   }
 };
+
+export const getHackathonById = async (id: number) => {
+  try {
+    const res = await db
+      .select({
+        id: hackathons.id,
+        name: hackathons.name,
+        startDate: hackathons.startDate,
+        endDate: hackathons.endDate,
+        description: hackathons.description,
+        location: hackathons.location,
+        photo: hackathons.photo,
+        organizer: {
+          firstName: users.firstName,
+          lastName: users.lastName,
+        },
+      })
+      .from(hackathons)
+      .leftJoin(users, eq(hackathons.organizerId, users.id))
+      .where(eq(hackathons.id, id));
+    // console.log(res);
+    return res[0];
+  } catch (error) {
+    console.log(error);
+  }
+};
