@@ -15,6 +15,7 @@ import {
 import { Input } from "~/components/ui/input";
 import { Textarea } from "./ui/textarea";
 import DatePickerForm from "./createHackathon/DatePickerForm";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   name: z
@@ -35,12 +36,16 @@ const NewHackathonForm = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
+  const router = useRouter();
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const res = await fetch("/api/create-hackathon", {
       method: "POST",
       body: JSON.stringify(values),
     });
+    if (res.ok) {
+      router.push("/discover");
+    }
   }
 
   return (

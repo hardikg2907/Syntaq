@@ -46,15 +46,12 @@ const DatePickerForm = ({
         <PopoverContent side={side} className="w-auto p-0">
           <Calendar
             mode="single"
-            selected={new Date(field.value)}
+            selected={field.value}
             onSelect={field.onChange}
             initialFocus
           />
           <div className="border-t border-border p-3">
-            <TimePicker12Demo
-              setDate={field.onChange}
-              date={new Date(field.value)}
-            />
+            <TimePicker12Demo setDate={field.onChange} date={field.value} />
           </div>
         </PopoverContent>
       </Popover>

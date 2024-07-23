@@ -14,6 +14,6 @@
 - [x] Make schemas for TeamHackathon Junction Table
 - [x] Start developing the UI
 - [x] Make Discover page for Hackathons
-- [] Make New Hackathon page
+- [x] Make New Hackathon page
 - [] Use uploadthing for photo upload
 - [] Start making queries and linking to the backend
