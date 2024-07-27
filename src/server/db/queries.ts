@@ -1,7 +1,7 @@
 import type { UserJSON, UserWebhookEvent } from "@clerk/nextjs/server";
 import { db } from ".";
 import { hackathons, users } from "./schema";
-import { and, eq, gte } from "drizzle-orm";
+import { and, eq, gte, min } from "drizzle-orm";
 
 // users
 
@@ -59,17 +59,21 @@ export const getHackathonById = async (id: number) => {
   try {
     const res = await db
       .select({
-        id: hackathons.id,
         name: hackathons.name,
+        subtitle: hackathons.subtitle,
         startDate: hackathons.startDate,
         endDate: hackathons.endDate,
         description: hackathons.description,
         location: hackathons.location,
+        registrationOpen: hackathons.registrationOpen,
+        registrationClose: hackathons.registrationClose,
         photo: hackathons.photo,
         organizer: {
           firstName: users.firstName,
           lastName: users.lastName,
         },
+        minTeamSize: hackathons.minTeamSize,
+        maxTeamSize: hackathons.maxTeamSize,
       })
       .from(hackathons)
       .leftJoin(users, eq(hackathons.organizerId, users.id))
