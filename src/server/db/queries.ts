@@ -1,7 +1,7 @@
 import type { UserJSON, UserWebhookEvent } from "@clerk/nextjs/server";
+import { eq, gte } from "drizzle-orm";
 import { db } from ".";
 import { hackathons, users } from "./schema";
-import { and, eq, gte, min } from "drizzle-orm";
 
 // users
 
@@ -14,6 +14,7 @@ export const createNewUser = async (payload: UserWebhookEvent) => {
       email: data.email_addresses[0]!.email_address,
       firstName: data.first_name!,
       lastName: data.last_name!,
+      username: data.username! || data.email_addresses[0]!.email_address,
     });
   } catch (err) {
     console.error(err);
@@ -28,6 +29,7 @@ export const updateUser = async (payload: UserWebhookEvent) => {
       .set({
         firstName: data.first_name!,
         lastName: data.last_name!,
+        username: data.username!,
       })
       .where(eq(users.id, data.id));
   } catch (err) {
@@ -84,5 +86,17 @@ export const getHackathonById = async (id: number) => {
     console.log(error);
   }
 };
+
+// export const checkIfAlreadyRegistered = async (userId: string, hackathonId: number) => {
+//   try {
+//     const res = await db
+//       .select()
+//       .from(teamHackathon)
+//       .where(and(eq(teamHackathon.teamId, userId), eq(teamHackathon.hackathonId, hackathonId)));
+//     return res.length > 0;
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
 
 // export const registerForHackathon = async (hackathonId: number, userId: string) => {

@@ -7,6 +7,7 @@
 import { format } from "date-fns";
 import { Calendar, ChevronRight, MapPin, User, Users } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { Button } from "~/components/ui/button";
 import { cn } from "~/lib/utils";
 
@@ -26,6 +27,7 @@ interface HackathonPageProps {
   registrationClose: Date;
   minTeamSize: number;
   maxTeamSize: number;
+  id: number;
 }
 
 export function HackathonPage({
@@ -41,6 +43,7 @@ export function HackathonPage({
   registrationOpen,
   minTeamSize,
   maxTeamSize,
+  id,
 }: HackathonPageProps) {
   const startYear = new Date(startDate).getFullYear();
   const endYear = new Date(endDate).getFullYear();
@@ -99,15 +102,17 @@ export function HackathonPage({
               </div>
             </div>
             <div className="flex flex-col items-center gap-4 min-[400px]:flex-row">
-              <Button
-                className={cn("group w-full min-[400px]:w-auto", {
-                  "bg-red-500": new Date() > registrationClose,
-                })}
-                disabled={new Date() > registrationClose}
-              >
-                Apply Now
-                <ChevronRight className="ml-2 h-5 w-0 opacity-0 transition-all duration-150 group-hover:w-5 group-hover:opacity-100" />
-              </Button>
+              <Link className="h-full w-full" href={`/register/${id}`}>
+                <Button
+                  className={cn("group w-full min-[400px]:w-auto", {
+                    "bg-red-500": new Date() > registrationClose,
+                  })}
+                  disabled={new Date() > registrationClose}
+                >
+                  Apply Now
+                  <ChevronRight className="ml-2 h-5 w-0 opacity-0 transition-all duration-150 group-hover:w-5 group-hover:opacity-100" />
+                </Button>
+              </Link>
             </div>
           </div>
         </div>

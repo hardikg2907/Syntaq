@@ -9,7 +9,7 @@ const page = async ({ params }: { params: { id: number } }) => {
         <div> 404 Not Found </div>
       ) : (
         // @ts-ignore
-        <HackathonPage {...hackathon} />
+        <HackathonPage {...hackathon} id={params.id} />
       )}
     </div>
   );
