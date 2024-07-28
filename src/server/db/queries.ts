@@ -84,3 +84,5 @@ export const getHackathonById = async (id: number) => {
     console.log(error);
   }
 };
+
+// export const registerForHackathon = async (hackathonId: number, userId: string) => {

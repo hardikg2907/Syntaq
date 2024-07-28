@@ -4,6 +4,8 @@
 import { InferInsertModel, sql } from "drizzle-orm";
 import {
   integer,
+  jsonb,
+  pgEnum,
   pgTableCreator,
   primaryKey,
   serial,
@@ -29,15 +31,19 @@ export const users = createTable("users", {
   lastName: varchar("last_name", { length: 256 }),
   bio: text("bio"),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
+  hackathonsParticipated: integer("hackathons_participated")
+    .array()
+    .notNull()
+    .default(sql`ARRAY[]::integer[]`),
 });
 
 export const teams = createTable("teams", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: TEAMNAMESIZE }).notNull(),
-  members: varchar("members", { length: 36 })
+  members: jsonb("members")
     .array()
     .notNull()
-    .default(sql`ARRAY[]::varchar[]`),
+    .default(sql`ARRAY[]::jsonb[]`),
   leaderId: varchar("leader_id", { length: 36 }).references(() => users.id),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });
@@ -66,6 +72,23 @@ export const teamHackathon = createTable("team_hackathon", {
   teamId: integer("team_id").references(() => teams.id),
   hackathonId: integer("hackathon_id").references(() => hackathons.id),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
+});
+
+export const statusEnum = pgEnum("status", ["pending", "accepted", "rejected"]);
+
+export const teamInvitations = createTable("team_invitations", {
+  id: serial("id").primaryKey(),
+  teamId: integer("team_id")
+    .notNull()
+    .references(() => teams.id),
+  userId: varchar("user_id", { length: 36 })
+    .notNull()
+    .references(() => users.id),
+  hackathonId: integer("hackathon_id")
+    .notNull()
+    .references(() => hackathons.id),
+  status: statusEnum("status"),
+  createdAt: timestamp("created_at").defaultNow(),
 });
 
 export type InsertHackathon = InferInsertModel<typeof hackathons>;
