@@ -1,8 +1,8 @@
 "use client";
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import { ModeToggle } from "./themes/theme-toggle";
 import { Button } from "./ui/button";
+import {} from "next-auth/";
 
 const Navbar = () => {
   return (
@@ -44,14 +44,6 @@ const Navbar = () => {
       </div>
 
       <div className="flex flex-row items-center gap-4">
-        <SignedOut>
-          <SignInButton>
-            <Button variant="default">Sign In</Button>
-          </SignInButton>
-        </SignedOut>
-        <SignedIn>
-          <UserButton />
-        </SignedIn>
         <ModeToggle />
       </div>
     </nav>

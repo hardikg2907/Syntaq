@@ -12,6 +12,7 @@ import { extractRouterConfig } from "uploadthing/server";
 
 import { ourFileRouter } from "~/app/api/uploadthing/core";
 import { Toaster } from "~/components/ui/sonner";
+import NextAuthProvider from "~/components/NextAuthProvider";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -42,20 +43,22 @@ export default function RootLayout({
               fontSans.variable,
             )}
           >
-            <NextSSRPlugin
-              /**
-               * The `extractRouterConfig` will extract **only** the route configs
-               * from the router to prevent additional information from being
-               * leaked to the client. The data passed to the client is the same
-               * as if you were to fetch `/api/uploadthing` directly.
-               */
-              routerConfig={extractRouterConfig(ourFileRouter)}
-            />
-            <Navbar />
-            <main className="min-h-screen w-full bg-slate-100 p-3 text-slate-950 dark:bg-black dark:text-white">
-              {children}
-            </main>
-            <Toaster />
+            <NextAuthProvider>
+              <NextSSRPlugin
+                /**
+                 * The `extractRouterConfig` will extract **only** the route configs
+                 * from the router to prevent additional information from being
+                 * leaked to the client. The data passed to the client is the same
+                 * as if you were to fetch `/api/uploadthing` directly.
+                 */
+                routerConfig={extractRouterConfig(ourFileRouter)}
+              />
+              <Navbar />
+              <main className="min-h-screen w-full bg-slate-100 p-3 text-slate-950 dark:bg-black dark:text-white">
+                {children}
+              </main>
+              <Toaster />
+            </NextAuthProvider>
           </body>
         </ThemeProvider>
       </html>
