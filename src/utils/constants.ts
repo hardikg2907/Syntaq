@@ -43,3 +43,6 @@ export namespace UrlUtils {
     return url;
   };
 }
+
+export const BACKEND_API_URL: string =
+  process.env.BACKEND_URL! || "http://localhost:8000/api";

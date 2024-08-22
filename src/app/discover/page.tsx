@@ -1,9 +1,20 @@
+"use client";
+
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 import Link from "next/link";
 import HackathonsCarousel from "~/components/HackathonsCarousel";
-import { discoverUpcomingHackathons } from "~/server/db/queries";
+import { BACKEND_API_URL } from "~/utils/constants";
 
-const Discover = async () => {
-  const hackathons = await discoverUpcomingHackathons();
+const Discover = () => {
+  const { data: hackathons } = useQuery({
+    queryKey: ["hackathons"],
+    queryFn: async () => {
+      const response = await axios.get(`${BACKEND_API_URL}/hackathons`);
+      return response.data;
+    },
+  });
+  console.log(hackathons);
 
   return (
     <div className="w-full">

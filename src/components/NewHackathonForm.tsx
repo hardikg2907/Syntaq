@@ -21,15 +21,19 @@ import { SimpleUploadButton } from "./simple-upload-button";
 import { Textarea } from "./ui/textarea";
 import { deleteFile } from "~/utils/uploadthing";
 import { toast } from "sonner";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { BACKEND_API_URL } from "~/utils/constants";
+import { useSession } from "next-auth/react";
 
 const formSchema = z.object({
-  name: z
+  title: z
     .string()
     .min(1, "Required Field")
     .max(256, "Name must be less than 256 characters"),
   description: z.string(),
-  startDate: z.date(),
-  endDate: z.date(),
+  start_date: z.date(),
+  end_date: z.date(),
   location: z.string().max(256, "Location must be less than 256 characters"),
   registrationOpen: z.date(),
   registrationClose: z.date(),
@@ -42,12 +46,21 @@ const NewHackathonForm = () => {
     resolver: zodResolver(formSchema),
   });
   const router = useRouter();
+  const { data: user } = useSession();
+
+  const mutation = useMutation({
+    mutationFn: async (values: z.infer<typeof formSchema>) => {
+      const response = await axios.post(`${BACKEND_API_URL}/hackathons/`, {
+        ...values,
+        userEmail: user?.user?.email,
+      });
+      return response.data;
+    },
+  });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const res = await fetch("/api/create-hackathon", {
-      method: "POST",
-      body: JSON.stringify(values),
-    });
+    const res = await mutation.mutateAsync(values);
+    console.log(res);
     if (res.ok) {
       router.push("/discover");
     }
@@ -68,12 +81,12 @@ const NewHackathonForm = () => {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
-          name="name"
+          name="title"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Name</FormLabel>
+              <FormLabel>Title</FormLabel>
               <FormControl>
-                <Input placeholder="Name" {...field} />
+                <Input placeholder="Title" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -98,14 +111,14 @@ const NewHackathonForm = () => {
         <div className="flex w-full justify-between">
           <FormField
             control={form.control}
-            name="startDate"
+            name="start_date"
             render={({ field }) => (
               <DatePickerForm field={field} label="Start Time:" side="right" />
             )}
           />
           <FormField
             control={form.control}
-            name="endDate"
+            name="end_date"
             render={({ field }) => (
               <DatePickerForm field={field} label="End Time:" side="left" />
             )}
