@@ -7,7 +7,11 @@ await import("./src/env.js");
 /** @type {import("next").NextConfig} */
 const config = {
   images: {
-    remotePatterns: [{ hostname: "utfs.io" }, { hostname: "www.google.com" }],
+    remotePatterns: [
+      { hostname: "utfs.io" },
+      { hostname: "www.google.com" },
+      { hostname: "lh3.googleusercontent.com" },
+    ],
   },
   typescript: {
     ignoreBuildErrors: true,

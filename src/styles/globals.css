@@ -1,6 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+#__next {
+  @apply h-full;
+  overflow-y: scroll;
+}
 
 @layer base {
   :root {

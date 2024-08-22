@@ -16,15 +16,15 @@ export namespace JwtUtils {
       const adjustedExpiry = decoded?.exp;
 
       if (adjustedExpiry < currentTime) {
-        console.log("Token expired");
+        // console.log("Token expired");
         return true;
       }
 
-      console.log("Token has not expired yet");
+      // console.log("Token has not expired yet");
       return false;
     }
 
-    console.log('Token["exp"] does not exist');
+    // console.log('Token["exp"] does not exist');
     return true;
   };
 }
