@@ -1,5 +1,5 @@
 import type { UserJSON, UserWebhookEvent } from "@clerk/nextjs/server";
-import { eq, gte } from "drizzle-orm";
+import { eq, gte, like } from "drizzle-orm";
 import { db } from ".";
 import { hackathons, users } from "./schema";
 
@@ -34,6 +34,18 @@ export const updateUser = async (payload: UserWebhookEvent) => {
       .where(eq(users.id, data.id));
   } catch (err) {
     console.error(err);
+  }
+};
+
+export const getUserByUsername = async (username: string | null) => {
+  try {
+    const res = await db
+      .select()
+      .from(users)
+      .where(like(users.username, `${username || ""}%`));
+    return res;
+  } catch (error) {
+    console.log(error);
   }
 };
 

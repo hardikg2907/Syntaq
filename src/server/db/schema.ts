@@ -1,7 +1,7 @@
 // Example model schema from the Drizzle docs
 // https://orm.drizzle.team/docs/sql-schema-declaration
 
-import { InferInsertModel, sql } from "drizzle-orm";
+import { InferInsertModel, InferSelectModel, sql } from "drizzle-orm";
 import {
   integer,
   jsonb,
@@ -11,6 +11,7 @@ import {
   serial,
   text,
   timestamp,
+  unique,
   varchar,
 } from "drizzle-orm/pg-core";
 import { TEAMNAMESIZE } from "~/utils/constants";
@@ -36,6 +37,18 @@ export const users = createTable("users", {
     .notNull()
     .default(sql`ARRAY[]::integer[]`),
 });
+
+export const friendships = createTable(
+  "friendships",
+  {
+    userId1: varchar("user_id1", { length: 36 }).notNull(),
+    userId2: varchar("user_id2", { length: 36 }).notNull(),
+    createdAt: timestamp("created_at").defaultNow(),
+  },
+  (table) => ({
+    unq: unique().on(table.userId1, table.userId2),
+  }),
+);
 
 export const teams = createTable("teams", {
   id: serial("id").primaryKey(),
@@ -92,3 +105,4 @@ export const teamInvitations = createTable("team_invitations", {
 });
 
 export type InsertHackathon = InferInsertModel<typeof hackathons>;
+export type SelectUser = InferSelectModel<typeof users>;
