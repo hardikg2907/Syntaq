@@ -12,7 +12,7 @@ import {
 import AutoPlay from "embla-carousel-autoplay";
 
 interface HackathonsCarouselProps {
-  hackathons: HackathonCardProps[];
+  hackathons: HackathonCardProps[] | null;
 }
 
 const HackathonsCarousel = ({ hackathons }: HackathonsCarouselProps) => {
@@ -28,19 +28,20 @@ const HackathonsCarousel = ({ hackathons }: HackathonsCarouselProps) => {
       className="ml-10 mt-4 h-72 w-full max-w-6xl"
     >
       <CarouselContent className="ml-20 h-72">
-        {hackathons?.map((hackathon) => (
-          <CarouselItem
-            key={hackathon.id}
-            className="-pl-10 md:basis-1/2 lg:basis-1/3"
-          >
-            <HackathonCard
-              id={hackathon.id}
-              name={hackathon.name}
-              startDate={hackathon.startDate}
-              photo={hackathon.photo}
-            />
-          </CarouselItem>
-        ))}
+        {hackathons &&
+          hackathons?.map((hackathon) => (
+            <CarouselItem
+              key={hackathon.id}
+              className="-pl-10 md:basis-1/2 lg:basis-1/3"
+            >
+              <HackathonCard
+                id={hackathon.id}
+                title={hackathon.title}
+                start_date={hackathon.start_date}
+                photo={hackathon.photo}
+              />
+            </CarouselItem>
+          ))}
       </CarouselContent>
       <CarouselPrevious className="-left-12" />
       <CarouselNext />

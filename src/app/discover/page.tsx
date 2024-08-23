@@ -14,7 +14,6 @@ const Discover = () => {
       return response.data;
     },
   });
-  console.log(hackathons);
 
   return (
     <div className="w-full">
