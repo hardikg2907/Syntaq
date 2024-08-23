@@ -4,9 +4,13 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "~/components/ui/button";
 
-import { Trash, X } from "lucide-react";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { Trash } from "lucide-react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import {
   Form,
   FormControl,
@@ -16,15 +20,11 @@ import {
   FormMessage,
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
+import { BACKEND_API_URL } from "~/utils/constants";
+import { deleteFile } from "~/utils/uploadthing";
 import DatePickerForm from "./createHackathon/DatePickerForm";
 import { SimpleUploadButton } from "./simple-upload-button";
 import { Textarea } from "./ui/textarea";
-import { deleteFile } from "~/utils/uploadthing";
-import { toast } from "sonner";
-import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
-import { BACKEND_API_URL } from "~/utils/constants";
-import { useSession } from "next-auth/react";
 
 const formSchema = z.object({
   title: z
@@ -61,7 +61,7 @@ const NewHackathonForm = () => {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const res = await mutation.mutateAsync(values);
     console.log(res);
-    if (res.ok) {
+    if (res) {
       router.push("/discover");
     }
   }

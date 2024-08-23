@@ -24,7 +24,7 @@ namespace NextAuthUtils {
   };
 }
 
-const settings: NextAuthOptions = {
+export const settings: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET!,
   session: {
     strategy: "jwt",
