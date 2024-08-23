@@ -12,10 +12,10 @@ import { Button } from "~/components/ui/button";
 import { cn } from "~/lib/utils";
 
 interface HackathonPageProps {
-  name: string;
+  title: string;
   subtitle?: string | null;
-  startDate: Date;
-  endDate: Date;
+  start_date: Date;
+  end_date: Date;
   description: string;
   location: string;
   organizer: {
@@ -31,10 +31,10 @@ interface HackathonPageProps {
 }
 
 export function HackathonPage({
-  name,
+  title,
   subtitle,
-  startDate,
-  endDate,
+  start_date,
+  end_date,
   description,
   location,
   organizer,
@@ -45,8 +45,8 @@ export function HackathonPage({
   maxTeamSize,
   id,
 }: HackathonPageProps) {
-  const startYear = new Date(startDate).getFullYear();
-  const endYear = new Date(endDate).getFullYear();
+  const startYear = new Date(start_date).getFullYear();
+  const endYear = new Date(end_date).getFullYear();
 
   return (
     <div className="flex min-h-[100dvh] flex-col">
@@ -54,7 +54,7 @@ export function HackathonPage({
         <div className="flex flex-col justify-center space-y-6 py-12 md:py-24 lg:py-32">
           <div className="space-y-4">
             <h1 className="text-wrap text-4xl font-bold tracking-tighter sm:text-6xl xl:text-7xl/none">
-              {name}
+              {title}
             </h1>
             <p className="max-w-[600px] text-primary/80 md:text-xl">
               {subtitle}
@@ -67,20 +67,20 @@ export function HackathonPage({
                     {startYear !== endYear ? (
                       <>
                         {format(
-                          new Date(startDate).toISOString(),
+                          new Date(start_date).toISOString(),
                           "MMMM d, yyyy",
                         )}{" "}
                         -{" "}
                         {format(
-                          new Date(endDate).toISOString(),
+                          new Date(end_date).toISOString(),
                           "MMMM d, yyyy",
                         )}
                       </>
                     ) : (
                       <>
-                        {format(new Date(startDate).toISOString(), "MMMM d")} -{" "}
+                        {format(new Date(start_date).toISOString(), "MMMM d")} -{" "}
                         {format(
-                          new Date(endDate).toISOString(),
+                          new Date(end_date).toISOString(),
                           "MMMM d, yyyy",
                         )}
                       </>
@@ -120,7 +120,7 @@ export function HackathonPage({
       {/* <section className="w-full border-b bg-black text-primary">
         <Image
           src={photo}
-          alt={name}
+          alt={title}
           layout="responsive"
           width={1920}
           height={1080}
