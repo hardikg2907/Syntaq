@@ -19,8 +19,8 @@ interface HackathonPageProps {
   description: string;
   location: string;
   organizer: {
-    firstName: string;
-    lastName: string;
+    first_name: string;
+    last_name: string;
   };
   photo: string;
   registrationOpen: Date;
@@ -96,7 +96,7 @@ export function HackathonPage({
                 <div>
                   <div className="text-sm text-primary/80">Organized by</div>
                   <div className="font-medium">
-                    {organizer.firstName} {organizer.lastName}
+                    {organizer.first_name} {organizer.last_name}
                   </div>
                 </div>
               </div>
