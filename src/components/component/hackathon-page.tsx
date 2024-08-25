@@ -50,7 +50,7 @@ export function HackathonPage({
 
   return (
     <div className="flex min-h-[100dvh] flex-col">
-      <section className="w-full border-b bg-black text-primary">
+      <section className="w-full border-b border-gray-300 text-primary dark:border-gray-800 dark:bg-black">
         <div className="flex flex-col justify-center space-y-6 py-12 md:py-24 lg:py-32">
           <div className="space-y-4">
             <h1 className="text-wrap text-4xl font-bold tracking-tighter sm:text-6xl xl:text-7xl/none">
