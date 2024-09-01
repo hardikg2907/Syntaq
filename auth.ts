@@ -179,8 +179,7 @@ namespace NextAuthUtils {
 //     },
 //   },
 // };
-
-export const { handlers, signIn, signOut, auth } = NextAuth({
+const authOptions = {
   providers: [
     CredentialsProvider({
       // name: "credentials",
@@ -283,4 +282,5 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return token;
     },
   },
-});
+};
+export const { handlers, signIn, signOut, auth } = NextAuth(authOptions);
