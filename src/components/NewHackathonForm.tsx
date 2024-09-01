@@ -50,10 +50,17 @@ const NewHackathonForm = () => {
 
   const mutation = useMutation({
     mutationFn: async (values: z.infer<typeof formSchema>) => {
-      const response = await axios.post(`${BACKEND_API_URL}/hackathons/`, {
-        ...values,
-        userEmail: user?.user?.email,
-      });
+      const response = await axios.post(
+        `${BACKEND_API_URL}/hackathons/`,
+        {
+          ...values,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${user?.access_token}`,
+          },
+        },
+      );
       return response.data;
     },
   });
