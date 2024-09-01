@@ -69,116 +69,6 @@ namespace NextAuthUtils {
   };
 }
 
-// export const settings: NextAuthOptions = {
-//   secret: process.env.NEXTAUTH_SECRET!,
-//   session: {
-//     strategy: "jwt",
-//     maxAge: BACKEND_REFRESH_TOKEN_LIFETIME,
-//   },
-//   debug: process.env.NODE_ENV === "development",
-//   providers: [
-//     CredentialsProvider({
-//       // name: "credentials",
-//       credentials: {
-//         username: { label: "Username", type: "text" },
-//         password: { label: "Password", type: "password" },
-//       },
-//       // The data returned from this function is passed forward as the
-//       // `user` variable to the signIn() and jwt() callback
-//       async authorize(credentials, req) {
-//         // console.log(credentials);
-//         try {
-//           const response = await axios({
-//             url: process.env.BACKEND_URL + "/auth/login/",
-//             method: "post",
-//             data: {
-//               username: credentials?.username,
-//               password: credentials?.password,
-//             },
-//           });
-//           const data = response.data;
-//           if (data) return data;
-//         } catch (error) {
-//           console.error(error);
-//         }
-//         return null;
-//       },
-//     }),
-//     GoogleProvider({
-//       clientId: process.env.GOOGLE_CLIENT_ID!,
-//       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-//       authorization: {
-//         params: {
-//           prompt: "consent",
-//           access_type: "offline",
-//           response_type: "code",
-//         },
-//       },
-//     }),
-//   ],
-//   callbacks: {
-//     async signIn({ user, account, profile, email, credentials }:any) {
-//       if (!SIGN_IN_PROVIDERS.includes(account!.provider)) return false;
-//       return SIGN_IN_HANDLERS[account?.provider]!(
-//         user,
-//         account,
-//         profile,
-//         email,
-//         credentials,
-//       );
-//     },
-//     async jwt({ token, user, account }:any) {
-//       if (user && account) {
-//         let backendResponse: any =
-//           account.provider === "credentials" ? user : account.meta;
-
-//         token["user"] = backendResponse.user;
-//         token["access_token"] = backendResponse.access;
-//         token["refresh_token"] = backendResponse.refresh;
-//         token["ref"] = getCurrentEpochTime() + BACKEND_ACCESS_TOKEN_LIFETIME;
-//         return token;
-//       }
-
-//       // user was signed in previously, we want to check if the token needs refreshing
-//       // token has been invalidated, try refreshing it
-//       if (JwtUtils.isJwtExpired(token.access_token as string)) {
-//         // console.log(token);
-//         const [newAccessToken, newRefreshToken] =
-//           await NextAuthUtils.refreshToken(token.refresh_token as string);
-
-//         if (newAccessToken && newRefreshToken) {
-//           token = {
-//             ...token,
-//             access_token: newAccessToken,
-//             refresh_token: newRefreshToken,
-//             ref: getCurrentEpochTime() + BACKEND_ACCESS_TOKEN_LIFETIME,
-//           };
-
-//           return token;
-//         }
-
-//         // unable to refresh tokens from DRF backend, invalidate the token
-//         return {
-//           ...token,
-//           exp: 0,
-//         };
-//       }
-
-//       // token valid
-//       return token;
-//     },
-//     async session({ token }) {
-//       // console.log("session ", session);
-//       // console.log("token ", token);
-//       // console.log("user", user);
-
-//       //@ts-ignore
-//       // session.accessToken = token.accessToken;
-//       // return session;
-//       return token;
-//     },
-//   },
-// };
 const authOptions = {
   providers: [
     CredentialsProvider({
@@ -272,13 +162,6 @@ const authOptions = {
       return token;
     },
     async session({ token }: any) {
-      // console.log("session ", session);
-      // console.log("token ", token);
-      // console.log("user", user);
-
-      //@ts-ignore
-      // session.accessToken = token.accessToken;
-      // return session;
       return token;
     },
   },
