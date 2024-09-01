@@ -3,7 +3,7 @@ import { useSession } from "next-auth/react";
 
 export default function HomePage() {
   const { data: session, status } = useSession();
-  // console.log(session);
+  // console.log(JSON.stringify(session, null, 2));
   return (
     <div>
       {/* Hello */}
@@ -11,7 +11,7 @@ export default function HomePage() {
       Hello
       {!(status === "loading") && session && (
         <>
-          Signed in as {session?.user?.name}
+          Signed in as {session?.name}
           <br />
         </>
       )}

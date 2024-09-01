@@ -74,7 +74,7 @@ const Navbar = () => {
                     className="overflow-hidden rounded-full"
                   >
                     <Image
-                      src={session.user?.image as string}
+                      src={session?.picture as string}
                       alt="User Image"
                       width={36}
                       height={36}

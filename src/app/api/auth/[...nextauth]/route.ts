@@ -2,7 +2,42 @@ import axios from "axios";
 import { NextAuthOptions } from "next-auth";
 import NextAuth from "next-auth/next";
 import GoogleProvider from "next-auth/providers/google";
+import CredentialsProvider from "next-auth/providers/credentials";
 import { JwtUtils, UrlUtils } from "~/utils/constants";
+
+const BACKEND_ACCESS_TOKEN_LIFETIME = 45 * 60; // 45 minutes
+const BACKEND_REFRESH_TOKEN_LIFETIME = 6 * 24 * 60 * 60; // 6 days
+
+const getCurrentEpochTime = () => {
+  return Math.floor(new Date().getTime() / 1000);
+};
+
+const SIGN_IN_HANDLERS = {
+  //@ts-ignore
+  credentials: async (user, account, profile, email, credentials) => {
+    return true;
+  },
+  //@ts-ignore
+  google: async (user, account, profile, email, credentials) => {
+    // console.log(account);
+    try {
+      const response = await axios({
+        method: "post",
+        url: process.env.BACKEND_URL + "/auth/social/google/",
+        data: {
+          access_token: account["access_token"],
+          // id_token: account["id_token"],
+        },
+      });
+      account["meta"] = response.data;
+      return true;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  },
+};
+const SIGN_IN_PROVIDERS = Object.keys(SIGN_IN_HANDLERS);
 
 namespace NextAuthUtils {
   export const refreshToken = async function (refreshToken: string) {
@@ -13,9 +48,18 @@ namespace NextAuthUtils {
         {
           refresh: refreshToken,
         },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            // Authorization: `Bearer ${refreshToken}`,
+          },
+        },
       );
 
       const { access, refresh } = response.data;
+
+      // console.log(response.data);
+      // console.log("refreshed tokens: ", access, refresh);
       // still within this block, return true
       return [access, refresh];
     } catch {
@@ -28,72 +72,85 @@ export const settings: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET!,
   session: {
     strategy: "jwt",
-    maxAge: 24 * 60 * 60,
-  },
-  jwt: {
-    secret: process.env.JWT_SECRET!,
+    maxAge: BACKEND_REFRESH_TOKEN_LIFETIME,
   },
   debug: process.env.NODE_ENV === "development",
   providers: [
+    CredentialsProvider({
+      name: "credentials",
+      credentials: {
+        username: { label: "Username", type: "text" },
+        password: { label: "Password", type: "password" },
+      },
+      // The data returned from this function is passed forward as the
+      // `user` variable to the signIn() and jwt() callback
+      async authorize(credentials, req) {
+        // console.log(credentials);
+        try {
+          const response = await axios({
+            url: process.env.BACKEND_URL + "/auth/login/",
+            method: "post",
+            data: {
+              username: credentials?.username,
+              password: credentials?.password,
+            },
+          });
+          const data = response.data;
+          if (data) return data;
+        } catch (error) {
+          console.error(error);
+        }
+        return null;
+      },
+    }),
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      authorization: {
+        params: {
+          prompt: "consent",
+          access_type: "offline",
+          response_type: "code",
+        },
+      },
     }),
   ],
   callbacks: {
-    async jwt({ token, user, account, profile, isNewUser }) {
-      if (user) {
-        // may have to switch it up a bit for other providers
-        if (account?.provider === "google") {
-          // extract these two tokens
-          const { access_token, id_token } = account;
+    async signIn({ user, account, profile, email, credentials }) {
+      if (!SIGN_IN_PROVIDERS.includes(account!.provider)) return false;
+      return SIGN_IN_HANDLERS[account?.provider]!(
+        user,
+        account,
+        profile,
+        email,
+        credentials,
+      );
+    },
+    async jwt({ token, user, account }) {
+      if (user && account) {
+        let backendResponse: any =
+          account.provider === "credentials" ? user : account.meta;
 
-          // make a POST request to the DRF backend
-          try {
-            const response = await axios.post(
-              // tip: use a seperate .ts file or json file to store such URL endpoints
-              // "http://127.0.0.1:8000/api/social/login/google/",
-              UrlUtils.makeUrl(
-                process.env.BACKEND_URL!,
-                "social",
-                "login",
-                account.provider,
-              ),
-              {
-                access_token, // note the differences in key and value variable names
-                id_token,
-              },
-            );
-
-            // extract the returned token from the DRF backend and add it to the `user` object
-            const { access_token: accessToken, refresh_token } = response.data;
-            // reform the `token` object from the access token we appended to the `user` object
-            token = {
-              ...token,
-              accessToken: accessToken,
-              refreshToken: refresh_token,
-            };
-
-            return token;
-          } catch (error) {
-            return null;
-          }
-        }
+        token["user"] = backendResponse.user;
+        token["access_token"] = backendResponse.access;
+        token["refresh_token"] = backendResponse.refresh;
+        token["ref"] = getCurrentEpochTime() + BACKEND_ACCESS_TOKEN_LIFETIME;
+        return token;
       }
 
       // user was signed in previously, we want to check if the token needs refreshing
       // token has been invalidated, try refreshing it
-      if (JwtUtils.isJwtExpired(token.accessToken as string)) {
+      if (JwtUtils.isJwtExpired(token.access_token as string)) {
+        // console.log(token);
         const [newAccessToken, newRefreshToken] =
-          await NextAuthUtils.refreshToken(token.refreshToken as string);
+          await NextAuthUtils.refreshToken(token.refresh_token as string);
 
         if (newAccessToken && newRefreshToken) {
           token = {
             ...token,
-            accessToken: newAccessToken,
-            refreshToken: newRefreshToken,
-            iat: Math.floor(Date.now() / 1000),
-            exp: Math.floor(Date.now() / 1000 + 2 * 60 * 60),
+            access_token: newAccessToken,
+            refresh_token: newRefreshToken,
+            ref: getCurrentEpochTime() + BACKEND_ACCESS_TOKEN_LIFETIME,
           };
 
           return token;
@@ -109,14 +166,15 @@ export const settings: NextAuthOptions = {
       // token valid
       return token;
     },
-    async session({ session, user, token }) {
+    async session({ token }) {
       // console.log("session ", session);
       // console.log("token ", token);
       // console.log("user", user);
 
       //@ts-ignore
-      session.accessToken = token.accessToken;
-      return session;
+      // session.accessToken = token.accessToken;
+      // return session;
+      return token;
     },
   },
 };
