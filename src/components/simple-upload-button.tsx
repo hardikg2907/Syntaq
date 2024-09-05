@@ -1,9 +1,9 @@
 "use client";
 
-import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useUploadThing } from "~/utils/uploadthing";
+import LoadingSpinner from "./LoadingSpinner";
 
 // inferred input off useUploadThing
 type Input = Parameters<typeof useUploadThing>;
@@ -98,7 +98,7 @@ export function SimpleUploadButton({
       onUploadBegin() {
         toast(
           <div className="flex items-center gap-2 text-white">
-            <Loader2 width={20} height={20} className="animate-spin" />{" "}
+            <LoadingSpinner size={20} />{" "}
             <span className="text-lg">Uploading...</span>
           </div>,
           {

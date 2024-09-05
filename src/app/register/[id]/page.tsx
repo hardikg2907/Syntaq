@@ -1,26 +1,19 @@
-"use client";
-import { useEffect, useState } from "react";
-import { Select } from "~/components/ui/select";
+import SignInPrompt from "~/components/SignInPrompt";
+import RegisterTeamPage from "./RegisterTeamPage";
+import { auth } from "auth";
 
-const RegisterPage = ({ params }: { params: { id: number } }) => {
-  const [userResults, setUserResults] = useState([]);
-  const [userQuery, setUserQuery] = useState("");
+const RegisterPage = async ({ params }: { params: { id: number } }) => {
+  const session = await auth();
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      const res = await fetch(`/api/users?query=${userQuery}`);
-      const data = await res.json();
-      // setUserResults(data);
-    };
-    fetchUsers();
-  }, [userQuery]);
+  if (!session)
+    return (
+      <SignInPrompt
+        message="You need to be signed in to register for this event."
+        redirect={`register/${params.id}`}
+      />
+    );
 
-  return (
-    <div>
-      {/* <RegisterForm id={params.id} /> */}
-      <Select></Select>
-    </div>
-  );
+  return <RegisterTeamPage hackathon_id={params?.id} user={session} />;
 };
 
 export default RegisterPage;
