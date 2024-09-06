@@ -59,6 +59,7 @@ const Team = ({ team_id }: { team_id: number }) => {
       },
       {
         headers: {
+          //@ts-ignore
           Authorization: `Bearer ${user?.access_token}`,
         },
       },
@@ -83,9 +84,16 @@ const Team = ({ team_id }: { team_id: number }) => {
   }
   return (
     <div className="flex flex-col gap-1">
-      {(members || []).map((member: any) => {
-        return <Member member={member} key={member.id} />;
-      })}
+      {members && (
+        <>
+          {(members?.accepted || []).map((member: any) => {
+            return <Member accepted={true} member={member} key={member.id} />;
+          })}
+          {(members?.pending || []).map((member: any) => {
+            return <Member accepted={false} member={member} key={member.id} />;
+          })}
+        </>
+      )}
       {newTeamMember && (
         <Form {...form}>
           <form className="flex w-full items-center justify-between rounded-lg border border-gray-800 p-3">
@@ -139,21 +147,31 @@ const Team = ({ team_id }: { team_id: number }) => {
   );
 };
 
-const Member = ({ member }: { member: any }) => {
+const Member = ({ member, accepted }: { member: any; accepted: boolean }) => {
+  const { data: user } = useSession();
+
   return (
     <div className="flex w-full items-center justify-between rounded-lg border border-gray-800 p-3">
-      <div>
-        {member.userFields.first_name} {member.userFields.last_name}
+      {accepted && (
+        <div>
+          {member.userFields.first_name} {member.userFields.last_name}{" "}
+          <span className="text-gray-500">
+            {/* @ts-ignore */}
+            {member.userFields.email === user?.email && "(You)"}
+          </span>
+        </div>
+      )}
+      <div className="text-sm text-gray-600">
+        {member?.userFields?.email || member?.receiver_email}
       </div>
-      <div className="text-sm text-gray-600">{member.userFields.email}</div>
       <div>
         <Badge
           className={cn({
-            "bg-green-500 hover:bg-green-600": member.is_confirmed,
-            "bg-blue-500 hover:bg-blue-600": !member.is_confirmed,
+            "bg-green-500 hover:bg-green-600": accepted,
+            "bg-blue-500 hover:bg-blue-600": !accepted,
           })}
         >
-          {member.is_confirmed ? "Accepted" : "Pending"}
+          {accepted ? "Accepted" : "Pending"}
         </Badge>
       </div>
     </div>
