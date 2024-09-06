@@ -53,7 +53,7 @@ const Team = ({ team_id }: { team_id: number }) => {
   });
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const res = await axios.post(
-      `${BACKEND_API_URL}/teams/${team_id}/invite/`,
+      `${BACKEND_API_URL}/teams/invitations/${team_id}/`,
       {
         ...values,
       },

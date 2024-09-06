@@ -27,9 +27,7 @@ const SignInPrompt = ({ message, redirect }: SignInPromptProps) => {
         <p>{message}</p>
         <Button
           onClick={() =>
-            router.push(
-              `/api/auth/signin?callbackUrl=http://localhost:3000/${redirect}`,
-            )
+            router.push(`/api/auth/signin?callbackUrl=${window.location.href}`)
           }
         >
           Sign In
