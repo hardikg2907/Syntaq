@@ -1,7 +1,5 @@
 import jwt from "jsonwebtoken";
 
-export const TEAMNAMESIZE = 50;
-
 export namespace JwtUtils {
   export const isJwtExpired = (token: string) => {
     // offset by 60 seconds, so we will check if the token is "almost expired".

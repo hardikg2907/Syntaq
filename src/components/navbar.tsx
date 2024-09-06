@@ -12,7 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { LogOut } from "lucide-react";
+import { LogOut, PlusCircle } from "lucide-react";
 
 const Navbar = () => {
   const { data: session, status } = useSession();
@@ -30,21 +30,6 @@ const Navbar = () => {
           {/* <Button variant="ghost" className="group flex w-full gap-2"> */}
           <p className="text-gray-500 transition-colors duration-150 ease-in-out group-hover:text-gray-900 dark:group-hover:text-gray-100">
             Discover
-          </p>
-          {/* <ChevronRight
-            size={16}
-            color="white"
-            className="opacity-0 transition-opacity duration-200 ease-in-out group-hover:opacity-100"
-          /> */}
-          {/* </Button> */}
-        </Link>
-        <Link
-          href="/new-hackathon"
-          className="group flex w-full items-center gap-2 text-sm"
-        >
-          {/* <Button variant="ghost" className="group flex w-full gap-2"> */}
-          <p className="text-gray-500 transition-colors duration-150 ease-in-out group-hover:text-gray-900 dark:group-hover:text-gray-100">
-            Create
           </p>
           {/* <ChevronRight
             size={16}
@@ -87,6 +72,17 @@ const Navbar = () => {
                     My Account
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
+                  <DropdownMenuItem>
+                    <Link
+                      href="/new-hackathon"
+                      className="group flex w-full items-center gap-2 text-sm"
+                    >
+                      <PlusCircle size={16} />
+                      <p className="transition-colors duration-150 ease-in-out dark:group-hover:text-gray-100">
+                        Create
+                      </p>
+                    </Link>
+                  </DropdownMenuItem>
                   <DropdownMenuItem>Settings</DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem

@@ -38,7 +38,10 @@ const HackathonCard = ({
         className="h-40 w-full rounded-t-xl object-contain"
       />
       <div className="p-3">
-        <h1 className="text-xl font-semibold transition-colors duration-150 group-hover:text-blue-500">
+        <h1
+          title={title}
+          className="truncate text-xl font-semibold transition-colors duration-150 group-hover:text-blue-500"
+        >
           {title}
         </h1>
         <p className="gap-1/2 flex items-center text-sm text-black dark:text-gray-500">
