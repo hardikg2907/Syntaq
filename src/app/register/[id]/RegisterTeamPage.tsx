@@ -1,9 +1,12 @@
 "use client";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
+import LoadingSpinner from "~/components/LoadingSpinner";
 import { Button } from "~/components/ui/button";
 import {
   Form,
@@ -15,10 +18,7 @@ import {
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { BACKEND_API_URL } from "~/utils/constants";
-import LoadingSpinner from "~/components/LoadingSpinner";
-import { toast } from "sonner";
-import { Badge } from "~/components/ui/badge";
-import { cn } from "~/lib/utils";
+import Team from "./Team";
 
 interface RegisterTeamPageProps {
   hackathon_id: number;
@@ -34,6 +34,8 @@ const formSchema = z.object({
 });
 
 const RegisterTeamPage = ({ hackathon_id, user }: RegisterTeamPageProps) => {
+  const [newTeamMember, setNewTeamMember] = useState<boolean>(false);
+
   const { mutate: createTeamMutate } = useMutation({
     mutationFn: async (values: z.infer<typeof formSchema>) => {
       const response = await axios.post(
@@ -55,25 +57,34 @@ const RegisterTeamPage = ({ hackathon_id, user }: RegisterTeamPageProps) => {
 
   const { mutate: updateTeamMutate } = useMutation({
     mutationFn: async (values: z.infer<typeof formSchema>) => {
-      const response = await axios.put(
-        `${BACKEND_API_URL}/teams/update/${existingTeam?.id}/`,
-        {
-          ...values,
-          hackathon_id,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${user?.access_token}`,
+      try {
+        const response = await axios.put(
+          `${BACKEND_API_URL}/teams/update/${existingTeam?.id}/`,
+          {
+            ...values,
+            hackathon_id,
           },
-        },
-      );
-      // console.log(response.data);
-      return response.data;
+          {
+            headers: {
+              Authorization: `Bearer ${user?.access_token}`,
+            },
+          },
+        );
+        refetch();
+        // console.log(response.data);
+        return response.data;
+      } catch (e) {
+        toast.error("Error updating team");
+        return null;
+      }
     },
   });
-  //   console.log(user);
 
-  const { data: existingTeam, isLoading } = useQuery({
+  const {
+    data: existingTeam,
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["team", hackathon_id, user?.user?.pk],
     queryFn: async () => {
       try {
@@ -86,7 +97,7 @@ const RegisterTeamPage = ({ hackathon_id, user }: RegisterTeamPageProps) => {
           },
         );
         form.setValue("name", response.data.name);
-        console.log(response.data);
+        // console.log(response.data);
         return response.data;
       } catch (e) {
         return null;
@@ -121,58 +132,52 @@ const RegisterTeamPage = ({ hackathon_id, user }: RegisterTeamPageProps) => {
         </div>
       ) : (
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Team Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Name" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="flex h-full flex-col gap-5"
+          >
+            <div className="space-y-8">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Team Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Name" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <>
+                <h1 className="border-b text-lg font-bold">Team Members</h1>
+                {existingTeam && (
+                  <Team
+                    team_id={existingTeam?.id}
+                    members={existingTeam?.members || []}
+                    newTeamMember={newTeamMember}
+                    setNewTeamMember={setNewTeamMember}
+                  />
+                )}
+              </>
+              {existingTeam && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="rounded-2xl bg-transparent"
+                  onClick={() => setNewTeamMember(true)}
+                >
+                  + Add Team member
+                </Button>
               )}
-            />
-            <Team members={existingTeam?.members || []} />
-            <Button type="submit">
+            </div>
+            <Button className="w-fit" type="submit">
               {existingTeam ? "Save" : "Create Team"}
             </Button>
           </form>
         </Form>
       )}
-    </div>
-  );
-};
-
-const Team = ({ members }: { members: any }) => {
-  return (
-    <div className="flex flex-col gap-1">
-      {[...members, ...members].map((member: any) => {
-        return <Member member={member} key={member.id} />;
-      })}
-    </div>
-  );
-};
-
-const Member = ({ member }: { member: any }) => {
-  return (
-    <div className="flex w-full items-center justify-between rounded-lg border border-gray-800 p-3">
-      <div>
-        {member.userFields.first_name} {member.userFields.last_name}
-      </div>
-      <div className="text-sm text-gray-600">{member.userFields.email}</div>
-      <div>
-        <Badge
-          className={cn({
-            "bg-green-500 hover:bg-green-600": member.is_confirmed,
-            "bg-blue-500 hover:bg-blue-600": !member.is_confirmed,
-          })}
-        >
-          {member.is_confirmed ? "Accepted" : "Pending"}
-        </Badge>
-      </div>
     </div>
   );
 };
