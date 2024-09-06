@@ -1,8 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Send, XIcon } from "lucide-react";
 import { useSession } from "next-auth/react";
-import { Dispatch, SetStateAction } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Badge } from "~/components/ui/badge";
@@ -15,6 +16,7 @@ import {
   FormMessage,
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
+import { Skeleton } from "~/components/ui/skeleton";
 import { cn } from "~/lib/utils";
 import { BACKEND_API_URL } from "~/utils/constants";
 
@@ -22,18 +24,29 @@ const formSchema = z.object({
   receiver_email: z.string().email("Should be a valid email"),
 });
 
-const Team = ({
-  members,
-  newTeamMember,
-  setNewTeamMember,
-  team_id,
-}: {
-  members: any;
-  newTeamMember: boolean;
-  setNewTeamMember: Dispatch<SetStateAction<boolean>>;
-  team_id: number;
-}) => {
+const Team = ({ team_id }: { team_id: number }) => {
   const { data: user } = useSession();
+  const [newTeamMember, setNewTeamMember] = useState<boolean>(false);
+
+  const {
+    data: members,
+    refetch,
+    isLoading,
+  } = useQuery({
+    queryKey: ["team_members", team_id],
+    queryFn: async () => {
+      const res = await axios.get(
+        `${BACKEND_API_URL}/teams/members/${team_id}/`,
+        {
+          headers: {
+            Authorization: `Bearer ${user?.access_token}`,
+          },
+        },
+      );
+
+      return res.data;
+    },
+  });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -51,6 +64,7 @@ const Team = ({
       },
     );
     // If successful
+    refetch();
     setNewTeamMember(false);
   };
   const sendInvite = async () => {
@@ -58,9 +72,18 @@ const Team = ({
     form.handleSubmit(onSubmit)();
   };
 
+  if (isLoading) {
+    return (
+      <div className="flex flex-col gap-1">
+        <Skeleton className="h-10 w-full rounded-lg border border-gray-800" />
+        <Skeleton className="h-10 w-full rounded-lg border border-gray-800" />
+        <Skeleton className="h-10 w-full rounded-lg border border-gray-800" />
+      </div>
+    );
+  }
   return (
     <div className="flex flex-col gap-1">
-      {members.map((member: any) => {
+      {(members || []).map((member: any) => {
         return <Member member={member} key={member.id} />;
       })}
       {newTeamMember && (
@@ -104,6 +127,14 @@ const Team = ({
           </form>
         </Form>
       )}
+      <Button
+        type="button"
+        variant="outline"
+        className="rounded-2xl bg-transparent"
+        onClick={() => setNewTeamMember(true)}
+      >
+        + Add Team member
+      </Button>
     </div>
   );
 };

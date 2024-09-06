@@ -34,8 +34,6 @@ const formSchema = z.object({
 });
 
 const RegisterTeamPage = ({ hackathon_id, user }: RegisterTeamPageProps) => {
-  const [newTeamMember, setNewTeamMember] = useState<boolean>(false);
-
   const { mutate: createTeamMutate } = useMutation({
     mutationFn: async (values: z.infer<typeof formSchema>) => {
       const response = await axios.post(
@@ -50,6 +48,7 @@ const RegisterTeamPage = ({ hackathon_id, user }: RegisterTeamPageProps) => {
           },
         },
       );
+      refetch();
 
       return response.data;
     },
@@ -70,7 +69,6 @@ const RegisterTeamPage = ({ hackathon_id, user }: RegisterTeamPageProps) => {
             },
           },
         );
-        refetch();
         // console.log(response.data);
         return response.data;
       } catch (e) {
@@ -152,27 +150,10 @@ const RegisterTeamPage = ({ hackathon_id, user }: RegisterTeamPageProps) => {
               />
               <>
                 <h1 className="border-b text-lg font-bold">Team Members</h1>
-                {existingTeam && (
-                  <Team
-                    team_id={existingTeam?.id}
-                    members={existingTeam?.members || []}
-                    newTeamMember={newTeamMember}
-                    setNewTeamMember={setNewTeamMember}
-                  />
-                )}
+                {existingTeam && <Team team_id={existingTeam?.id} />}
               </>
-              {existingTeam && (
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="rounded-2xl bg-transparent"
-                  onClick={() => setNewTeamMember(true)}
-                >
-                  + Add Team member
-                </Button>
-              )}
             </div>
-            <Button className="w-fit" type="submit">
+            <Button disabled={isLoading} className="w-fit" type="submit">
               {existingTeam ? "Save" : "Create Team"}
             </Button>
           </form>
