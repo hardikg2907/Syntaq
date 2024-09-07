@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Send, XIcon } from "lucide-react";
 import { useSession } from "next-auth/react";
@@ -24,7 +24,13 @@ const formSchema = z.object({
   receiver_email: z.string().email("Should be a valid email"),
 });
 
-const Team = ({ team_id }: { team_id: number }) => {
+const Team = ({
+  team_id,
+  isLeader,
+}: {
+  team_id: number;
+  isLeader: boolean;
+}) => {
   const { data: user } = useSession();
   const [newTeamMember, setNewTeamMember] = useState<boolean>(false);
 
@@ -36,7 +42,7 @@ const Team = ({ team_id }: { team_id: number }) => {
     queryKey: ["team_members", team_id],
     queryFn: async () => {
       const res = await axios.get(
-        `${BACKEND_API_URL}/teams/members/${team_id}/`,
+        `${BACKEND_API_URL}/teams/members-and-invitations/${team_id}/`,
         {
           headers: {
             Authorization: `Bearer ${user?.access_token}`,
@@ -76,6 +82,7 @@ const Team = ({ team_id }: { team_id: number }) => {
   if (isLoading) {
     return (
       <div className="flex flex-col gap-1">
+        <h1 className="border-b text-lg font-bold">Team Members</h1>
         <Skeleton className="h-10 w-full rounded-lg border border-gray-800" />
         <Skeleton className="h-10 w-full rounded-lg border border-gray-800" />
         <Skeleton className="h-10 w-full rounded-lg border border-gray-800" />
@@ -84,13 +91,30 @@ const Team = ({ team_id }: { team_id: number }) => {
   }
   return (
     <div className="flex flex-col gap-1">
+      <h1 className="border-b text-lg font-bold">Team Members</h1>
       {members && (
         <>
           {(members?.accepted || []).map((member: any) => {
-            return <Member accepted={true} member={member} key={member.id} />;
+            return (
+              <Member
+                accepted={true}
+                member={member}
+                isLeader={isLeader}
+                key={member.id}
+                refetch={refetch}
+              />
+            );
           })}
           {(members?.pending || []).map((member: any) => {
-            return <Member accepted={false} member={member} key={member.id} />;
+            return (
+              <Member
+                accepted={false}
+                member={member}
+                isLeader={isLeader}
+                key={member.id}
+                refetch={refetch}
+              />
+            );
           })}
         </>
       )}
@@ -147,8 +171,57 @@ const Team = ({ team_id }: { team_id: number }) => {
   );
 };
 
-const Member = ({ member, accepted }: { member: any; accepted: boolean }) => {
+const Member = ({
+  member,
+  accepted,
+  isLeader,
+  refetch,
+}: {
+  member: any;
+  accepted: boolean;
+  isLeader?: boolean;
+  refetch?: () => void;
+}) => {
   const { data: user } = useSession();
+
+  const { mutateAsync: deleteMember } = useMutation({
+    mutationKey: ["delete-member", member.id],
+    mutationFn: async (id: number) => {
+      const res = await axios.delete(
+        `${BACKEND_API_URL}/teams/members/${id}/`,
+        {
+          headers: {
+            Authorization: `Bearer ${user?.access_token}`,
+          },
+        },
+      );
+      return res.data;
+    },
+  });
+
+  const { mutateAsync: deleteInvitation } = useMutation({
+    mutationKey: ["delete-invitation", member.id],
+    mutationFn: async (id: number) => {
+      const res = await axios.delete(
+        `${BACKEND_API_URL}/teams/invitations/${id}/`,
+        {
+          headers: {
+            Authorization: `Bearer ${user?.access_token}`,
+          },
+        },
+      );
+      return res.data;
+    },
+  });
+
+  const deleteHandler = async () => {
+    if (accepted) {
+      await deleteMember(member.id);
+    } else {
+      await deleteInvitation(member.id);
+    }
+    refetch && refetch();
+  };
 
   return (
     <div className="flex w-full items-center justify-between rounded-lg border border-gray-800 p-3">
@@ -164,15 +237,25 @@ const Member = ({ member, accepted }: { member: any; accepted: boolean }) => {
       <div className="text-sm text-gray-600">
         {member?.userFields?.email || member?.receiver_email}
       </div>
-      <div>
+      <div className="flex items-center justify-between gap-1">
         <Badge
-          className={cn({
+          className={cn("", {
             "bg-green-500 hover:bg-green-600": accepted,
             "bg-blue-500 hover:bg-blue-600": !accepted,
           })}
         >
           {accepted ? "Accepted" : "Pending"}
         </Badge>
+        {isLeader && member?.userFields?.email !== user?.email && (
+          <Button
+            type="button"
+            variant="destructive"
+            className="flex gap-1 bg-transparent"
+            onClick={() => deleteHandler()}
+          >
+            <XIcon size={10} />
+          </Button>
+        )}
       </div>
     </div>
   );

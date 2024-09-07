@@ -148,8 +148,12 @@ const RegisterTeamPage = ({ hackathon_id, user }: RegisterTeamPageProps) => {
                 )}
               />
               <>
-                <h1 className="border-b text-lg font-bold">Team Members</h1>
-                {existingTeam && <Team team_id={existingTeam?.id} />}
+                {existingTeam && (
+                  <Team
+                    team_id={existingTeam?.id}
+                    isLeader={existingTeam?.leader === user?.user?.pk}
+                  />
+                )}
               </>
             </div>
             <Button disabled={isLoading} className="w-fit" type="submit">

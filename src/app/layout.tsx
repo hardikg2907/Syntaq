@@ -14,6 +14,8 @@ import { ourFileRouter } from "~/app/api/uploadthing/core";
 import NextAuthProvider from "~/components/NextAuthProvider";
 import QueryProvider from "~/components/providers/QueryProvider";
 import { Toaster } from "~/components/ui/sonner";
+import axios from "axios";
+import { toast } from "sonner";
 const queryClient = new QueryClient();
 
 const fontSans = FontSans({
@@ -26,6 +28,20 @@ export const metadata: Metadata = {
   description: "Manage your hackathons with ease.",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
+
+axios.interceptors.response.use(
+  null,
+  (error) => {
+    if (axios.isAxiosError(error)) {
+      const errorMessage = error.message;
+      const statusCode = error.response?.status;
+      if (statusCode && statusCode >= 400 && statusCode < 500) {
+        toast.error(errorMessage);
+      }
+    }
+  },
+  { synchronous: true },
+);
 
 export default function RootLayout({
   children,

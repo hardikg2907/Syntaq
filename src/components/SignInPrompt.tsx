@@ -18,13 +18,9 @@ const SignInPrompt = ({ message, redirect }: SignInPromptProps) => {
 
   return (
     <Dialog modal open={true}>
-      <DialogHeader>
-        <DialogTitle>
-          <h1>Sign In</h1>
-        </DialogTitle>
-      </DialogHeader>
       <DialogContent>
-        <p>{message}</p>
+        {/* <DialogTitle className="text-center">Sign In</DialogTitle> */}
+        <p className="text-center">{message}</p>
         <Button
           onClick={() =>
             router.push(`/api/auth/signin?callbackUrl=${window.location.href}`)
