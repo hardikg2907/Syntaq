@@ -159,14 +159,16 @@ const Team = ({
           </form>
         </Form>
       )}
-      <Button
-        type="button"
-        variant="outline"
-        className="rounded-2xl bg-transparent"
-        onClick={() => setNewTeamMember(true)}
-      >
-        + Add Team member
-      </Button>
+      {isLeader && (
+        <Button
+          type="button"
+          variant="outline"
+          className="rounded-2xl bg-transparent"
+          onClick={() => setNewTeamMember(true)}
+        >
+          + Add Team member
+        </Button>
+      )}
     </div>
   );
 };

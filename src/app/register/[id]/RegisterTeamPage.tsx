@@ -121,6 +121,8 @@ const RegisterTeamPage = ({ hackathon_id, user }: RegisterTeamPageProps) => {
     // }
   }
 
+  const isLeader = existingTeam?.leader === user?.user?.pk;
+
   return (
     <div className="h-full w-full">
       {isLoading ? (
@@ -134,31 +136,34 @@ const RegisterTeamPage = ({ hackathon_id, user }: RegisterTeamPageProps) => {
             className="flex h-full flex-col gap-5"
           >
             <div className="space-y-8">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Team Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Name" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              {isLeader ? (
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Team Name</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Name" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              ) : (
+                <h1 className="text-xl font-semibold">{existingTeam?.name}</h1>
+              )}
               <>
                 {existingTeam && (
-                  <Team
-                    team_id={existingTeam?.id}
-                    isLeader={existingTeam?.leader === user?.user?.pk}
-                  />
+                  <Team team_id={existingTeam?.id} isLeader={isLeader} />
                 )}
               </>
             </div>
-            <Button disabled={isLoading} className="w-fit" type="submit">
-              {existingTeam ? "Save" : "Create Team"}
-            </Button>
+            {isLeader && (
+              <Button disabled={isLoading} className="w-fit" type="submit">
+                {existingTeam ? "Save" : "Create Team"}
+              </Button>
+            )}
           </form>
         </Form>
       )}
