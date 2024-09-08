@@ -8,7 +8,7 @@ import { BACKEND_API_URL } from "~/utils/constants";
 
 const Discover = () => {
   // const { data: session } = useSession();
-  const { data: hackathons } = useQuery({
+  const { data: hackathons, isLoading } = useQuery({
     queryKey: ["hackathons"],
     queryFn: async () => {
       const response = await axios.get(`${BACKEND_API_URL}/hackathons`, {
@@ -31,7 +31,7 @@ const Discover = () => {
           View all
         </Link>
       </div>
-      <HackathonsCarousel hackathons={hackathons || []} />
+      <HackathonsCarousel isLoading={isLoading} hackathons={hackathons || []} />
     </div>
   );
 };
