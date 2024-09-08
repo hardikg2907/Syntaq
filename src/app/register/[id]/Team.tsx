@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
+import { Dialog, DialogContent, DialogTrigger } from "~/components/ui/dialog";
 import {
   Form,
   FormControl,
@@ -249,14 +250,43 @@ const Member = ({
           {accepted ? "Accepted" : "Pending"}
         </Badge>
         {isLeader && member?.userFields?.email !== user?.email && (
-          <Button
-            type="button"
-            variant="destructive"
-            className="flex gap-1 bg-transparent"
-            onClick={() => deleteHandler()}
-          >
-            <XIcon size={10} />
-          </Button>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button
+                type="button"
+                variant="destructive"
+                className="flex gap-1 bg-transparent"
+              >
+                <XIcon size={10} />
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <div className="flex flex-col gap-1">
+                <h1 className="text-lg font-bold">Are you sure?</h1>
+                <p className="text-gray-600">
+                  Do you really want to remove {member.userFields.first_name}{" "}
+                  {member.userFields.last_name} from the team?
+                </p>
+                <div className="flex gap-1">
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    className="flex gap-1 bg-transparent"
+                    onClick={() => deleteHandler()}
+                  >
+                    Yes
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="flex gap-1 bg-transparent"
+                  >
+                    No
+                  </Button>
+                </div>
+              </div>
+            </DialogContent>
+          </Dialog>
         )}
       </div>
     </div>
