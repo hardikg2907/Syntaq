@@ -8,8 +8,10 @@ import { format } from "date-fns";
 import { Calendar, ChevronRight, MapPin, User, Users } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { Button } from "~/components/ui/button";
+import { Button, buttonVariants } from "~/components/ui/button";
 import { cn } from "~/lib/utils";
+import LoadingSpinner from "../LoadingSpinner";
+import { Skeleton } from "../ui/skeleton";
 
 interface HackathonPageProps {
   title: string;
@@ -28,6 +30,8 @@ interface HackathonPageProps {
   minTeamSize: number;
   maxTeamSize: number;
   id: number;
+  teamData: Object;
+  isTeamLoading: boolean;
 }
 
 export function HackathonPage({
@@ -44,6 +48,8 @@ export function HackathonPage({
   minTeamSize,
   maxTeamSize,
   id,
+  teamData,
+  isTeamLoading,
 }: HackathonPageProps) {
   const startYear = new Date(start_date).getFullYear();
   const endYear = new Date(end_date).getFullYear();
@@ -102,17 +108,30 @@ export function HackathonPage({
               </div>
             </div>
             <div className="flex flex-col items-center gap-4 min-[400px]:flex-row">
-              <Link className="h-full w-full" href={`/register/${id}`}>
-                <Button
-                  className={cn("group w-full min-[400px]:w-auto", {
-                    "bg-red-500": new Date() > registrationClose,
-                  })}
-                  disabled={new Date() > registrationClose}
-                >
-                  Apply Now
-                  <ChevronRight className="ml-2 h-5 w-0 opacity-0 transition-all duration-150 group-hover:w-5 group-hover:opacity-100" />
-                </Button>
-              </Link>
+              {isTeamLoading ? (
+                <Skeleton
+                  className={cn(
+                    "h-10 w-24",
+                    buttonVariants({
+                      variant: "ghost",
+                    }),
+                  )}
+                />
+              ) : (
+                <Link className="h-full w-full" href={`/register/${id}`}>
+                  <Button
+                    className={cn("group w-full min-[400px]:w-auto", {
+                      "bg-red-500": !teamData && new Date() > registrationClose,
+                      "bg-green-600 hover:bg-green-700": teamData,
+                    })}
+                    disabled={new Date() > registrationClose || isTeamLoading}
+                  >
+                    <>{teamData ? "View Registration" : "Register"}</>
+
+                    <ChevronRight className="ml-2 h-5 w-0 opacity-0 transition-all duration-150 group-hover:w-5 group-hover:opacity-100" />
+                  </Button>
+                </Link>
+              )}
             </div>
           </div>
         </div>
