@@ -122,6 +122,7 @@ const RegisterTeamPage = ({ hackathon_id, user }: RegisterTeamPageProps) => {
   }
 
   const isLeader = existingTeam?.leader === user?.user?.pk;
+  const showForm = isLeader || !existingTeam;
 
   return (
     <div className="h-full w-full">
@@ -136,7 +137,7 @@ const RegisterTeamPage = ({ hackathon_id, user }: RegisterTeamPageProps) => {
             className="flex h-full flex-col gap-5"
           >
             <div className="space-y-8">
-              {isLeader ? (
+              {showForm ? (
                 <FormField
                   control={form.control}
                   name="name"
@@ -159,7 +160,7 @@ const RegisterTeamPage = ({ hackathon_id, user }: RegisterTeamPageProps) => {
                 )}
               </>
             </div>
-            {isLeader && (
+            {showForm && (
               <Button disabled={isLoading} className="w-fit" type="submit">
                 {existingTeam ? "Save" : "Create Team"}
               </Button>

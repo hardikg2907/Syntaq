@@ -5,6 +5,7 @@ import { Send, XIcon } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
@@ -72,6 +73,7 @@ const Team = ({
       },
     );
     // If successful
+    toast.success("Invitation sent successfully");
     refetch();
     setNewTeamMember(false);
   };
@@ -264,8 +266,8 @@ const Member = ({
               <div className="flex flex-col gap-1">
                 <h1 className="text-lg font-bold">Are you sure?</h1>
                 <p className="text-gray-600">
-                  Do you really want to remove {member.userFields.first_name}{" "}
-                  {member.userFields.last_name} from the team?
+                  Do you really want to remove {member.userFields?.first_name}{" "}
+                  {member.userFields?.last_name} from the team?
                 </p>
                 <div className="flex gap-1">
                   <Button
