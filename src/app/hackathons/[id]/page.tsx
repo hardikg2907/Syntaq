@@ -1,58 +1,36 @@
-"use client";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import { useSession } from "next-auth/react";
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
+import { auth } from "auth";
+import { getHackathon, getUserTeam } from "~/actions/hackathon";
 import { HackathonPage } from "~/components/component/hackathon-page";
-import LoadingSpinner from "~/components/LoadingSpinner";
-import { BACKEND_API_URL } from "~/utils/constants";
 
-const page = ({ params }: { params: { id: number } }) => {
-  const { data: user } = useSession();
-  const { data: hackathon, isLoading } = useQuery({
+const page = async ({ params }: { params: { id: number } }) => {
+  const user = await auth();
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery({
     queryKey: ["hackathon", params.id],
-    queryFn: async () => {
-      const response = await axios.get(
-        `${BACKEND_API_URL}/hackathons/${params.id}/`,
-      );
-      return response.data;
-    },
+    queryFn: async () => await getHackathon(params.id),
   });
-  // console.log(hackathon);
 
-  const { data: teamData, isLoading: isTeamLoading } = useQuery({
-    queryKey: ["userTeam", params.id],
-    queryFn: async ({}) => {
-      const response = await axios.get(
-        `${BACKEND_API_URL}/hackathons/${params.id}/user-team/`,
-        {
-          headers: {
-            Authorization: `Bearer ${user?.access_token}`,
-          },
-        },
-      );
-      console.log(response.data);
-      return response.data; // Returns team details or null if not registered
-    },
-    enabled: !!user,
+  await queryClient.prefetchQuery({
+    queryKey: ["user-team", params.id],
+    queryFn: async () => await getUserTeam(params.id, user),
   });
 
   return (
     <div className="h-full w-full">
-      {isLoading ? (
-        <div className="flex h-full w-full items-center justify-center">
-          <LoadingSpinner />
-        </div>
-      ) : !hackathon ? (
-        <div> 404 Not Found </div>
-      ) : (
-        // @ts-ignore
+      <HydrationBoundary state={dehydrate(queryClient)}>
         <HackathonPage
-          teamData={teamData}
-          isTeamLoading={isTeamLoading}
-          {...hackathon}
+          // teamData={teamData}
+          // isTeamLoading={isTeamLoading}
           id={params.id}
+          user={user}
         />
-      )}
+      </HydrationBoundary>
     </div>
   );
 };

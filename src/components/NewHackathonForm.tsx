@@ -63,14 +63,18 @@ const NewHackathonForm = () => {
       );
       return response.data;
     },
+    onSuccess: (data) => {
+      toast.success("Hackathon created successfully");
+      router.push(`/hackathons/${data.id}`);
+    },
+    onError: (error) => {
+      console.error(error);
+      toast.error("Failed to create hackathon");
+    },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const res = await mutation.mutateAsync(values);
-    console.log(res);
-    if (res) {
-      router.push("/discover");
-    }
   }
 
   const deletePhoto = async () => {

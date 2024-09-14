@@ -35,8 +35,11 @@ const HackathonsCarousel = ({
       <CarouselContent className="ml-20 h-72">
         {isLoading ? (
           <>
-            {[...Array(3)].map((a) => (
-              <CarouselItem className="-pl-10 md:basis-1/2 lg:basis-1/3">
+            {[...Array(3)].map((a, i) => (
+              <CarouselItem
+                key={i}
+                className="-pl-10 md:basis-1/2 lg:basis-1/3"
+              >
                 <Skeleton className="h-60 w-[250px] rounded-xl border border-gray-300 bg-gray-50 shadow-md shadow-gray-900 dark:border-0 dark:bg-gray-900/40" />
               </CarouselItem>
             ))}
