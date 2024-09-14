@@ -18,9 +18,8 @@
 - [x] Use uploadthing for photo upload
 - [x] Make route for photo deletion
 - [x] Make a page for each hackathon (basic)
-- [] Invitations for team and team forming
+- [x] Invitations for team and team forming
 - [] Make edit page for hackathon
 - [] Maybe try a slug for each hackathon instead of id
 - [] Add theming options for each hackathon
 - [] While creating hackathon, they could drag and drop elements to stylize their hackathon page themselves, where we just provide the components
-- [] Start making queries and linking to the backend

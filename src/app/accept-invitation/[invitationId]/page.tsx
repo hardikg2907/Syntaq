@@ -39,7 +39,7 @@ const AcceptInvitationPage = ({
       return res.data;
     },
   });
-  const { data: invitation } = useQuery({
+  const { data: invitation, isLoading } = useQuery({
     queryKey: ["invitation", invitationId],
     queryFn: async () => {
       const res = await axios.get(
@@ -60,6 +60,7 @@ const AcceptInvitationPage = ({
         <SignInPrompt message="Sign In to accept this Invitation" />
       </>
     );
+  if (isLoading) return <LoadingSpinner />;
   if (!invitation) return <div>404 Invitation not found</div>;
   return (
     <div className="h-full w-full space-y-8">

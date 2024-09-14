@@ -18,6 +18,7 @@ import {
 import { Input } from "~/components/ui/input";
 import { BACKEND_API_URL } from "~/utils/constants";
 import Team from "./Team";
+import { createTeam, getTeam, updateTeam } from "~/actions/team";
 
 interface RegisterTeamPageProps {
   hackathon_id: number;
@@ -33,73 +34,23 @@ const formSchema = z.object({
 });
 
 const RegisterTeamPage = ({ hackathon_id, user }: RegisterTeamPageProps) => {
-  const { mutate: createTeamMutate } = useMutation({
-    mutationFn: async (values: z.infer<typeof formSchema>) => {
-      const response = await axios.post(
-        `${BACKEND_API_URL}/teams/create/`,
-        {
-          ...values,
-          hackathon_id,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${user?.access_token}`,
-          },
-        },
-      );
-      refetch();
-
-      return response.data;
-    },
-  });
-
-  const { mutate: updateTeamMutate } = useMutation({
-    mutationFn: async (values: z.infer<typeof formSchema>) => {
-      try {
-        const response = await axios.put(
-          `${BACKEND_API_URL}/teams/update/${existingTeam?.id}/`,
-          {
-            ...values,
-            hackathon_id,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${user?.access_token}`,
-            },
-          },
-        );
-        // console.log(response.data);
-        return response.data;
-      } catch (e) {
-        toast.error("Error updating team");
-        return null;
-      }
-    },
-  });
-
   const {
     data: existingTeam,
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: ["team", hackathon_id, user?.user?.pk],
-    queryFn: async () => {
-      try {
-        const response = await axios.get(
-          `${BACKEND_API_URL}/teams/${hackathon_id}/`,
-          {
-            headers: {
-              Authorization: `Bearer ${user?.access_token}`,
-            },
-          },
-        );
-        form.setValue("name", response.data.name);
-        // console.log(response.data);
-        return response.data;
-      } catch (e) {
-        return null;
-      }
-    },
+    queryKey: ["team", hackathon_id],
+    queryFn: async () => getTeam({ hackathon_id, user }),
+  });
+
+  const { mutateAsync: createTeamMutate } = useMutation({
+    mutationFn: async (values: z.infer<typeof formSchema>) =>
+      createTeam(values, user, hackathon_id),
+  });
+
+  const { mutateAsync: updateTeamMutate } = useMutation({
+    mutationFn: async (values: z.infer<typeof formSchema>) =>
+      updateTeam(values, user, hackathon_id, existingTeam?.id),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -109,16 +60,12 @@ const RegisterTeamPage = ({ hackathon_id, user }: RegisterTeamPageProps) => {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     let res;
     if (existingTeam) {
-      res = updateTeamMutate(values);
+      res = await updateTeamMutate(values);
       toast.success("Team updated successfully");
     } else {
-      res = createTeamMutate(values);
+      res = await createTeamMutate(values);
       toast.success("Team created successfully");
     }
-    // console.log(res);
-    // if (res) {
-    //   router.push(`/hackathons/${params.id}`);
-    // }
   }
 
   const isLeader = existingTeam?.leader === user?.user?.pk;
@@ -141,6 +88,7 @@ const RegisterTeamPage = ({ hackathon_id, user }: RegisterTeamPageProps) => {
                 <FormField
                   control={form.control}
                   name="name"
+                  defaultValue={existingTeam?.name}
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Team Name</FormLabel>
@@ -161,9 +109,11 @@ const RegisterTeamPage = ({ hackathon_id, user }: RegisterTeamPageProps) => {
               </>
             </div>
             {showForm && (
-              <Button disabled={isLoading} className="w-fit" type="submit">
-                {existingTeam ? "Save" : "Create Team"}
-              </Button>
+              <div className="w-full">
+                <Button disabled={isLoading} className="w-fit" type="submit">
+                  {existingTeam ? "Save" : "Create Team"}
+                </Button>
+              </div>
             )}
           </form>
         </Form>
