@@ -46,11 +46,26 @@ const RegisterTeamPage = ({ hackathon_id, user }: RegisterTeamPageProps) => {
   const { mutateAsync: createTeamMutate } = useMutation({
     mutationFn: async (values: z.infer<typeof formSchema>) =>
       createTeam(values, user, hackathon_id),
+    onSuccess: async () => {
+      toast.success("Team Created successfully!");
+      await refetch();
+    },
+    onError: (error) => {
+      console.log(error);
+      toast.error(error?.response?.data?.detail);
+    },
   });
 
   const { mutateAsync: updateTeamMutate } = useMutation({
     mutationFn: async (values: z.infer<typeof formSchema>) =>
       updateTeam(values, user, hackathon_id, existingTeam?.id),
+    onSuccess: async () => {
+      toast.success("Team Updated successfully!");
+      await refetch();
+    },
+    onError: (error) => {
+      toast.error(error?.response?.data?.detail);
+    },
   });
 
   const form = useForm<z.infer<typeof formSchema>>({

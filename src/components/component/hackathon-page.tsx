@@ -8,6 +8,7 @@ import { cn } from "~/lib/utils";
 import LoadingSpinner from "../LoadingSpinner";
 import { Skeleton } from "../ui/skeleton";
 import { useGetHackathon, useGetUserTeam } from "~/queries/get-hackathon";
+import { useRouter } from "next/navigation";
 
 interface HackathonPageProps {
   id: number;
@@ -17,6 +18,7 @@ interface HackathonPageProps {
 export function HackathonPage({ id, user }: HackathonPageProps) {
   const { data, isLoading } = useGetHackathon(id);
   const { data: teamData, isLoading: isTeamLoading } = useGetUserTeam(id, user);
+  const router = useRouter();
 
   if (isLoading || isTeamLoading) {
     return (
@@ -108,19 +110,34 @@ export function HackathonPage({ id, user }: HackathonPageProps) {
                   )}
                 />
               ) : (
-                <Link className="h-full w-full" href={`/register/${id}`}>
-                  <Button
-                    className={cn("group w-full min-[400px]:w-auto", {
-                      "bg-red-500": !teamData && new Date() > registrationClose,
-                      "bg-green-600 hover:bg-green-700": teamData,
-                    })}
-                    disabled={new Date() > registrationClose || isTeamLoading}
-                  >
-                    <>{teamData ? "View Registration" : "Register"}</>
+                // <Link className="h-full w-full" href={`/register/${id}`}>
+                <Button
+                  className={cn("group w-full min-[400px]:w-auto", {
+                    "bg-red-500":
+                      new Date().getTime() >
+                      new Date(registrationClose).getTime(),
+                    "bg-green-600 hover:bg-green-700": teamData,
+                  })}
+                  onClick={() => {
+                    router.push(`/register/${id}`);
+                  }}
+                  disabled={
+                    new Date().getTime() >
+                      new Date(registrationClose).getTime() || isTeamLoading
+                  }
+                >
+                  <>
+                    {teamData
+                      ? "View Registration"
+                      : new Date().getTime() >
+                          new Date(registrationClose).getTime()
+                        ? "Registration Closed"
+                        : "Register"}
+                  </>
 
-                    <ChevronRight className="ml-2 h-5 w-0 opacity-0 transition-all duration-150 group-hover:w-5 group-hover:opacity-100" />
-                  </Button>
-                </Link>
+                  <ChevronRight className="ml-2 h-5 w-0 opacity-0 transition-all duration-150 group-hover:w-5 group-hover:opacity-100" />
+                </Button>
+                // </Link>
               )}
             </div>
           </div>
@@ -184,9 +201,6 @@ export function HackathonPage({ id, user }: HackathonPageProps) {
                   <MapPin className="h-5 w-5" />
                   <div>
                     <div className="font-medium">{location}</div>
-                    {/* <div className="text-muted-foreground">
-                      123 Main St, Anytown USA
-                    </div> */}
                   </div>
                 </div>
               </div>

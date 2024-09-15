@@ -25,6 +25,7 @@ import { deleteFile } from "~/utils/uploadthing";
 import DatePickerForm from "./createHackathon/DatePickerForm";
 import { SimpleUploadButton } from "./simple-upload-button";
 import { Textarea } from "./ui/textarea";
+import { createHackathon } from "~/actions/hackathon";
 
 const formSchema = z.object({
   title: z
@@ -49,26 +50,16 @@ const NewHackathonForm = () => {
   const { data: user } = useSession();
 
   const mutation = useMutation({
-    mutationFn: async (values: z.infer<typeof formSchema>) => {
-      const response = await axios.post(
-        `${BACKEND_API_URL}/hackathons/`,
-        {
-          ...values,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${user?.access_token}`,
-          },
-        },
-      );
-      return response.data;
-    },
+    mutationFn: async (values: z.infer<typeof formSchema>) =>
+      // @ts-ignore
+      await createHackathon(values, user),
     onSuccess: (data) => {
       toast.success("Hackathon created successfully");
       router.push(`/hackathons/${data.id}`);
     },
     onError: (error) => {
-      console.error(error);
+      // @ts-ignore
+      console.log(error?.response?.data);
       toast.error("Failed to create hackathon");
     },
   });
