@@ -26,6 +26,7 @@ export interface Session {
 // export type Session = Token;
 
 const hackathonSchema = z.object({
+  id: z.number().optional(),
   title: z
     .string()
     .min(1, "Required Field")
@@ -38,7 +39,7 @@ const hackathonSchema = z.object({
   registrationClose: z.date(),
   maxTeamSize: z.coerce.number().min(1, "Max team size must be at least 1"),
   minTeamSize: z.coerce.number().min(1, "Min team size must be at least 1"),
-  photo: z.string().default(""),
+  photo: z.string().default("").optional(),
 });
 console.log(typeof hackathonSchema);
 export type Hackathon = z.infer<typeof hackathonSchema>;

@@ -1,4 +1,3 @@
-// "use server";
 import axios from "axios";
 import { BACKEND_API_URL } from "~/utils/constants";
 
@@ -20,7 +19,7 @@ export const getTeam = async ({
     );
     return response.data;
   } catch (e) {
-    return null;
+    throw e;
   }
 };
 
@@ -29,21 +28,23 @@ export const createTeam = async (
   user: any,
   hackathon_id: number,
 ) => {
-  const response = await axios.post(
-    `${BACKEND_API_URL}/teams/create/`,
-    {
-      ...values,
-      hackathon_id,
-    },
-    {
-      headers: {
-        Authorization: `Bearer ${user?.access_token}`,
+  try {
+    const response = await axios.post(
+      `${BACKEND_API_URL}/teams/create/`,
+      {
+        ...values,
+        hackathon_id,
       },
-    },
-  );
-  //   refetch();
-
-  return response.data;
+      {
+        headers: {
+          Authorization: `Bearer ${user?.access_token}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (e) {
+    throw e;
+  }
 };
 
 export const updateTeam = async (
@@ -67,6 +68,6 @@ export const updateTeam = async (
     );
     return response.data;
   } catch (e) {
-    return null;
+    throw e;
   }
 };
