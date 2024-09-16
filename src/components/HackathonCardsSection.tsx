@@ -3,14 +3,22 @@ import HackathonHorizontalCard from "./HackathonHorizontalCard";
 
 interface HackathonCardsSectionProps {
   hackathons: Hackathon[];
+  type: "participated" | "organized";
 }
 
-const HackathonCardsSection = ({ hackathons }: HackathonCardsSectionProps) => {
+const HackathonCardsSection = ({
+  hackathons,
+  type,
+}: HackathonCardsSectionProps) => {
   return (
     <div className="mt-2 flex h-full w-full flex-col gap-3">
       {hackathons.map((hackathon) => {
         return (
-          <HackathonHorizontalCard key={hackathon.id} hackathon={hackathon} />
+          <HackathonHorizontalCard
+            type={type}
+            key={hackathon.id}
+            hackathon={hackathon}
+          />
         );
       })}
     </div>

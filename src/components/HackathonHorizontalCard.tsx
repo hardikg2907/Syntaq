@@ -14,10 +14,12 @@ import { ArrowUpRightIcon, PenBoxIcon } from "lucide-react";
 
 interface HackathonHorizontalCardProps {
   hackathon: Hackathon;
+  type: "participated" | "organized";
 }
 
 const HackathonHorizontalCard = ({
   hackathon,
+  type,
 }: HackathonHorizontalCardProps) => {
   return (
     <Card className="flex flex-row items-center rounded-xl p-4 py-2">
@@ -32,8 +34,10 @@ const HackathonHorizontalCard = ({
       </div>
       <div className="flex w-full justify-between">
         <CardHeader className="w-56 px-1">
-          <CardTitle className="truncate">{hackathon?.title}</CardTitle>
-          <CardDescription className="truncate">
+          <CardTitle className="truncate" title={hackathon?.title}>
+            {hackathon?.title}
+          </CardTitle>
+          <CardDescription className="truncate" title={hackathon?.subtitle}>
             {hackathon?.subtitle}
           </CardDescription>
         </CardHeader>
@@ -52,21 +56,23 @@ const HackathonHorizontalCard = ({
               className="w-0 transition-all duration-150 ease-in-out group-hover:w-4"
             />
           </Link>
-          <Link
-            href={`/manage/${hackathon.id}`}
-            target="_blank"
-            className={buttonVariants({
-              variant: "red",
-              className:
-                "group flex w-fit items-center justify-between gap-2 p-2",
-            })}
-          >
-            Manage
-            <PenBoxIcon
-              size={16}
-              className="w-0 transition-all duration-150 ease-in-out group-hover:w-4"
-            />
-          </Link>
+          {type == "organized" && (
+            <Link
+              href={`/manage/${hackathon.id}`}
+              target="_blank"
+              className={buttonVariants({
+                variant: "red",
+                className:
+                  "group flex w-fit items-center justify-between gap-2 p-2",
+              })}
+            >
+              Manage
+              <PenBoxIcon
+                size={16}
+                className="w-0 transition-all duration-150 ease-in-out group-hover:w-4"
+              />
+            </Link>
+          )}
         </CardFooter>
       </div>
     </Card>

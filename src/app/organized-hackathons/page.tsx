@@ -10,7 +10,10 @@ const OrganizedHackathonsPage = async () => {
   return (
     <div className="h-full w-full">
       <Heading>Organized Hackathons</Heading>
-      <HackathonCardsSection hackathons={organizedHackathons} />
+      <HackathonCardsSection
+        type="organized"
+        hackathons={organizedHackathons}
+      />
     </div>
   );
 };

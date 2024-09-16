@@ -67,3 +67,23 @@ export const getOrganizedHackathons = async (user: any) => {
     throw new Error(error?.response.data);
   }
 };
+
+export const getParticipatedHackathons = async (user: any) => {
+  try {
+    const response = await axios.get(
+      `${BACKEND_API_URL}/hackathons/participated-hackathons/`,
+      {
+        headers: {
+          Authorization: `Bearer ${user?.access_token}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (error: any) {
+    console.error(
+      "Error fetching participated hackathons:",
+      error?.response?.data,
+    );
+    throw new Error(error?.response?.data);
+  }
+};
