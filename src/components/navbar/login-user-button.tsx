@@ -13,8 +13,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { CalendarDays, LogOut, PlusCircle } from "lucide-react";
 
-export const LoginUserButton = () => {
-  const { data: session } = useSession();
+export const LoginUserButton = ({ session }: { session: any }) => {
   return (
     <>
       {!session && (
@@ -69,6 +68,18 @@ export const LoginUserButton = () => {
                   </p>
                 </Link>
               </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link
+                  href="/participated-hackathons"
+                  className="group flex w-full items-center gap-2 text-sm"
+                >
+                  <CalendarDays size={16} />
+                  <p className="transition-colors duration-150 ease-in-out dark:group-hover:text-gray-100">
+                    Participated
+                  </p>
+                </Link>
+              </DropdownMenuItem>
+
               <DropdownMenuItem>Settings</DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem

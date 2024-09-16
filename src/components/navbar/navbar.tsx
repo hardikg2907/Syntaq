@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { ModeToggle } from "../themes/theme-toggle";
 import { LoginUserButton } from "./login-user-button";
+import { auth } from "auth";
 
 const Navbar = async () => {
+  const user = await auth();
   return (
     <nav className="flex w-full items-center justify-between border-b border-gray-300 bg-slate-100 p-3 pl-5 text-xl font-semibold dark:border-gray-700 dark:bg-black">
       <div className="flex h-full items-center justify-between gap-3">
@@ -27,7 +29,7 @@ const Navbar = async () => {
       </div>
 
       <div className="flex flex-row items-center gap-4">
-        <LoginUserButton />
+        <LoginUserButton session={user} />
         <ModeToggle />
       </div>
     </nav>
