@@ -9,7 +9,7 @@ export interface User {
   username: string;
 }
 
-export interface Token {
+export interface Session {
   access_token: string;
   email: string;
   exp: number;
@@ -23,7 +23,7 @@ export interface Token {
   user: User;
 }
 
-export type Session = Token;
+// export type Session = Token;
 
 const hackathonSchema = z.object({
   title: z

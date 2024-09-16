@@ -1,7 +1,7 @@
-"use server";
+// "use server";
 import axios from "axios";
 import { BACKEND_API_URL } from "~/utils/constants";
-import { Hackathon, Session } from "~/utils/types";
+import type { Hackathon, Session } from "~/utils/types";
 
 export const getHackathon = async (id: number) => {
   try {
@@ -28,6 +28,7 @@ export const createHackathon = async (values: Hackathon, user: Session) => {
     return response.data;
   } catch (error: any) {
     console.error("Error creating hackathon:", error?.response.data);
+    throw new Error(error?.response.data);
   }
 };
 
@@ -43,6 +44,7 @@ export const getUserTeam = async (id: number, user: any) => {
     );
     return response.data;
   } catch (error: any) {
-    console.error("Error fetching user team data:", error?.response.data);
+    console.error("Error fetching user team data:", error?.response?.data);
+    throw new Error(error?.response?.data);
   }
 };

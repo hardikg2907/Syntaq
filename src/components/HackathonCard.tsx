@@ -28,16 +28,16 @@ const HackathonCard = ({
   return (
     <div
       onClick={() => router.push(`/hackathons/${id}`)}
-      className="group h-60 w-[250px] cursor-pointer rounded-xl border border-gray-300 bg-gray-50 transition-shadow duration-200 hover:shadow-md dark:border-0 dark:bg-gray-900/40 dark:hover:shadow-slate-900"
+      className="group h-60 w-[250px] cursor-pointer overflow-hidden rounded-xl border border-gray-300 bg-gray-50 transition-shadow duration-200 hover:shadow-md dark:border-0 dark:bg-gray-900/40 dark:hover:shadow-slate-900"
     >
       <Image
-        src={photo || ""}
+        src={photo || "/default_hackathon_image.png"}
         alt={title}
         width={200}
         height={150}
         className="h-40 w-full rounded-t-xl object-contain"
       />
-      <div className="p-3">
+      <div className="h-full bg-gray-100 p-3 dark:bg-gray-900/70">
         <h1
           title={title}
           className="truncate text-xl font-semibold transition-colors duration-150 group-hover:text-blue-500"
@@ -53,7 +53,7 @@ const HackathonCard = ({
                 ? `${daysLeft} days`
                 : `${hoursLeft} hours`}
           </span>
-          {"  "}
+          {"   "}
           left
         </p>
       </div>

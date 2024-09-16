@@ -9,9 +9,9 @@ export const useGetHackathon = (id: number) => {
 };
 
 export const useGetUserTeam = (id: number, user: any) => {
+  // console.log(user);
   return useQuery({
     queryKey: ["user-team", id],
     queryFn: async () => await getUserTeam(id, user),
-    enabled: !!user,
   });
 };
