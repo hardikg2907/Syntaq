@@ -24,7 +24,8 @@ const page = async ({ params }: { params: { id: number } }) => {
   return (
     <div className="h-full w-full">
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <HackathonPage id={params.id} user={user} />
+        {/* @ts-ignore */}
+        <HackathonPage id={params.id} user={user!} />
       </HydrationBoundary>
     </div>
   );

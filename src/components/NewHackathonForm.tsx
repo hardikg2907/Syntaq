@@ -1,16 +1,15 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { Button } from "~/components/ui/button";
 
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import { Trash } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { createHackathon } from "~/actions/hackathon";
 import {
   Form,
   FormControl,
@@ -20,28 +19,74 @@ import {
   FormMessage,
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
-import { BACKEND_API_URL } from "~/utils/constants";
 import { deleteFile } from "~/utils/uploadthing";
 import DatePickerForm from "./createHackathon/DatePickerForm";
 import { SimpleUploadButton } from "./simple-upload-button";
 import { Textarea } from "./ui/textarea";
-import { createHackathon } from "~/actions/hackathon";
 
-const formSchema = z.object({
-  title: z
-    .string()
-    .min(1, "Required Field")
-    .max(256, "Name must be less than 256 characters"),
-  description: z.string(),
-  start_date: z.date(),
-  end_date: z.date(),
-  location: z.string().max(256, "Location must be less than 256 characters"),
-  registrationOpen: z.date(),
-  registrationClose: z.date(),
-  maxTeamSize: z.coerce.number().min(1, "Max team size must be at least 1"),
-  minTeamSize: z.coerce.number().min(1, "Min team size must be at least 1"),
-  photo: z.string().default(""),
-});
+import { isBefore } from "date-fns";
+import { z } from "zod";
+
+const formSchema = z
+  .object({
+    title: z
+      .string()
+      .min(1, "Required Field")
+      .max(256, "Name must be less than 256 characters"),
+    description: z.string(),
+    start_date: z.date(),
+    end_date: z.date(),
+    location: z.string().max(256, "Location must be less than 256 characters"),
+    registrationOpen: z.date(),
+    registrationClose: z.date(),
+    maxTeamSize: z.coerce.number().min(1, "Max team size must be at least 1"),
+    minTeamSize: z.coerce.number().min(1, "Min team size must be at least 1"),
+    photo: z.string().default(""),
+  })
+  .refine((data) => !isBefore(data.start_date, new Date()), {
+    message: "Start date must be in the future",
+    path: ["start_date"],
+  })
+  .refine((data) => !isBefore(data.end_date, new Date()), {
+    message: "End date must be in the future",
+    path: ["end_date"],
+  })
+  .refine((data) => !isBefore(data.registrationOpen, new Date()), {
+    message: "Registration open date must be in the future",
+    path: ["registrationOpen"],
+  })
+  .refine((data) => !isBefore(data.registrationClose, new Date()), {
+    message: "Registration close date must be in the future",
+    path: ["registrationClose"],
+  })
+  .refine((data) => !isBefore(data.end_date, data.start_date), {
+    message: "End date must be after start date",
+    path: ["end_date"],
+  })
+  .refine((data) => !isBefore(data.registrationClose, data.registrationOpen), {
+    message: "Registration close date must be after registration open date",
+    path: ["registrationClose"],
+  })
+  .refine((data) => !isBefore(data.start_date, data.registrationOpen), {
+    message: "Start date must be after registration open date",
+    path: ["start_date"],
+  })
+  .refine((data) => !isBefore(data.end_date, data.registrationOpen), {
+    message: "End date must be after registration open date",
+    path: ["end_date"],
+  })
+  .refine((data) => !isBefore(data.end_date, data.registrationClose), {
+    message: "End date must be after registration close date",
+    path: ["end_date"],
+  })
+  .refine((data) => !isBefore(data.start_date, data.registrationClose), {
+    message: "Start date must be after registration close date",
+    path: ["start_date"],
+  })
+  .refine((data) => data.maxTeamSize >= data.minTeamSize, {
+    message: "Max team size cannot be less than min team size",
+    path: ["maxTeamSize"],
+  });
 const NewHackathonForm = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

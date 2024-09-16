@@ -9,10 +9,11 @@ import LoadingSpinner from "../LoadingSpinner";
 import { Skeleton } from "../ui/skeleton";
 import { useGetHackathon, useGetUserTeam } from "~/queries/get-hackathon";
 import { useRouter } from "next/navigation";
+import type { Session } from "~/utils/types";
 
 interface HackathonPageProps {
   id: number;
-  user: any;
+  user: Session | null;
 }
 
 export function HackathonPage({ id, user }: HackathonPageProps) {
