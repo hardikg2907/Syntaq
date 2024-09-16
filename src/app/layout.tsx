@@ -6,7 +6,7 @@ import { Inter as FontSans } from "next/font/google";
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { type Metadata } from "next";
 import { extractRouterConfig } from "uploadthing/server";
-import Navbar from "~/components/navbar";
+import Navbar from "~/components/navbar/navbar";
 import { cn } from "~/lib/utils";
 
 import { QueryClient } from "@tanstack/react-query";

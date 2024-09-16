@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { ModeToggle } from "./themes/theme-toggle";
-import { LoginUserButton } from "./navbar/login-user-button";
+import { ModeToggle } from "../themes/theme-toggle";
+import { LoginUserButton } from "./login-user-button";
 
 const Navbar = async () => {
   return (
