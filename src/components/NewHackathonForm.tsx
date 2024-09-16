@@ -24,7 +24,7 @@ import DatePickerForm from "./createHackathon/DatePickerForm";
 import { SimpleUploadButton } from "./simple-upload-button";
 import { Textarea } from "./ui/textarea";
 
-import { isBefore } from "date-fns";
+import { isBefore, sub } from "date-fns";
 import { z } from "zod";
 
 const formSchema = z
@@ -33,6 +33,10 @@ const formSchema = z
       .string()
       .min(1, "Required Field")
       .max(256, "Name must be less than 256 characters"),
+    subtitle: z
+      .string()
+      .max(256, "Subtitle must be less than 256 characters")
+      .optional(),
     description: z.string(),
     start_date: z.date(),
     end_date: z.date(),
@@ -134,6 +138,19 @@ const NewHackathonForm = () => {
               <FormLabel>Title</FormLabel>
               <FormControl>
                 <Input placeholder="Title" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="subtitle"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Subtitle</FormLabel>
+              <FormControl>
+                <Input placeholder="Subtitle" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

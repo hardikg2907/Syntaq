@@ -31,6 +31,10 @@ const hackathonSchema = z.object({
     .string()
     .min(1, "Required Field")
     .max(256, "Name must be less than 256 characters"),
+  subtitle: z
+    .string()
+    .max(256, "Subtitle must be less than 256 characters")
+    .optional(),
   description: z.string(),
   start_date: z.date(),
   end_date: z.date(),
