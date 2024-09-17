@@ -61,22 +61,27 @@ const Team = ({
     resolver: zodResolver(formSchema),
   });
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const res = await axios.post(
-      `${BACKEND_API_URL}/teams/invitations/${team_id}/`,
-      {
-        ...values,
-      },
-      {
-        headers: {
-          //@ts-ignore
-          Authorization: `Bearer ${user?.access_token}`,
+    try {
+      const res = await axios.post(
+        `${BACKEND_API_URL}/teams/invitations/${team_id}/`,
+        {
+          ...values,
         },
-      },
-    );
-    // If successful
-    toast.success("Invitation sent successfully");
-    refetch();
-    setNewTeamMember(false);
+        {
+          headers: {
+            //@ts-ignore
+            Authorization: `Bearer ${user?.access_token}`,
+          },
+        },
+      );
+      // If successful
+      toast.success("Invitation sent successfully");
+      refetch();
+      setNewTeamMember(false);
+    } catch (error) {
+      console.log(error);
+      toast.error(JSON.stringify(error?.response?.data));
+    }
   };
   const sendInvite = async () => {
     // Send invite to new team member

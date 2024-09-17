@@ -19,6 +19,7 @@ import { Input } from "~/components/ui/input";
 import { BACKEND_API_URL } from "~/utils/constants";
 import Team from "./Team";
 import { createTeam, getTeam, updateTeam } from "~/actions/team";
+import Heading from "~/components/Heading";
 
 interface RegisterTeamPageProps {
   hackathon_id: number;
@@ -94,6 +95,9 @@ const RegisterTeamPage = ({ hackathon_id, user }: RegisterTeamPageProps) => {
         </div>
       ) : (
         <Form {...form}>
+          <Heading className="mb-5">
+            {existingTeam ? "Edit Team" : "Register Team"}
+          </Heading>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
             className="flex h-full flex-col gap-5"

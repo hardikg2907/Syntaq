@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import Link from "next/link";
 import HackathonsCarousel from "~/components/HackathonsCarousel";
+import Heading from "~/components/Heading";
 import { BACKEND_API_URL } from "~/utils/constants";
 
 const Discover = () => {
@@ -23,7 +24,7 @@ const Discover = () => {
   return (
     <div className="w-full">
       <div className="flex w-full items-end justify-between">
-        <h1 className="text-2xl font-bold">Upcoming Hackathons,</h1>
+        <Heading>Upcoming Hackathons</Heading>
         <Link
           href="/hackathons"
           className="text-sm text-blue-500 hover:underline"
