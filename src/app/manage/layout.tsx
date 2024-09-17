@@ -1,7 +1,14 @@
+import Link from "next/link";
 import { ReactNode } from "react";
+import ManageSidebar from "~/components/ManageSidebar";
 
 export default function ManageLayout({
   children,
 }: Readonly<{ children: ReactNode }>) {
-  return <div className="h-full w-full bg-red-200">{children}</div>;
+  return (
+    <div className="h-screen w-full">
+      <ManageSidebar />
+      <div className="ml-14">{children}</div>
+    </div>
+  );
 }
