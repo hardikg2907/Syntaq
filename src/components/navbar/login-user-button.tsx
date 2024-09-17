@@ -46,10 +46,10 @@ export const LoginUserButton = ({ session }: { session: any }) => {
                 My Account
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
+              <DropdownMenuItem className="p-0">
                 <Link
                   href="/new-hackathon"
-                  className="group flex w-full items-center gap-2 text-sm"
+                  className="group flex h-full w-full items-center gap-2 p-1 pl-2 text-sm"
                 >
                   <PlusCircle size={16} />
                   <p className="transition-colors duration-150 ease-in-out dark:group-hover:text-gray-100">
@@ -57,10 +57,10 @@ export const LoginUserButton = ({ session }: { session: any }) => {
                   </p>
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem className="p-0">
                 <Link
                   href="/organized-hackathons"
-                  className="group flex w-full items-center gap-2 text-sm"
+                  className="group flex h-full w-full items-center gap-2 p-1 pl-2 text-sm"
                 >
                   <CalendarDays size={16} />
                   <p className="transition-colors duration-150 ease-in-out dark:group-hover:text-gray-100">
@@ -68,10 +68,10 @@ export const LoginUserButton = ({ session }: { session: any }) => {
                   </p>
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem className="p-0">
                 <Link
                   href="/participated-hackathons"
-                  className="group flex w-full items-center gap-2 text-sm"
+                  className="group flex h-full w-full items-center gap-2 p-1 pl-2 text-sm"
                 >
                   <CalendarDays size={16} />
                   <p className="transition-colors duration-150 ease-in-out dark:group-hover:text-gray-100">
