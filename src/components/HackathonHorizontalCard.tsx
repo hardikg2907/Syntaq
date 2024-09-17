@@ -22,7 +22,7 @@ const HackathonHorizontalCard = ({
   type,
 }: HackathonHorizontalCardProps) => {
   return (
-    <Card className="flex flex-row items-center rounded-xl p-4 py-2">
+    <Card className="flex flex-row items-center rounded-xl p-4 py-2 transition-shadow duration-150 ease-in-out hover:shadow-md hover:shadow-gray-300 dark:hover:shadow-slate-900">
       <div className="mr-4 flex-shrink-0">
         <Image
           src={hackathon?.photo || "/default_hackathon_image.png"}

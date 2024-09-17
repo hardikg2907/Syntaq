@@ -10,7 +10,7 @@ const Heading = ({ children, className = "" }: HeadingProps) => {
   return (
     <h1
       className={cn(
-        `text-3xl font-bold text-white underline underline-offset-1`,
+        `text-3xl font-bold underline underline-offset-1 dark:text-white`,
         className,
       )}
     >

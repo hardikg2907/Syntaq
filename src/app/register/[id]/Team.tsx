@@ -40,6 +40,7 @@ const Team = ({
     data: members,
     refetch,
     isLoading,
+    isFetching,
   } = useQuery({
     queryKey: ["team_members", team_id],
     queryFn: async () => {
@@ -82,7 +83,7 @@ const Team = ({
     form.handleSubmit(onSubmit)();
   };
 
-  if (isLoading) {
+  if (isLoading && isFetching) {
     return (
       <div className="flex flex-col gap-1">
         <h1 className="border-b text-lg font-bold">Team Members</h1>
