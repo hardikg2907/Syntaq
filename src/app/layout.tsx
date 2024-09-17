@@ -14,8 +14,7 @@ import { ourFileRouter } from "~/app/api/uploadthing/core";
 import NextAuthProvider from "~/components/providers/NextAuthProvider";
 import QueryProvider from "~/components/providers/QueryProvider";
 import { Toaster } from "~/components/ui/sonner";
-import axios from "axios";
-import { toast } from "sonner";
+import { headers } from "next/headers";
 const queryClient = new QueryClient();
 
 const fontSans = FontSans({
@@ -46,14 +45,11 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const headersList = headers();
+  const currentPath = headersList.get("x-current-path");
   return (
     <html lang="en" suppressHydrationWarning>
-      <ThemeProvider
-        attribute="class"
-        defaultTheme="system"
-        enableSystem
-        disableTransitionOnChange
-      >
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <body
           className={cn(
             "min-h-screen w-full bg-background font-sans antialiased",
@@ -71,7 +67,7 @@ export default function RootLayout({
                  */
                 routerConfig={extractRouterConfig(ourFileRouter)}
               />
-              <Navbar />
+              {!currentPath?.startsWith("/manage/") && <Navbar />}
               <main className="min-h-screen w-full bg-slate-100 p-3 text-slate-950 dark:bg-black dark:text-white">
                 {children}
               </main>
