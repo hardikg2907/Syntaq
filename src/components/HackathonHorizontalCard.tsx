@@ -58,7 +58,7 @@ const HackathonHorizontalCard = ({
           </Link>
           {type == "organized" && (
             <Link
-              href={`/manage/${hackathon.id}`}
+              href={`/manage/${hackathon.id}/edit`}
               target="_blank"
               className={buttonVariants({
                 variant: "red",

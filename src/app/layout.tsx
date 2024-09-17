@@ -29,19 +29,19 @@ export const metadata: Metadata = {
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
-axios.interceptors.response.use(
-  null,
-  (error) => {
-    if (axios.isAxiosError(error)) {
-      const errorMessage = error.message;
-      const statusCode = error.response?.status;
-      if (statusCode && statusCode >= 400 && statusCode < 500) {
-        toast.error(errorMessage);
-      }
-    }
-  },
-  { synchronous: true },
-);
+// axios.interceptors.response.use(
+//   null,
+//   (error) => {
+//     if (axios.isAxiosError(error)) {
+//       const errorMessage = error.message;
+//       const statusCode = error.response?.status;
+//       if (statusCode && statusCode >= 400 && statusCode < 500) {
+//         toast.error(errorMessage);
+//       }
+//     }
+//   },
+//   { synchronous: true },
+// );
 
 export default function RootLayout({
   children,
