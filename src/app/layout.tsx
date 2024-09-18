@@ -47,13 +47,13 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   const headersList = headers();
   const currentPath = headersList.get("x-current-path");
-  console.log(currentPath);
+  // console.log(currentPath);
   return (
     <html lang="en" suppressHydrationWarning>
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <body
           className={cn(
-            "min-h-screen w-full bg-background font-sans antialiased",
+            "min-h-screen w-full overflow-y-scroll bg-background font-sans antialiased",
             fontSans.variable,
           )}
         >

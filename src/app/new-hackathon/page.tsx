@@ -1,11 +1,11 @@
 import Heading from "~/components/Heading";
-import NewHackathonForm from "~/components/NewHackathonForm";
+import HackathonForm from "~/components/HackathonForm";
 
 const NewHackathon = () => {
   return (
     <div>
       <Heading className="mb-5">Create a new hackathon</Heading>
-      <NewHackathonForm />
+      <HackathonForm />
     </div>
   );
 };

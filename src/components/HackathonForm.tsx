@@ -26,6 +26,7 @@ import { Textarea } from "./ui/textarea";
 
 import { isBefore, sub } from "date-fns";
 import { z } from "zod";
+import { Hackathon } from "~/utils/types";
 
 const formSchema = z
   .object({
@@ -91,7 +92,7 @@ const formSchema = z
     message: "Max team size cannot be less than min team size",
     path: ["maxTeamSize"],
   });
-const NewHackathonForm = () => {
+const HackathonForm = ({ hackathon }: { hackathon?: Hackathon }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
@@ -132,6 +133,7 @@ const NewHackathonForm = () => {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
+          defaultValue={hackathon?.title}
           name="title"
           render={({ field }) => (
             <FormItem>
@@ -146,6 +148,7 @@ const NewHackathonForm = () => {
         <FormField
           control={form.control}
           name="subtitle"
+          defaultValue={hackathon?.subtitle}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Subtitle</FormLabel>
@@ -159,6 +162,7 @@ const NewHackathonForm = () => {
         <FormField
           control={form.control}
           name="description"
+          defaultValue={hackathon?.description}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Description</FormLabel>
@@ -175,6 +179,7 @@ const NewHackathonForm = () => {
         <div className="flex w-full justify-between">
           <FormField
             control={form.control}
+            defaultValue={hackathon?.start_date}
             name="start_date"
             render={({ field }) => (
               <DatePickerForm field={field} label="Start Time:" side="right" />
@@ -183,6 +188,7 @@ const NewHackathonForm = () => {
           <FormField
             control={form.control}
             name="end_date"
+            defaultValue={hackathon?.end_date}
             render={({ field }) => (
               <DatePickerForm field={field} label="End Time:" side="left" />
             )}
@@ -191,6 +197,7 @@ const NewHackathonForm = () => {
         <FormField
           control={form.control}
           name="location"
+          defaultValue={hackathon?.location}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Location</FormLabel>
@@ -205,6 +212,7 @@ const NewHackathonForm = () => {
           <FormField
             control={form.control}
             name="registrationOpen"
+            defaultValue={hackathon?.registrationOpen}
             render={({ field }) => (
               <DatePickerForm
                 field={field}
@@ -216,6 +224,7 @@ const NewHackathonForm = () => {
           <FormField
             control={form.control}
             name="registrationClose"
+            defaultValue={hackathon?.registrationClose}
             render={({ field }) => (
               <DatePickerForm
                 field={field}
@@ -229,6 +238,7 @@ const NewHackathonForm = () => {
           <FormField
             control={form.control}
             name="minTeamSize"
+            defaultValue={hackathon?.minTeamSize}
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Minimum Team Size: </FormLabel>
@@ -247,6 +257,7 @@ const NewHackathonForm = () => {
           <FormField
             control={form.control}
             name="maxTeamSize"
+            defaultValue={hackathon?.maxTeamSize}
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Maximum Team Size: </FormLabel>
@@ -266,6 +277,7 @@ const NewHackathonForm = () => {
         <FormField
           control={form.control}
           name="photo"
+          defaultValue={hackathon?.photo}
           render={({ field }) => (
             <FormItem className="flex items-center gap-2">
               <FormLabel>Banner image: </FormLabel>
@@ -302,4 +314,4 @@ const NewHackathonForm = () => {
   );
 };
 
-export default NewHackathonForm;
+export default HackathonForm;

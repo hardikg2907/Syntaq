@@ -13,7 +13,7 @@ const page = async ({ params }: { params: { id: number } }) => {
 
   await queryClient.prefetchQuery({
     queryKey: ["hackathon", params.id],
-    queryFn: async () => await getHackathon(params.id),
+    queryFn: async () => await getHackathon(params.id, true),
   });
 
   await queryClient.prefetchQuery({

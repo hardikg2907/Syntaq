@@ -1,14 +1,8 @@
 "use client";
 
-import {
-  LineChart,
-  Package,
-  PencilLine,
-  Settings,
-  ShoppingCart,
-  Users2,
-} from "lucide-react";
+import { LineChart, PencilLine, Settings, Users2 } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   Tooltip,
   TooltipContent,
@@ -16,6 +10,9 @@ import {
   TooltipTrigger,
 } from "~/components/ui/tooltip";
 import { cn } from "~/lib/utils";
+import { LoginUserButton } from "./navbar/login-user-button";
+import { auth } from "auth";
+import { useSession } from "next-auth/react";
 
 const pages = [
   {
@@ -35,8 +32,9 @@ const pages = [
 ];
 
 const ManageSidebar = () => {
-  const path = window.location.pathname;
+  const path = usePathname();
   const pathEnd = path.split("/").pop();
+  const { data: user } = useSession();
   return (
     <TooltipProvider>
       <aside className="fixed inset-y-0 left-0 z-10 flex w-14 flex-col border-r transition-all">
@@ -51,7 +49,7 @@ const ManageSidebar = () => {
             <span className="sr-only">Syntaq</span>
           </Link>
           {pages.map((page) => (
-            <Tooltip>
+            <Tooltip key={page.path}>
               <TooltipTrigger asChild>
                 <Link
                   href={
@@ -81,11 +79,11 @@ const ManageSidebar = () => {
                 href="#"
                 className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
               >
-                <Settings className="h-5 w-5" />
-                <span className="sr-only">Settings</span>
+                <LoginUserButton session={user} />
+                <span className="sr-only">Profile</span>
               </Link>
             </TooltipTrigger>
-            <TooltipContent side="right">Settings</TooltipContent>
+            <TooltipContent side="right">Profile</TooltipContent>
           </Tooltip>
         </nav>
       </aside>

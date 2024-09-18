@@ -3,10 +3,10 @@ import axios from "axios";
 import { BACKEND_API_URL } from "~/utils/constants";
 import type { Hackathon, Session } from "~/utils/types";
 
-export const getHackathon = async (id: number) => {
+export const getHackathon = async (id: number, expand: boolean) => {
   try {
     const response = await axios.get(
-      `${BACKEND_API_URL}/hackathons/${id}/?expand=organizer`,
+      `${BACKEND_API_URL}/hackathons/${id}/${expand ? "?expand=organizer" : ""}`,
     );
     return response.data;
   } catch (error: any) {

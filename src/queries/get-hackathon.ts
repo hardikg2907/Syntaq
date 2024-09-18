@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { getHackathon, getUserTeam } from "~/actions/hackathon";
 
-export const useGetHackathon = (id: number) => {
+export const useGetHackathon = (id: number, expand: boolean = true) => {
   return useQuery({
     queryKey: ["hackathon", id],
-    queryFn: async () => await getHackathon(id),
+    queryFn: async () => await getHackathon(id, expand),
   });
 };
 
