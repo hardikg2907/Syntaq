@@ -49,11 +49,15 @@ export default function RootLayout({
   const currentPath = headersList.get("x-current-path");
   // console.log(currentPath);
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className="flex min-h-full flex-col scroll-smooth"
+    >
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <body
           className={cn(
-            "min-h-screen w-full overflow-y-scroll bg-background font-sans antialiased",
+            "flex flex-grow flex-col bg-background font-sans antialiased",
             fontSans.variable,
           )}
         >
@@ -69,7 +73,7 @@ export default function RootLayout({
                 routerConfig={extractRouterConfig(ourFileRouter)}
               />
               {!currentPath?.startsWith("/manage/") && <Navbar />}
-              <main className="min-h-screen w-full bg-slate-100 p-3 text-slate-950 dark:bg-black dark:text-white">
+              <main className="w-full flex-grow bg-slate-100 p-3 text-slate-950 dark:bg-black dark:text-white">
                 {children}
               </main>
               <Toaster />

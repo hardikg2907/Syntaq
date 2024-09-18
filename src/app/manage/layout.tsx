@@ -5,7 +5,7 @@ export default function ManageLayout({
   children,
 }: Readonly<{ children: ReactNode }>) {
   return (
-    <div className="h-screen w-full">
+    <div className="h-full w-full">
       <ManageSidebar />
       <div className="ml-14">{children}</div>
     </div>

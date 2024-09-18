@@ -73,18 +73,16 @@ const ManageSidebar = () => {
           ))}
         </nav>
         <nav className="mt-auto flex flex-col items-center px-2 py-5">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Link
+          {/* <Link
                 href="#"
                 className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-              >
-                <LoginUserButton session={user} />
-                <span className="sr-only">Profile</span>
-              </Link>
+              > */}
+          <LoginUserButton session={user} />
+          <span className="sr-only">Profile</span>
+          {/* </Link>
             </TooltipTrigger>
             <TooltipContent side="right">Profile</TooltipContent>
-          </Tooltip>
+          </Tooltip> */}
         </nav>
       </aside>
     </TooltipProvider>
