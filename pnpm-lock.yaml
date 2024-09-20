@@ -42,8 +42,8 @@ importers:
         specifier: ^5.51.23
         version: 5.51.23(react@18.3.1)
       '@uploadthing/react':
-        specifier: ^6.7.2
-        version: 6.7.2(next@14.2.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(uploadthing@6.13.2(next@14.2.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(tailwindcss@3.4.6))
+        specifier: ^7.0.2
+        version: 7.0.2(next@14.2.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(uploadthing@7.0.2(next@14.2.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(tailwindcss@3.4.6))
       axios:
         specifier: ^1.7.4
         version: 1.7.4
@@ -111,8 +111,8 @@ importers:
         specifier: ^1.0.7
         version: 1.0.7(tailwindcss@3.4.6)
       uploadthing:
-        specifier: ^6.13.2
-        version: 6.13.2(next@14.2.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(tailwindcss@3.4.6)
+        specifier: ^7.0.2
+        version: 7.0.2(next@14.2.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(tailwindcss@3.4.6)
       zod:
         specifier: ^3.23.8
         version: 3.23.8
@@ -187,10 +187,16 @@ packages:
     resolution: {integrity: sha512-7dRy4DwXwtzBrPbZflqxnvfxLF8kdZXPkhymtDeFoFqE6ldzjQFgYTtYIFARcLEYDrqfBfYcZt1WqFxRoyC9Rw==}
     engines: {node: '>=6.9.0'}
 
-  '@effect/schema@0.68.12':
-    resolution: {integrity: sha512-UWJsFXzeYTBQYnftwI1KR2uaxIZ8fk+kffDS7BnJwnGjPPgODq3/AzeoBDSu1MAlnwBKOz+QRdMuSMxrT/pHig==}
+  '@effect/platform@0.63.2':
+    resolution: {integrity: sha512-b39pVFw0NGo/tXjGShW7Yg0M+kG7bRrFR6+dQ3aIu99ePTkTp6bGb/kDB7n+dXsFFdIqHsQGYESeYcOQngxdFQ==}
     peerDependencies:
-      effect: ^3.4.5
+      '@effect/schema': ^0.72.2
+      effect: ^3.7.2
+
+  '@effect/schema@0.72.2':
+    resolution: {integrity: sha512-/x1BIA2pqcUidNrOMmwYe6Z58KtSgHSc5iJu7bNwIxi2LHMVuUao1BvpI5x6i7T/zkoi4dd1S6qasZzJIYDjdw==}
+    peerDependencies:
+      effect: ^3.7.2
 
   '@eslint-community/eslint-utils@4.4.0':
     resolution: {integrity: sha512-1/sA4dwrzBAyeUoQ6oxahHKmrZvsnLCg4RfxW3ZFGGmQkSNQPFNLV9CUEFQP1x9EYXHTo5p6xdhZM1Ne9p/AfA==}
@@ -1001,21 +1007,21 @@ packages:
       vue:
         optional: true
 
-  '@uploadthing/mime-types@0.2.10':
-    resolution: {integrity: sha512-kz3F0oEgAyts25NAGXlUBCWh3mXonbSOQJFGFMawHuIgbUbnzXbe4w5WI+0XdneCbjNmikfWrdWrs8m/7HATfQ==}
+  '@uploadthing/mime-types@0.3.0':
+    resolution: {integrity: sha512-jN/XFvpKTzcd3MXT/9D9oxx05scnYiSYxAXF/e6hyg377zFducRxivU/kHyYTkpUZPTmOL5q9EQbOkUsXMlSMg==}
 
-  '@uploadthing/react@6.7.2':
-    resolution: {integrity: sha512-9Mdslj1S24qbISA/LE3In5OFQ/U7OxdMbBlTPkJxKPkh+UW7BqZS0XuRTfkZYPkdBGDoXw5aH7VG3D/vGgpmxg==}
+  '@uploadthing/react@7.0.2':
+    resolution: {integrity: sha512-343zTofWBo1yR+31/oP75WCTCC1lUuyAhfoqgJ0MEY64i15KoQAaTe3ICSNnXyeRaHCmJSQeK3hbEl44QGq/iQ==}
     peerDependencies:
       next: '*'
       react: ^17.0.2 || ^18.0.0
-      uploadthing: 6.13.2
+      uploadthing: 7.0.2
     peerDependenciesMeta:
       next:
         optional: true
 
-  '@uploadthing/shared@6.7.8':
-    resolution: {integrity: sha512-dLNa9GpdeiCHc/Nd0+BfaJ3wXvWIztBAaWIsNNPoaKiU3qhHoQd+5jDVx4oYKYVANqnv9s2CJW7di8Th5xy7Cw==}
+  '@uploadthing/shared@7.0.2':
+    resolution: {integrity: sha512-yhE7lA42m6g7Qw245Ey/8uK5J4d8FJhOg90VVt0PG1iJYvBZHbboSq1ndsGZ1X8jFaskBVORzWc66gEw43FEsQ==}
 
   acorn-jsx@5.3.2:
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
@@ -1207,10 +1213,6 @@ packages:
   concat-map@0.0.1:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
 
-  consola@3.2.3:
-    resolution: {integrity: sha512-I5qxpzLv+sJhTVEoLYNcTW+bThDCPsit0vLNKShZx6rLtpilNpmmeTPaeqJb9ZE9dV3DGaeby6Vuhrw38WjeyQ==}
-    engines: {node: ^14.18.0 || >=16.10.0}
-
   cookie@0.6.0:
     resolution: {integrity: sha512-U71cyTamuh1CRNCfpGY6to28lxvNwPG4Guz/EVjgf3Jmzv0vlDp1atT9eS5dDjMYHucpHbWns6Lwf3BKz6svdw==}
     engines: {node: '>= 0.6'}
@@ -1317,8 +1319,13 @@ packages:
   ecdsa-sig-formatter@1.0.11:
     resolution: {integrity: sha512-nagl3RYrbNv6kQkeJIpt6NJZy8twLB/2vtz6yN9Z4vRKHN4/QZJIEbqohALSgwKdnksuY3k5Addp5lg8sVoVcQ==}
 
-  effect@3.4.5:
-    resolution: {integrity: sha512-aTonOH68tUttSdYwMkiuky3hjgn3pu7yInNaE8rU2EDKQ8zr9Me78WcvWBQKe4u1gvbBH77y9dAKqn98lNIfNQ==}
+  effect-log@0.32.0:
+    resolution: {integrity: sha512-zlh4S+zBkHeDhiV5IAAXwecqxASVJk9tYNJUb12EuJqgtRGGyhrXYNn8zz5Gk/w7PmnNLTl9Vb6bQo2BFn+J/Q==}
+    peerDependencies:
+      effect: ^3.7.0
+
+  effect@3.7.2:
+    resolution: {integrity: sha512-pV7l1+LSZFvVObj4zuy4nYiBaC7qZOfrKV6s/Ef4p3KueiQwZFgamazklwyZ+x7Nyj2etRDFvHE/xkThTfQD1w==}
 
   embla-carousel-autoplay@8.1.7:
     resolution: {integrity: sha512-UXt1XvCNwzC/Sqd7iU8nYd1CjuDLweIwJClfBL3gVTzHQBVwb68GBBfC/oPFsEeIWNUZe8NO5xDQSI9aTnYO7Q==}
@@ -1496,8 +1503,8 @@ packages:
     resolution: {integrity: sha512-kVscqXk4OCp68SZ0dkgEKVi6/8ij300KBWTJq32P/dYeWTSwK41WyTxalN1eRmA5Z9UU/LX9D7FWSmV9SAYx6g==}
     engines: {node: '>=0.10.0'}
 
-  fast-check@3.20.0:
-    resolution: {integrity: sha512-pZIjqLpOZgdSLecec4GKC3Zq5702MZ34upMKxojnNVSWA0K64V3pXOBT1Wdsrc3AphLtzRBbsi8bRWF4TUGmUg==}
+  fast-check@3.22.0:
+    resolution: {integrity: sha512-8HKz3qXqnHYp/VCNn2qfjHdAdcI8zcSqOyX64GOMukp7SL2bfzfeDKjSd+UyECtejccaZv3LcvZTm9YDD22iCQ==}
     engines: {node: '>=8.0.0'}
 
   fast-deep-equal@3.1.3:
@@ -1530,6 +1537,9 @@ packages:
   fill-range@7.1.1:
     resolution: {integrity: sha512-YsGpe3WHLK8ZYi4tWDg2Jy3ebRz2rXowDxnld4bkQB00cc/1Zw9AWnC0i9ztDJitivtQvaI9KaLyKrc+hBW0yg==}
     engines: {node: '>=8'}
+
+  find-my-way-ts@0.1.5:
+    resolution: {integrity: sha512-4GOTMrpGQVzsCH2ruUn2vmwzV/02zF4q+ybhCIrw/Rkt3L8KWcycdC6aJMctJzwN4fXD4SD5F/4B9Sksh5rE0A==}
 
   find-up@5.0.0:
     resolution: {integrity: sha512-78/PXT1wlLLDgTzDs7sjq9hzz0vXD+zn+7wypEe4fXQxCmdmqfGsEPQxmiCSQI3ajFV91bVSsvNtrJRiW6nGng==}
@@ -1979,6 +1989,9 @@ packages:
 
   ms@2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
+
+  multipasta@0.2.5:
+    resolution: {integrity: sha512-c8eMDb1WwZcE02WVjHoOmUVk7fnKU/RmUcosHACglrWAuPQsEJv+E8430sXj6jNc1jHw0zrS16aCjQh4BcEb4A==}
 
   mz@2.7.0:
     resolution: {integrity: sha512-z81GNO7nnYMEhrGh9LeymoE4+Yr0Wn5McHIZMK5cfQCl+NDX08sCZgUc9/6MHni9IWuFLm1Z3HTCXu2z9fN62Q==}
@@ -2464,8 +2477,8 @@ packages:
     resolution: {integrity: sha512-itJW8lvSA0TXEphiRoawsCksnlf8SyvmFzIhltqAHluXd88pkCd+cXJVHTDwdCr0IzwptSm035IHQktUu1QUMg==}
     engines: {node: '>=0.10.0'}
 
-  std-env@3.7.0:
-    resolution: {integrity: sha512-JPbdCEQLj1w5GilpiHAx3qJvFndqybBysA3qUOnznweH4QbNYUsW/ea8QzSrnh0vNsezMMw5bcVool8lM0gwzg==}
+  sqids@0.3.0:
+    resolution: {integrity: sha512-lOQK1ucVg+W6n3FhRwwSeUijxe93b51Bfz5PMRMihVf1iVkl82ePQG7V5vwrhzB11v0NtsR25PSZRGiSomJaJw==}
 
   stop-iteration-iterator@1.0.0:
     resolution: {integrity: sha512-iCGQj+0l0HOdZ2AEeBADlsRC+vsnDsZsbdSiH1yNSjcfKM7fdpCMfqAL/dwF5BLiw/XhRft/Wax6zQbhq2BcjQ==}
@@ -2598,9 +2611,6 @@ packages:
   tsconfig-paths@3.15.0:
     resolution: {integrity: sha512-2Ac2RgzDe/cn48GvOe3M+o82pEFewD3UPbyoUHHdKasHwJKjds4fLXWf/Ux5kATBKN20oaFGu+jbElp1pos0mg==}
 
-  tslib@2.6.3:
-    resolution: {integrity: sha512-xNvxJEOUiWPGhUuUdQgAJPKOOJfGnIyKySOc09XkKsgdUV/3E2zvwZYdejjmRgPCgcym1juLH3226yA7sEFJKQ==}
-
   tslib@2.7.0:
     resolution: {integrity: sha512-gLXCKdN1/j47AiHiOkJN69hJmcbGTHI0ImLmbYLHykhgeN0jVGola9yVjFgzCUklsZQMW55o+dW7IXv3RCXDzA==}
 
@@ -2639,19 +2649,16 @@ packages:
   undici-types@5.26.5:
     resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
 
-  uploadthing@6.13.2:
-    resolution: {integrity: sha512-hrxwOgqKs8siczPloop72drRBiUYaFDHMp45OR/sSAaAbOPyGBmBL88Bi4UWCvgC+aBWCLRxtMEGeoqrfu+OMg==}
+  uploadthing@7.0.2:
+    resolution: {integrity: sha512-B5/r0nmOfWjo+cGvZLyDQ8jypJYWoW/VsmoL+VqkiGMg5yIkKzMGJ5InrDOJS+3WQBbW8KdhVrRyA+mGSZEGUw==}
     engines: {node: '>=18.13.0'}
     peerDependencies:
-      '@effect/platform': '*'
       express: '*'
       fastify: '*'
       h3: '*'
       next: '*'
       tailwindcss: '*'
     peerDependenciesMeta:
-      '@effect/platform':
-        optional: true
       express:
         optional: true
       fastify:
@@ -2766,10 +2773,17 @@ snapshots:
     dependencies:
       regenerator-runtime: 0.14.1
 
-  '@effect/schema@0.68.12(effect@3.4.5)':
+  '@effect/platform@0.63.2(@effect/schema@0.72.2(effect@3.7.2))(effect@3.7.2)':
     dependencies:
-      effect: 3.4.5
-      fast-check: 3.20.0
+      '@effect/schema': 0.72.2(effect@3.7.2)
+      effect: 3.7.2
+      find-my-way-ts: 0.1.5
+      multipasta: 0.2.5
+
+  '@effect/schema@0.72.2(effect@3.7.2)':
+    dependencies:
+      effect: 3.7.2
+      fast-check: 3.22.0
 
   '@eslint-community/eslint-utils@4.4.0(eslint@8.57.0)':
     dependencies:
@@ -3628,16 +3642,14 @@ snapshots:
     optionalDependencies:
       react: 18.3.1
 
-  '@uploadthing/mime-types@0.2.10': {}
+  '@uploadthing/mime-types@0.3.0': {}
 
-  '@uploadthing/react@6.7.2(next@14.2.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(uploadthing@6.13.2(next@14.2.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(tailwindcss@3.4.6))':
+  '@uploadthing/react@7.0.2(next@14.2.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(uploadthing@7.0.2(next@14.2.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(tailwindcss@3.4.6))':
     dependencies:
       '@uploadthing/dropzone': 0.4.1(react@18.3.1)
-      '@uploadthing/shared': 6.7.8
-      file-selector: 0.6.0
+      '@uploadthing/shared': 7.0.2
       react: 18.3.1
-      tailwind-merge: 2.4.0
-      uploadthing: 6.13.2(next@14.2.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(tailwindcss@3.4.6)
+      uploadthing: 7.0.2(next@14.2.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(tailwindcss@3.4.6)
     optionalDependencies:
       next: 14.2.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
     transitivePeerDependencies:
@@ -3645,11 +3657,11 @@ snapshots:
       - svelte
       - vue
 
-  '@uploadthing/shared@6.7.8':
+  '@uploadthing/shared@7.0.2':
     dependencies:
-      '@uploadthing/mime-types': 0.2.10
-      effect: 3.4.5
-      std-env: 3.7.0
+      '@uploadthing/mime-types': 0.3.0
+      effect: 3.7.2
+      sqids: 0.3.0
 
   acorn-jsx@5.3.2(acorn@8.12.1):
     dependencies:
@@ -3687,7 +3699,7 @@ snapshots:
 
   aria-hidden@1.2.4:
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   aria-query@5.1.3:
     dependencies:
@@ -3868,8 +3880,6 @@ snapshots:
 
   concat-map@0.0.1: {}
 
-  consola@3.2.3: {}
-
   cookie@0.6.0: {}
 
   cross-spawn@7.0.3:
@@ -3977,7 +3987,11 @@ snapshots:
     dependencies:
       safe-buffer: 5.2.1
 
-  effect@3.4.5: {}
+  effect-log@0.32.0(effect@3.7.2):
+    dependencies:
+      effect: 3.7.2
+
+  effect@3.7.2: {}
 
   embla-carousel-autoplay@8.1.7(embla-carousel@8.1.7):
     dependencies:
@@ -4320,7 +4334,7 @@ snapshots:
 
   esutils@2.0.3: {}
 
-  fast-check@3.20.0:
+  fast-check@3.22.0:
     dependencies:
       pure-rand: 6.1.0
 
@@ -4350,11 +4364,13 @@ snapshots:
 
   file-selector@0.6.0:
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   fill-range@7.1.1:
     dependencies:
       to-regex-range: 5.0.1
+
+  find-my-way-ts@0.1.5: {}
 
   find-up@5.0.0:
     dependencies:
@@ -4807,6 +4823,8 @@ snapshots:
 
   ms@2.1.3: {}
 
+  multipasta@0.2.5: {}
+
   mz@2.7.0:
     dependencies:
       any-promise: 1.3.0
@@ -5057,7 +5075,7 @@ snapshots:
     dependencies:
       react: 18.3.1
       react-style-singleton: 2.2.1(@types/react@18.3.5)(react@18.3.1)
-      tslib: 2.6.3
+      tslib: 2.7.0
     optionalDependencies:
       '@types/react': 18.3.5
 
@@ -5066,7 +5084,7 @@ snapshots:
       react: 18.3.1
       react-remove-scroll-bar: 2.3.6(@types/react@18.3.5)(react@18.3.1)
       react-style-singleton: 2.2.1(@types/react@18.3.5)(react@18.3.1)
-      tslib: 2.6.3
+      tslib: 2.7.0
       use-callback-ref: 1.3.2(@types/react@18.3.5)(react@18.3.1)
       use-sidecar: 1.1.2(@types/react@18.3.5)(react@18.3.1)
     optionalDependencies:
@@ -5077,7 +5095,7 @@ snapshots:
       react: 18.3.1
       react-remove-scroll-bar: 2.3.6(@types/react@18.3.5)(react@18.3.1)
       react-style-singleton: 2.2.1(@types/react@18.3.5)(react@18.3.1)
-      tslib: 2.6.3
+      tslib: 2.7.0
       use-callback-ref: 1.3.2(@types/react@18.3.5)(react@18.3.1)
       use-sidecar: 1.1.2(@types/react@18.3.5)(react@18.3.1)
     optionalDependencies:
@@ -5088,7 +5106,7 @@ snapshots:
       get-nonce: 1.0.1
       invariant: 2.2.4
       react: 18.3.1
-      tslib: 2.6.3
+      tslib: 2.7.0
     optionalDependencies:
       '@types/react': 18.3.5
 
@@ -5214,7 +5232,7 @@ snapshots:
 
   source-map-js@1.2.0: {}
 
-  std-env@3.7.0: {}
+  sqids@0.3.0: {}
 
   stop-iteration-iterator@1.0.0:
     dependencies:
@@ -5392,8 +5410,6 @@ snapshots:
       minimist: 1.2.8
       strip-bom: 3.0.0
 
-  tslib@2.6.3: {}
-
   tslib@2.7.0: {}
 
   type-check@0.4.0:
@@ -5445,14 +5461,14 @@ snapshots:
 
   undici-types@5.26.5: {}
 
-  uploadthing@6.13.2(next@14.2.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(tailwindcss@3.4.6):
+  uploadthing@7.0.2(next@14.2.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(tailwindcss@3.4.6):
     dependencies:
-      '@effect/schema': 0.68.12(effect@3.4.5)
-      '@uploadthing/mime-types': 0.2.10
-      '@uploadthing/shared': 6.7.8
-      consola: 3.2.3
-      effect: 3.4.5
-      std-env: 3.7.0
+      '@effect/platform': 0.63.2(@effect/schema@0.72.2(effect@3.7.2))(effect@3.7.2)
+      '@effect/schema': 0.72.2(effect@3.7.2)
+      '@uploadthing/mime-types': 0.3.0
+      '@uploadthing/shared': 7.0.2
+      effect: 3.7.2
+      effect-log: 0.32.0(effect@3.7.2)
     optionalDependencies:
       next: 14.2.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       tailwindcss: 3.4.6
@@ -5469,7 +5485,7 @@ snapshots:
   use-callback-ref@1.3.2(@types/react@18.3.5)(react@18.3.1):
     dependencies:
       react: 18.3.1
-      tslib: 2.6.3
+      tslib: 2.7.0
     optionalDependencies:
       '@types/react': 18.3.5
 
@@ -5477,7 +5493,7 @@ snapshots:
     dependencies:
       detect-node-es: 1.1.0
       react: 18.3.1
-      tslib: 2.6.3
+      tslib: 2.7.0
     optionalDependencies:
       '@types/react': 18.3.5
 

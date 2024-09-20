@@ -179,7 +179,11 @@ const HackathonForm = ({ hackathon }: { hackathon?: Hackathon }) => {
         <div className="flex w-full justify-between">
           <FormField
             control={form.control}
-            defaultValue={new Date(hackathon?.start_date || "")}
+            defaultValue={
+              hackathon?.start_date
+                ? new Date(hackathon?.start_date!)
+                : undefined
+            }
             name="start_date"
             render={({ field }) => (
               <DatePickerForm field={field} label="Start Time:" side="right" />
@@ -188,7 +192,9 @@ const HackathonForm = ({ hackathon }: { hackathon?: Hackathon }) => {
           <FormField
             control={form.control}
             name="end_date"
-            defaultValue={new Date(hackathon?.end_date || "")}
+            defaultValue={
+              hackathon?.end_date ? new Date(hackathon?.end_date!) : undefined
+            }
             render={({ field }) => (
               <DatePickerForm field={field} label="End Time:" side="left" />
             )}
@@ -212,7 +218,11 @@ const HackathonForm = ({ hackathon }: { hackathon?: Hackathon }) => {
           <FormField
             control={form.control}
             name="registrationOpen"
-            defaultValue={new Date(hackathon?.registrationOpen || "")}
+            defaultValue={
+              hackathon?.registrationOpen
+                ? new Date(hackathon?.registrationOpen!)
+                : undefined
+            }
             render={({ field }) => (
               <DatePickerForm
                 field={field}
@@ -224,7 +234,11 @@ const HackathonForm = ({ hackathon }: { hackathon?: Hackathon }) => {
           <FormField
             control={form.control}
             name="registrationClose"
-            defaultValue={new Date(hackathon?.registrationClose || "")}
+            defaultValue={
+              hackathon?.registrationClose
+                ? new Date(hackathon?.registrationClose!)
+                : undefined
+            }
             render={({ field }) => (
               <DatePickerForm
                 field={field}
