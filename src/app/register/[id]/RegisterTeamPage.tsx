@@ -20,6 +20,7 @@ import { BACKEND_API_URL } from "~/utils/constants";
 import Team from "./Team";
 import { createTeam, getTeam, updateTeam } from "~/actions/team";
 import Heading from "~/components/Heading";
+import { getHackathonWithParams } from "~/actions/hackathon";
 
 interface RegisterTeamPageProps {
   hackathon_id: number;
@@ -42,6 +43,12 @@ const RegisterTeamPage = ({ hackathon_id, user }: RegisterTeamPageProps) => {
   } = useQuery({
     queryKey: ["team", hackathon_id],
     queryFn: async () => getTeam({ hackathon_id, user }),
+  });
+
+  const { data: hackathon } = useQuery({
+    queryKey: ["hackathon", hackathon_id],
+    queryFn: async () =>
+      getHackathonWithParams(hackathon_id, "fields=maxTeamSize,minTeamSize"),
   });
 
   const { mutateAsync: createTeamMutate } = useMutation({
@@ -83,9 +90,9 @@ const RegisterTeamPage = ({ hackathon_id, user }: RegisterTeamPageProps) => {
       toast.success("Team created successfully");
     }
   }
-
   const isLeader = existingTeam?.leader === user?.user?.pk;
-  const showForm = isLeader || !existingTeam;
+  const showForm =
+    (isLeader && !existingTeam?.registration_complete) || !existingTeam;
 
   return (
     <div className="h-full w-full">
@@ -123,17 +130,26 @@ const RegisterTeamPage = ({ hackathon_id, user }: RegisterTeamPageProps) => {
               )}
               <>
                 {existingTeam && (
-                  <Team team_id={existingTeam?.id} isLeader={isLeader} />
+                  <Team
+                    team_id={existingTeam?.id}
+                    isLeader={isLeader}
+                    registration_complete={existingTeam?.registration_complete}
+                  />
                 )}
               </>
             </div>
-            {showForm && (
-              <div className="w-full">
-                <Button disabled={isLoading} className="w-fit" type="submit">
-                  {existingTeam ? "Save" : "Create Team"}
-                </Button>
-              </div>
-            )}
+            <div className="flex w-full justify-between">
+              <Button
+                disabled={isLoading || !showForm}
+                className="w-fit"
+                type="submit"
+              >
+                {existingTeam ? "Save" : "Create Team"}
+              </Button>
+              <p className="text-sm text-gray-500">
+                (Min: {hackathon?.minTeamSize}, Max: {hackathon?.maxTeamSize})
+              </p>
+            </div>
           </form>
         </Form>
       )}

@@ -14,6 +14,17 @@ export const getHackathon = async (id: number, expand: boolean) => {
   }
 };
 
+export const getHackathonWithParams = async (id: number, params: string) => {
+  try {
+    const response = await axios.get(
+      `${BACKEND_API_URL}/hackathons/${id}?${params}`,
+    );
+    return response.data;
+  } catch (error: any) {
+    console.error("Error fetching hackathon data:", error?.response.data);
+  }
+};
+
 export const createHackathon = async (values: Hackathon, user: Session) => {
   try {
     const response = await axios.post(

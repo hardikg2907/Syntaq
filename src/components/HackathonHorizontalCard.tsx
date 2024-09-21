@@ -73,6 +73,23 @@ const HackathonHorizontalCard = ({
               />
             </Link>
           )}
+          {type == "participated" && (
+            <Link
+              href={`/register/${hackathon.id}`}
+              target="_blank"
+              className={buttonVariants({
+                variant: "green",
+                className:
+                  "group flex w-fit items-center justify-between gap-2 p-2",
+              })}
+            >
+              View Registration
+              <ArrowUpRightIcon
+                size={16}
+                className="w-0 transition-all duration-150 ease-in-out group-hover:w-4"
+              />
+            </Link>
+          )}
         </CardFooter>
       </div>
     </Card>

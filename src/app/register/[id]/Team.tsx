@@ -29,9 +29,11 @@ const formSchema = z.object({
 const Team = ({
   team_id,
   isLeader,
+  registration_complete,
 }: {
   team_id: number;
   isLeader: boolean;
+  registration_complete: boolean;
 }) => {
   const { data: user } = useSession();
   const [newTeamMember, setNewTeamMember] = useState<boolean>(false);
@@ -168,7 +170,7 @@ const Team = ({
           </form>
         </Form>
       )}
-      {isLeader && (
+      {isLeader && !registration_complete && (
         <Button
           type="button"
           variant="outline"
