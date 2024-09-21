@@ -27,7 +27,8 @@ const pages = [
   },
   {
     icon: Users2,
-    label: "Participants",
+    label: "Registrations",
+    path: "registrations",
   },
 ];
 

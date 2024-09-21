@@ -25,6 +25,7 @@ import {
   FormMessage,
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
+import { Skeleton } from "~/components/ui/skeleton";
 import { Textarea } from "~/components/ui/textarea";
 import { useGetHackathon } from "~/queries/get-hackathon";
 import { Hackathon, Session } from "~/utils/types";
@@ -40,7 +41,7 @@ const EditHackathonPage = ({ params }: { params: { id: number } }) => {
     <div className="min-h-screen w-full">
       <Heading>Edit Hackathon</Heading>
       {isLoading || !user ? (
-        <LoadingSpinner />
+        <EditHackathonFormSkeleton />
       ) : (
         <EditHackathonForm hackathon={hackathon} user={user} />
       )}
@@ -383,6 +384,39 @@ const EditHackathonForm = ({
         <Button type="submit">Save</Button>
       </form>
     </Form>
+  );
+};
+
+const EditHackathonFormSkeleton = () => {
+  return (
+    <div className="mt-5 h-full w-full space-y-8">
+      <div className="space-y-2">
+        <p>Title</p>
+        <Skeleton className="h-8" />
+      </div>
+      <div className="space-y-2">
+        <p>Subtitle</p>
+        <Skeleton className="h-8" />
+      </div>
+      <div className="space-y-2">
+        <p>Description</p>
+        <Skeleton className="h-[80px]" />
+      </div>
+      <div className="flex w-full justify-between">
+        <div className="w-1/3 space-y-2">
+          <p>Start Time:</p>
+          <Skeleton className="h-8" />
+        </div>
+        <div className="w-1/3 space-y-2">
+          <p>End Time:</p>
+          <Skeleton className="h-8" />
+        </div>
+      </div>
+      <div className="space-y-2">
+        <p>Location</p>
+        <Skeleton className="h-8" />
+      </div>
+    </div>
   );
 };
 
