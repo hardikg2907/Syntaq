@@ -24,9 +24,8 @@ import DatePickerForm from "./createHackathon/DatePickerForm";
 import { SimpleUploadButton } from "./simple-upload-button";
 import { Textarea } from "./ui/textarea";
 
-import { isBefore, sub } from "date-fns";
+import { isBefore } from "date-fns";
 import { z } from "zod";
-import { Hackathon } from "~/utils/types";
 
 const formSchema = z
   .object({
@@ -92,14 +91,14 @@ const formSchema = z
     message: "Max team size cannot be less than min team size",
     path: ["maxTeamSize"],
   });
-const HackathonForm = ({ hackathon }: { hackathon?: Hackathon }) => {
+const HackathonForm = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
   const router = useRouter();
   const { data: user } = useSession();
 
-  const mutation = useMutation({
+  const { mutateAsync: createHackathonMutateAsync } = useMutation({
     mutationFn: async (values: z.infer<typeof formSchema>) =>
       // @ts-ignore
       await createHackathon(values, user),
@@ -115,7 +114,7 @@ const HackathonForm = ({ hackathon }: { hackathon?: Hackathon }) => {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const res = await mutation.mutateAsync(values);
+    await createHackathonMutateAsync(values);
   }
 
   const deletePhoto = async () => {
@@ -133,7 +132,6 @@ const HackathonForm = ({ hackathon }: { hackathon?: Hackathon }) => {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
-          defaultValue={hackathon?.title}
           name="title"
           render={({ field }) => (
             <FormItem>
@@ -148,7 +146,6 @@ const HackathonForm = ({ hackathon }: { hackathon?: Hackathon }) => {
         <FormField
           control={form.control}
           name="subtitle"
-          defaultValue={hackathon?.subtitle || ""}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Subtitle</FormLabel>
@@ -162,7 +159,6 @@ const HackathonForm = ({ hackathon }: { hackathon?: Hackathon }) => {
         <FormField
           control={form.control}
           name="description"
-          defaultValue={hackathon?.description}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Description</FormLabel>
@@ -179,11 +175,6 @@ const HackathonForm = ({ hackathon }: { hackathon?: Hackathon }) => {
         <div className="flex w-full justify-between">
           <FormField
             control={form.control}
-            defaultValue={
-              hackathon?.start_date
-                ? new Date(hackathon?.start_date!)
-                : undefined
-            }
             name="start_date"
             render={({ field }) => (
               <DatePickerForm field={field} label="Start Time:" side="right" />
@@ -192,9 +183,6 @@ const HackathonForm = ({ hackathon }: { hackathon?: Hackathon }) => {
           <FormField
             control={form.control}
             name="end_date"
-            defaultValue={
-              hackathon?.end_date ? new Date(hackathon?.end_date!) : undefined
-            }
             render={({ field }) => (
               <DatePickerForm field={field} label="End Time:" side="left" />
             )}
@@ -203,7 +191,6 @@ const HackathonForm = ({ hackathon }: { hackathon?: Hackathon }) => {
         <FormField
           control={form.control}
           name="location"
-          defaultValue={hackathon?.location}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Location</FormLabel>
@@ -218,11 +205,6 @@ const HackathonForm = ({ hackathon }: { hackathon?: Hackathon }) => {
           <FormField
             control={form.control}
             name="registrationOpen"
-            defaultValue={
-              hackathon?.registrationOpen
-                ? new Date(hackathon?.registrationOpen!)
-                : undefined
-            }
             render={({ field }) => (
               <DatePickerForm
                 field={field}
@@ -231,14 +213,10 @@ const HackathonForm = ({ hackathon }: { hackathon?: Hackathon }) => {
               />
             )}
           />
+
           <FormField
             control={form.control}
             name="registrationClose"
-            defaultValue={
-              hackathon?.registrationClose
-                ? new Date(hackathon?.registrationClose!)
-                : undefined
-            }
             render={({ field }) => (
               <DatePickerForm
                 field={field}
@@ -252,7 +230,6 @@ const HackathonForm = ({ hackathon }: { hackathon?: Hackathon }) => {
           <FormField
             control={form.control}
             name="minTeamSize"
-            defaultValue={hackathon?.minTeamSize}
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Minimum Team Size: </FormLabel>
@@ -271,7 +248,6 @@ const HackathonForm = ({ hackathon }: { hackathon?: Hackathon }) => {
           <FormField
             control={form.control}
             name="maxTeamSize"
-            defaultValue={hackathon?.maxTeamSize}
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Maximum Team Size: </FormLabel>
@@ -291,7 +267,6 @@ const HackathonForm = ({ hackathon }: { hackathon?: Hackathon }) => {
         <FormField
           control={form.control}
           name="photo"
-          defaultValue={hackathon?.photo}
           render={({ field }) => (
             <FormItem className="flex items-center gap-2">
               <FormLabel>Banner image: </FormLabel>

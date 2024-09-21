@@ -34,6 +34,30 @@ export const createHackathon = async (values: Hackathon, user: Session) => {
   }
 };
 
+export const updateHackathon = async (
+  id: number,
+  values: Hackathon,
+  user: Session,
+) => {
+  try {
+    const response = await axios.patch(
+      `${BACKEND_API_URL}/hackathons/${id}/`,
+      {
+        ...values,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${user?.access_token}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (error: any) {
+    console.error("Error updating hackathon:", error?.response.data);
+    throw new Error(error?.response.data);
+  }
+};
+
 export const getUserTeam = async (id: number, user: any) => {
   try {
     const response = await axios.get(

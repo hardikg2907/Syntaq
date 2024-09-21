@@ -48,8 +48,8 @@ const ManageSidebar = () => {
             </div>
             <span className="sr-only">Syntaq</span>
           </Link>
-          {pages.map((page) => (
-            <Tooltip key={page.path}>
+          {pages.map((page, idx) => (
+            <Tooltip key={idx}>
               <TooltipTrigger asChild>
                 <Link
                   href={
