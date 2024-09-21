@@ -3,7 +3,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { isBefore } from "date-fns";
-import { Trash } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
@@ -11,9 +10,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { updateHackathon } from "~/actions/hackathon";
 import DatePickerForm from "~/components/createHackathon/DatePickerForm";
-import HackathonForm from "~/components/HackathonForm";
 import Heading from "~/components/Heading";
-import LoadingSpinner from "~/components/LoadingSpinner";
 import { SimpleUploadButton } from "~/components/simple-upload-button";
 import { Button } from "~/components/ui/button";
 import {
@@ -195,24 +192,27 @@ const EditHackathonForm = ({
       // @ts-ignore
       await updateHackathon(hackathon?.id!, values, user),
     onSuccess: (data: Hackathon) => {
+      toast.dismiss("loading");
       toast.success("Hackathon updated successfully");
       // router.push(`/hackathons/${data.id}`);
     },
     onError: (error) => {
       // @ts-ignore
+      toast.dismiss("loading");
       console.log(error?.response?.data);
       toast.error("Failed to update hackathon");
     },
   });
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    console.log(data);
+    // console.log(data);
+    toast.loading("Updating hackathon...", { duration: 10000, id: "loading" });
     await updateHackathonMutateAsync(data);
   };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="mt-5 space-y-8">
         <FormField
           control={form.control}
           name="title"
