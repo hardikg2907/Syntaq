@@ -122,3 +122,23 @@ export const getParticipatedHackathons = async (user: any) => {
     throw new Error(error?.response?.data);
   }
 };
+
+export const getHackathonRegistrations = async (id: number, user: any) => {
+  try {
+    const response = await axios.get(
+      `${BACKEND_API_URL}/hackathons/${id}/registrations/`,
+      {
+        headers: {
+          Authorization: `Bearer ${user?.access_token}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (error: any) {
+    console.error(
+      "Error fetching hackathon registrations:",
+      error?.response?.data,
+    );
+    throw new Error(error?.response?.data);
+  }
+};
