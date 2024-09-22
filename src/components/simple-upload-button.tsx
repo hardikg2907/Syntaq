@@ -17,7 +17,7 @@ const useUploadThingInputProps = (...args: Input) => {
     const selectedFiles = Array.from(e.target.files);
     const result = await $ut.startUpload(selectedFiles);
 
-    console.log("uploaded files", result);
+    // console.log("uploaded files", result);
     // TODO: persist result in state maybe?
   };
 
@@ -61,20 +61,14 @@ export function SimpleUploadButton({
     "imageUploader",
     {
       onUploadBegin() {
-        toast(
-          <div className="flex items-center gap-2 text-white">
-            <LoadingSpinner size={20} />{" "}
-            <span className="text-lg">Uploading...</span>
-          </div>,
-          {
-            duration: 100000,
-            id: "upload-begin",
-          },
-        );
+        toast.loading("Uploading...", {
+          duration: 100000,
+          id: "upload-begin",
+        });
       },
       onClientUploadComplete(fileUrl) {
         toast.dismiss("upload-begin");
-        toast("Upload complete!");
+        toast.success("Upload complete!");
         uploadComplete?.(fileUrl[0]?.url!);
         // router.refresh();
       },
