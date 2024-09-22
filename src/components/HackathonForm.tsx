@@ -103,18 +103,24 @@ const HackathonForm = () => {
       // @ts-ignore
       await createHackathon(values, user),
     onSuccess: (data) => {
-      toast.success("Hackathon created successfully");
+      // toast.dismiss("create-hackathon");
+      // toast.success("Hackathon created successfully");
       router.push(`/hackathons/${data.id}`);
     },
     onError: (error) => {
       // @ts-ignore
-      console.log(error?.response?.data);
-      toast.error("Failed to create hackathon");
+      // toast.dismiss("create-hackathon");
+      // // console.log(error?.response?.data);
+      // toast.error("Failed to create hackathon");
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    await createHackathonMutateAsync(values);
+    toast.promise(createHackathonMutateAsync(values), {
+      loading: "Creating Hackathon...",
+      success: "Hackathon created successfully!",
+      error: "Failed to create hackathon",
+    });
   }
 
   const deletePhoto = async () => {

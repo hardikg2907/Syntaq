@@ -76,7 +76,7 @@ export default function RootLayout({
               <main className="w-full flex-grow bg-slate-100 p-3 text-slate-950 dark:bg-black dark:text-white">
                 {children}
               </main>
-              <Toaster />
+              <Toaster richColors />
             </NextAuthProvider>
           </QueryProvider>
         </body>

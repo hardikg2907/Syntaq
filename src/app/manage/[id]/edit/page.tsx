@@ -191,23 +191,14 @@ const EditHackathonForm = ({
     mutationFn: async (values: z.infer<typeof formSchema>) =>
       // @ts-ignore
       await updateHackathon(hackathon?.id!, values, user),
-    onSuccess: (data: Hackathon) => {
-      toast.dismiss("loading");
-      toast.success("Hackathon updated successfully");
-      // router.push(`/hackathons/${data.id}`);
-    },
-    onError: (error) => {
-      // @ts-ignore
-      toast.dismiss("loading");
-      console.log(error?.response?.data);
-      toast.error("Failed to update hackathon");
-    },
   });
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    // console.log(data);
-    toast.loading("Updating hackathon...", { duration: 10000, id: "loading" });
-    await updateHackathonMutateAsync(data);
+    toast.promise(updateHackathonMutateAsync(data), {
+      loading: "Updating hackathon...",
+      success: "Hackathon updated successfully",
+      error: "Failed to update hackathon",
+    });
   };
 
   return (
