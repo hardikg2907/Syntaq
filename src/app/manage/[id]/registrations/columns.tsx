@@ -2,6 +2,7 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "~/components/ui/badge";
+import { Checkbox } from "~/components/ui/checkbox";
 import { DataTableColumnHeader } from "~/components/ui/data-table";
 
 // This type is used to define the shape of your registration data.
@@ -14,6 +15,28 @@ export type Registration = {
 
 // Define your columns for the registration table
 export const columns: ColumnDef<Registration>[] = [
+  {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && "indeterminate")
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
   {
     accessorKey: "id",
     header: "Sr. No.",
@@ -41,13 +64,30 @@ export const columns: ColumnDef<Registration>[] = [
         </>
       );
     },
+    filterFn: (row, id, filterValue) => {
+      if (filterValue === "all") return true;
+      return (
+        row.original.registration_complete === (filterValue === "Registered")
+      );
+    },
+    meta: {
+      filterVariant: "select",
+    },
   },
   {
     accessorKey: "registrationDate",
-    header: "Registration Date",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Registration Date" />
+    ),
     cell: ({ row }) => {
       const date = new Date(row.original.created_at);
       return date.toLocaleDateString();
+    },
+    sortingFn: (a, b) => {
+      return (
+        new Date(a.original.created_at).getTime() -
+        new Date(b.original.created_at).getTime()
+      );
     },
   },
 ];
