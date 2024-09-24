@@ -2,16 +2,9 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { getHackathonRegistrations } from "~/actions/hackathon";
-import { Badge } from "~/components/ui/badge";
+import { DataTable } from "~/components/ui/data-table"; // Import your DataTable component
+import { columns } from "./columns"; // Import your columns definition
 import { Skeleton } from "~/components/ui/skeleton";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "~/components/ui/table";
 
 const RegistrationsTable = ({
   user,
@@ -25,73 +18,60 @@ const RegistrationsTable = ({
     queryFn: async () => await getHackathonRegistrations(hackathon_id, user),
   });
 
+  //   if (isLoading) {
+  //     return (
+  //       <div className="container mx-auto py-10">
+  //         <TableSkeleton />
+  //       </div>
+  //     );
+  //   }
+
   return (
-    <Table className="mt-10 border">
-      <TableHeader className="rounded-t-md">
-        <TableRow>
-          <TableHead className="w-[50px]">Sr. No.</TableHead>
-          <TableHead className="w-[200px] text-center">Team Name</TableHead>
-          <TableHead className="w-[150px] text-center">
-            Registration Status
-          </TableHead>
-          <TableHead className="w-[150px] text-right">
-            Registration Date
-          </TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {isLoading ? (
-          <TableSkeleton />
-        ) : (
-          <>
-            {registrations?.map((registration: any, index: number) => (
-              <TableRow key={registration.id}>
-                <TableCell className="w-[50px] font-medium">
-                  {index + 1}
-                </TableCell>
-                <TableCell className="w-[200px] text-center">
-                  {registration.name}
-                </TableCell>
-                <TableCell className="w-[150px] text-center">
-                  {registration.registration_complete ? (
-                    <Badge variant="green">Registered</Badge>
-                  ) : (
-                    <Badge variant="default">Incomplete</Badge>
-                  )}
-                </TableCell>
-                <TableCell className="w-[150px] text-right">
-                  {new Date(registration.created_at).toLocaleDateString()}
-                </TableCell>
-              </TableRow>
-            ))}
-          </>
-        )}
-      </TableBody>
-    </Table>
+    <div className="container mx-auto py-10">
+      {registrations && <DataTable columns={columns} data={registrations} />}
+    </div>
   );
 };
 
 const TableSkeleton = () => (
-  <>
-    {[...Array(5)].map((_, index) => (
-      <TableRow key={index}>
-        <TableCell className="w-[50px]">
-          <Skeleton className="h-6 w-8" />
-        </TableCell>
-        <TableCell className="w-[200px]">
-          <Skeleton className="h-6 w-full" />
-        </TableCell>
-        <TableCell className="w-[150px]">
-          <Skeleton className="h-6 w-full" />
-        </TableCell>
-        <TableCell className="w-[150px]">
-          <div className="flex justify-end">
-            <Skeleton className="h-6 w-20" />
-          </div>
-        </TableCell>
-      </TableRow>
-    ))}
-  </>
+  <div className="mt-10 border">
+    <table className="min-w-full divide-y divide-gray-200">
+      <thead className="rounded-t-md bg-gray-50">
+        <tr>
+          <th className="w-[50px] px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+            Sr. No.
+          </th>
+          <th className="w-[200px] px-6 py-3 text-center text-xs font-medium uppercase tracking-wider text-gray-500">
+            Team Name
+          </th>
+          <th className="w-[150px] px-6 py-3 text-center text-xs font-medium uppercase tracking-wider text-gray-500">
+            Registration Status
+          </th>
+          <th className="w-[150px] px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">
+            Registration Date
+          </th>
+        </tr>
+      </thead>
+      <tbody className="divide-y divide-gray-200 bg-white">
+        {[...Array(5)].map((_, index) => (
+          <tr key={index}>
+            <td className="w-[50px] px-6 py-4 font-medium">
+              <Skeleton className="h-6 w-8" />
+            </td>
+            <td className="w-[200px] px-6 py-4 text-center">
+              <Skeleton className="h-6 w-full" />
+            </td>
+            <td className="w-[150px] px-6 py-4 text-center">
+              <Skeleton className="h-6 w-full" />
+            </td>
+            <td className="w-[150px] px-6 py-4 text-right">
+              <Skeleton className="h-6 w-20" />
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
 );
 
 export default RegistrationsTable;
