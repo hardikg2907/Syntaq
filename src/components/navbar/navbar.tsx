@@ -8,7 +8,6 @@ import { useSession } from "next-auth/react";
 const Navbar = () => {
   const { data: user, status } = useSession();
   const path = usePathname();
-  console.log(path);
 
   if (path?.includes("/manage/")) return null;
   return (

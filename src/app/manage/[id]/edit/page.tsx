@@ -28,12 +28,12 @@ import { useGetHackathon } from "~/queries/get-hackathon";
 import { Hackathon, Session } from "~/utils/types";
 
 const EditHackathonPage = ({ params }: { params: { id: number } }) => {
+  const { data: user } = useSession();
   const {
     data: hackathon,
     isLoading,
     isFetching,
   } = useGetHackathon(params.id, false);
-  const { data: user } = useSession();
   return (
     <div className="min-h-screen w-full">
       <Heading>Edit Hackathon</Heading>
