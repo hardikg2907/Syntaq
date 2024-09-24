@@ -14,8 +14,6 @@ import { ourFileRouter } from "~/app/api/uploadthing/core";
 import NextAuthProvider from "~/components/providers/NextAuthProvider";
 import QueryProvider from "~/components/providers/QueryProvider";
 import { Toaster } from "~/components/ui/sonner";
-import { headers } from "next/headers";
-const queryClient = new QueryClient();
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -45,9 +43,6 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const headersList = headers();
-  const currentPath = headersList.get("x-current-path");
-  // console.log(currentPath);
   return (
     <html
       lang="en"
@@ -72,7 +67,7 @@ export default function RootLayout({
                  */
                 routerConfig={extractRouterConfig(ourFileRouter)}
               />
-              {!currentPath?.startsWith("/manage/") && <Navbar />}
+              <Navbar />
               <main className="w-full flex-grow bg-slate-100 p-3 text-slate-950 dark:bg-black dark:text-white">
                 {children}
               </main>

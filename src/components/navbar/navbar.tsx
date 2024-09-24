@@ -1,10 +1,16 @@
+"use client";
 import Link from "next/link";
 import { ModeToggle } from "../themes/theme-toggle";
 import { LoginUserButton } from "./login-user-button";
-import { auth } from "auth";
+import { usePathname } from "next/navigation";
+import { useSession } from "next-auth/react";
 
-const Navbar = async () => {
-  const user = await auth();
+const Navbar = () => {
+  const { data: user, status } = useSession();
+  const path = usePathname();
+  console.log(path);
+
+  if (path?.includes("/manage/")) return null;
   return (
     <nav className="flex w-full items-center justify-between border-b border-gray-300 bg-slate-100 p-3 pl-5 text-xl font-semibold dark:border-gray-700 dark:bg-black">
       <div className="flex h-full items-center justify-between gap-3">

@@ -59,7 +59,6 @@ const HackathonHorizontalCard = ({
           {type == "organized" && (
             <Link
               href={`/manage/${hackathon.id}/edit`}
-              target="_blank"
               className={buttonVariants({
                 variant: "red",
                 className:
@@ -76,7 +75,6 @@ const HackathonHorizontalCard = ({
           {type == "participated" && (
             <Link
               href={`/register/${hackathon.id}`}
-              target="_blank"
               className={buttonVariants({
                 variant: "green",
                 className:
