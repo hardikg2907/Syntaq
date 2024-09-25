@@ -26,6 +26,7 @@ import { Textarea } from "./ui/textarea";
 
 import { isBefore } from "date-fns";
 import { z } from "zod";
+import TiptapEditor from "./ui/TiptapEditor";
 
 const formSchema = z
   .object({
@@ -169,10 +170,7 @@ const HackathonForm = () => {
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Textarea
-                  placeholder="Description about your event."
-                  {...field}
-                />
+                <TiptapEditor description={""} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>

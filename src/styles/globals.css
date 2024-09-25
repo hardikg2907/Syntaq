@@ -71,3 +71,37 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* .tiptap ul li {
+  @apply ml-4 list-disc;
+}
+
+.tiptap ol li {
+  @apply ml-4 list-decimal;
+} */
+
+/* tiptap heading styles */
+
+.tiptap h1 {
+  @apply text-4xl font-bold;
+}
+
+.tiptap h2 {
+  @apply text-3xl font-bold;
+}
+
+.tiptap h3 {
+  @apply text-2xl font-bold;
+}
+
+.tiptap h4 {
+  @apply text-xl font-bold;
+}
+
+.tiptap h5 {
+  @apply text-lg font-bold;
+}
+
+.tiptap h6 {
+  @apply text-base font-bold;
+}

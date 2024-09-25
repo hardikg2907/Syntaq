@@ -1,7 +1,6 @@
 "use client";
-import { useEditor, EditorContent } from "@tiptap/react";
+import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import Heading from "@tiptap/extension-heading";
 import ToolBar from "./Toolbar";
 
 function TiptapEditor({
@@ -12,13 +11,20 @@ function TiptapEditor({
   onChange: (richText: string) => void;
 }) {
   const editor = useEditor({
+    immediatelyRender: false,
     extensions: [
-      StarterKit.configure({}),
-      Heading.configure({
-        HTMLAttributes: {
-          class: "text-xl font-bold",
-          levels: [2],
+      StarterKit.configure({
+        orderedList: {
+          HTMLAttributes: {
+            class: "list-decimal pl-4",
+          },
         },
+        bulletList: {
+          HTMLAttributes: {
+            class: "list-disc pl-4",
+          },
+        },
+        heading: {},
       }),
     ],
     content: description,
