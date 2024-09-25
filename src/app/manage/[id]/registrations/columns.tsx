@@ -38,20 +38,48 @@ export const columns: ColumnDef<Registration>[] = [
     ),
     enableSorting: false,
     enableHiding: false,
+    size: 50,
   },
   {
     accessorKey: "id",
-    header: "Sr. No.",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Sr. No." />
+    ),
     cell: ({ row }) => row.index + 1,
+    size: 50,
+    sortingFn: "alphanumeric",
   },
   {
     accessorKey: "name",
-    header: "Team Name",
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title="Team Name"
+        filterVariant="text"
+      />
+    ),
+    cell: ({ row }) => (
+      <div
+        title={row.original.name}
+        className="truncate"
+        style={{ maxWidth: "150px" }}
+      >
+        {row.original.name}
+      </div>
+    ),
+    size: 150,
+    meta: {
+      filterVariant: "text",
+    },
   },
   {
     accessorKey: "registration_complete",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Registration Status" />
+      <DataTableColumnHeader
+        column={column}
+        title="Registration Status"
+        filterVariant="select"
+      />
     ),
     cell: ({ row }) => {
       const status = row.original.registration_complete;
@@ -75,6 +103,7 @@ export const columns: ColumnDef<Registration>[] = [
     meta: {
       filterVariant: "select",
     },
+    size: 150,
   },
   {
     accessorKey: "registrationDate",
@@ -91,5 +120,6 @@ export const columns: ColumnDef<Registration>[] = [
         new Date(b.original.created_at).getTime()
       );
     },
+    size: 150,
   },
 ];
