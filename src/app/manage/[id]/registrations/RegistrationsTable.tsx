@@ -5,6 +5,7 @@ import { getHackathonRegistrations } from "~/actions/hackathon";
 import { DataTable } from "~/components/ui/data-table"; // Import your DataTable component
 import { columns } from "./columns"; // Import your columns definition
 import { Skeleton } from "~/components/ui/skeleton";
+import LoadingSpinner from "~/components/LoadingSpinner";
 
 const RegistrationsTable = ({
   user,
@@ -18,13 +19,9 @@ const RegistrationsTable = ({
     queryFn: async () => await getHackathonRegistrations(hackathon_id, user),
   });
 
-  //   if (isLoading) {
-  //     return (
-  //       <div className="container mx-auto py-10">
-  //         <TableSkeleton />
-  //       </div>
-  //     );
-  //   }
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <div className="container mx-auto py-10">
