@@ -25,6 +25,7 @@ export const columns: ColumnDef<Registration>[] = [
         }
         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
         aria-label="Select all"
+        className="overflow-hidden rounded-lg border-white"
       />
     ),
     cell: ({ row }) => (
@@ -32,6 +33,7 @@ export const columns: ColumnDef<Registration>[] = [
         checked={row.getIsSelected()}
         onCheckedChange={(value) => row.toggleSelected(!!value)}
         aria-label="Select row"
+        className="overflow-hidden rounded-lg border-white"
       />
     ),
     enableSorting: false,
