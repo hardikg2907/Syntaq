@@ -24,6 +24,7 @@ import {
 import { Input } from "~/components/ui/input";
 import { Skeleton } from "~/components/ui/skeleton";
 import { Textarea } from "~/components/ui/textarea";
+import TiptapEditor from "~/components/ui/TiptapEditor";
 import { useGetHackathon } from "~/queries/get-hackathon";
 import { Hackathon, Session } from "~/utils/types";
 
@@ -200,7 +201,7 @@ const EditHackathonForm = ({
       error: "Failed to update hackathon",
     });
   };
-
+  console.log(hackathon?.description);
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="mt-5 space-y-8">
@@ -237,9 +238,9 @@ const EditHackathonForm = ({
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Textarea
-                  placeholder="Description about your event."
-                  {...field}
+                <TiptapEditor
+                  description={field.value}
+                  onChange={field.onChange}
                 />
               </FormControl>
               <FormMessage />

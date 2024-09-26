@@ -158,7 +158,10 @@ export function HackathonPage({ id, user }: HackathonPageProps) {
           <div className="grid gap-8">
             <div>
               <h2 className="text-2xl font-bold">About</h2>
-              <p className="mt-4">{description}</p>
+              <div
+                dangerouslySetInnerHTML={{ __html: description }}
+                id="hackathon-description"
+              ></div>
             </div>
           </div>
         </div>
