@@ -4,12 +4,19 @@ import { type Editor } from "@tiptap/react";
 import { Toggle } from "~/components/ui/toggle";
 import {
   Bold,
+  Heading1,
   Heading2,
   Italic,
   List,
   ListOrdered,
   StrikethroughIcon,
 } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./dropdown-menu";
 
 type Props = {
   editor: Editor | null;
@@ -22,15 +29,26 @@ function ToolBar({ editor }: Props) {
 
   return (
     <div className="my-2 flex gap-3 rounded-lg border border-input p-1">
-      <Toggle
-        size="sm"
-        pressed={editor.isActive("heading")}
-        onPressedChange={() =>
-          editor.chain().focus().toggleHeading({ level: 2 }).run()
-        }
-      >
-        <Heading2 className="h-4 w-4" />
-      </Toggle>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Toggle size="sm" pressed={editor.isActive("heading")}>
+            H
+          </Toggle>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent side="right" className="w-fit">
+          <DropdownMenuItem asChild className="w-fit">
+            <Toggle
+              size="sm"
+              pressed={editor.isActive("heading", { level: 1 })}
+              onPressedChange={() =>
+                editor.chain().focus().toggleHeading({ level: 1 }).run()
+              }
+            >
+              <Heading1 className="h-4 w-4" />
+            </Toggle>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
       <Toggle
         size="sm"
         pressed={editor.isActive("bold")}
@@ -65,6 +83,13 @@ function ToolBar({ editor }: Props) {
         onPressedChange={() => editor.chain().focus().toggleOrderedList().run()}
       >
         <ListOrdered className="h-4 w-4" />
+      </Toggle>
+      <Toggle
+        size="sm"
+        pressed={editor.isActive("codeBlock")}
+        onPressedChange={() => editor.chain().focus().toggleCodeBlock().run()}
+      >
+        {"</>"}
       </Toggle>
     </div>
   );

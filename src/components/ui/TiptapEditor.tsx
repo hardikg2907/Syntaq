@@ -24,7 +24,6 @@ function TiptapEditor({
             class: "list-disc pl-4",
           },
         },
-        heading: {},
       }),
     ],
     content: description,
