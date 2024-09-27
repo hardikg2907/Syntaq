@@ -10,6 +10,8 @@ import { Skeleton } from "../ui/skeleton";
 import { useGetHackathon, useGetUserTeam } from "~/queries/get-hackathon";
 import { useRouter } from "next/navigation";
 import type { Session } from "~/utils/types";
+import { generateHTML } from "~/lib/tiptap";
+import "~/styles/editor.css";
 
 interface HackathonPageProps {
   id: number;
@@ -159,8 +161,9 @@ export function HackathonPage({ id, user }: HackathonPageProps) {
             <div>
               <h2 className="text-2xl font-bold">About</h2>
               <div
-                dangerouslySetInnerHTML={{ __html: description }}
+                dangerouslySetInnerHTML={{ __html: generateHTML(description) }}
                 id="hackathon-description"
+                className="ProseMirror"
               ></div>
             </div>
           </div>

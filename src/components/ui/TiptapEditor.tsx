@@ -1,6 +1,25 @@
 "use client";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import { createLowlight } from "lowlight";
+import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
+import js from "highlight.js/lib/languages/javascript";
+import ts from "highlight.js/lib/languages/typescript";
+import html from "highlight.js/lib/languages/xml";
+import Document from "@tiptap/extension-document";
+import TextStyle from "@tiptap/extension-text-style";
+import TextAlign from "@tiptap/extension-text-align";
+import { Color } from "@tiptap/extension-color";
+import Link from "@tiptap/extension-link";
+import { generateJSON } from "@tiptap/react";
+import "~/styles/editor.css";
+
+const lowlight = createLowlight();
+
+lowlight.register("html", html);
+lowlight.register("js", js);
+lowlight.register("ts", ts);
+
 import ToolBar from "./Toolbar";
 
 function TiptapEditor({
@@ -13,6 +32,7 @@ function TiptapEditor({
   const editor = useEditor({
     immediatelyRender: false,
     extensions: [
+      Document,
       StarterKit.configure({
         orderedList: {
           HTMLAttributes: {
@@ -25,6 +45,13 @@ function TiptapEditor({
           },
         },
       }),
+      CodeBlockLowlight.configure({
+        lowlight,
+      }),
+      TextStyle,
+      TextAlign,
+      Color,
+      Link,
     ],
     content: description,
     editorProps: {
@@ -34,11 +61,11 @@ function TiptapEditor({
       },
     },
     onUpdate({ editor }) {
-      onChange(editor.getHTML());
-      console.log(editor.getHTML());
+      onChange(JSON.stringify(editor.getJSON()));
+      console.log(editor.getJSON());
     },
   });
-
+  editor?.setEditable(false);
   return (
     <div className="flex min-h-[250px] flex-col justify-stretch">
       <ToolBar editor={editor} />

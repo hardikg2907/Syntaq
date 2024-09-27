@@ -25,6 +25,7 @@ import { Input } from "~/components/ui/input";
 import { Skeleton } from "~/components/ui/skeleton";
 import { Textarea } from "~/components/ui/textarea";
 import TiptapEditor from "~/components/ui/TiptapEditor";
+import { generateHTML } from "~/lib/tiptap";
 import { useGetHackathon } from "~/queries/get-hackathon";
 import { Hackathon, Session } from "~/utils/types";
 
@@ -239,7 +240,7 @@ const EditHackathonForm = ({
               <FormLabel>Description</FormLabel>
               <FormControl>
                 <TiptapEditor
-                  description={field.value}
+                  description={generateHTML(field.value)}
                   onChange={field.onChange}
                 />
               </FormControl>
