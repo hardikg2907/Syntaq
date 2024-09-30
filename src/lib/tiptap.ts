@@ -36,7 +36,9 @@ export const generateHTML = (content: string) => {
       lowlight,
     }),
     TextStyle,
-    TextAlign,
+    TextAlign.configure({
+      types: ["heading", "paragraph"],
+    }),
     Color,
     Link,
   ]);
