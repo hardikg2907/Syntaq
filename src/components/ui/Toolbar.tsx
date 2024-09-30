@@ -131,7 +131,7 @@ function ToolBar({ editor }: Props) {
                 editor.chain().focus().setTextAlign("left").run()
               }
             >
-              <AlignLeft className="h-4 w-4" /> Align Left
+              <AlignLeft className="h-4 w-4" />
             </Toggle>
           </DropdownMenuItem>
           <DropdownMenuItem asChild className="w-fit">
@@ -142,7 +142,7 @@ function ToolBar({ editor }: Props) {
                 editor.chain().focus().setTextAlign("center").run()
               }
             >
-              <AlignCenter className="h-4 w-4" /> Align Center
+              <AlignCenter className="h-4 w-4" />
             </Toggle>
           </DropdownMenuItem>
           <DropdownMenuItem asChild className="w-fit">
@@ -153,7 +153,7 @@ function ToolBar({ editor }: Props) {
                 editor.chain().focus().setTextAlign("right").run()
               }
             >
-              <AlignRight className="h-4 w-4" /> Align Right
+              <AlignRight className="h-4 w-4" />
             </Toggle>
           </DropdownMenuItem>
           <DropdownMenuItem asChild className="w-fit">
@@ -164,7 +164,7 @@ function ToolBar({ editor }: Props) {
                 editor.chain().focus().setTextAlign("justify").run()
               }
             >
-              <AlignJustify className="h-4 w-4" /> Justify
+              <AlignJustify className="h-4 w-4" />
             </Toggle>
           </DropdownMenuItem>
         </DropdownMenuContent>

@@ -49,7 +49,9 @@ function TiptapEditor({
         lowlight,
       }),
       TextStyle,
-      TextAlign,
+      TextAlign.configure({
+        types: ["heading", "paragraph"],
+      }),
       Color,
       Link,
     ],
@@ -65,7 +67,6 @@ function TiptapEditor({
       console.log(editor.getJSON());
     },
   });
-  editor?.setEditable(false);
   return (
     <div className="flex min-h-[250px] flex-col justify-stretch">
       <ToolBar editor={editor} />

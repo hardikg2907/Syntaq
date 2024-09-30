@@ -23,7 +23,6 @@ import {
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { Skeleton } from "~/components/ui/skeleton";
-import { Textarea } from "~/components/ui/textarea";
 import TiptapEditor from "~/components/ui/TiptapEditor";
 import { generateHTML } from "~/lib/tiptap";
 import { useGetHackathon } from "~/queries/get-hackathon";
