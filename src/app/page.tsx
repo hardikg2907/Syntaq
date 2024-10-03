@@ -1,4 +1,9 @@
 import { auth } from "auth";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Home | Syntaq",
+};
 
 export default async function HomePage() {
   const session = await auth();

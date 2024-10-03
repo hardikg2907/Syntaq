@@ -9,12 +9,12 @@ import { extractRouterConfig } from "uploadthing/server";
 import Navbar from "~/components/navbar/navbar";
 import { cn } from "~/lib/utils";
 
-import { QueryClient } from "@tanstack/react-query";
 import { ourFileRouter } from "~/app/api/uploadthing/core";
 import NextAuthProvider from "~/components/providers/NextAuthProvider";
 import QueryProvider from "~/components/providers/QueryProvider";
 import { Toaster } from "~/components/ui/sonner";
 import { TooltipProvider } from "~/components/ui/tooltip";
+import Providers from "~/components/providers/Providers";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -25,6 +25,7 @@ export const metadata: Metadata = {
   title: "Syntaq",
   description: "Manage your hackathons with ease.",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
+  robots: "follow, index",
 };
 
 // axios.interceptors.response.use(
@@ -50,35 +51,29 @@ export default function RootLayout({
       suppressHydrationWarning
       className="flex min-h-full flex-col scroll-smooth"
     >
-      <TooltipProvider delayDuration={300}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <body
-            className={cn(
-              "flex flex-grow flex-col bg-background font-sans antialiased",
-              fontSans.variable,
-            )}
-          >
-            <QueryProvider>
-              <NextAuthProvider>
-                <NextSSRPlugin
-                  /**
-                   * The `extractRouterConfig` will extract **only** the route configs
-                   * from the router to prevent additional information from being
-                   * leaked to the client. The data passed to the client is the same
-                   * as if you were to fetch `/api/uploadthing` directly.
-                   */
-                  routerConfig={extractRouterConfig(ourFileRouter)}
-                />
-                <Navbar />
-                <main className="w-full flex-grow bg-slate-100 p-3 text-slate-950 dark:bg-black dark:text-white">
-                  {children}
-                </main>
-                <Toaster richColors />
-              </NextAuthProvider>
-            </QueryProvider>
-          </body>
-        </ThemeProvider>
-      </TooltipProvider>
+      <Providers>
+        <body
+          className={cn(
+            "flex flex-grow flex-col bg-background font-sans antialiased",
+            fontSans.variable,
+          )}
+        >
+          <NextSSRPlugin
+            /**
+             * The `extractRouterConfig` will extract **only** the route configs
+             * from the router to prevent additional information from being
+             * leaked to the client. The data passed to the client is the same
+             * as if you were to fetch `/api/uploadthing` directly.
+             */
+            routerConfig={extractRouterConfig(ourFileRouter)}
+          />
+          <Navbar />
+          <main className="w-full flex-grow bg-slate-100 p-3 text-slate-950 dark:bg-black dark:text-white">
+            {children}
+          </main>
+          <Toaster richColors />
+        </body>
+      </Providers>
     </html>
   );
 }
