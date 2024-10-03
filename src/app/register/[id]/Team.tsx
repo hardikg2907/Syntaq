@@ -78,6 +78,7 @@ const Team = ({
       );
       // If successful
       toast.success("Invitation sent successfully");
+      form.reset();
       refetch();
       setNewTeamMember(false);
     } catch (error) {
