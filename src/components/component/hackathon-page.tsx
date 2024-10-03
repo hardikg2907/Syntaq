@@ -12,6 +12,8 @@ import { useRouter } from "next/navigation";
 import type { Session } from "~/utils/types";
 import { generateHTML } from "~/lib/tiptap";
 import "~/styles/editor.css";
+import { useEffect } from "react";
+import posthog from "posthog-js";
 
 interface HackathonPageProps {
   id: number;
@@ -23,12 +25,23 @@ export function HackathonPage({ id, user }: HackathonPageProps) {
   const { data: teamData, isLoading: isTeamLoading } = useGetUserTeam(id, user);
   const router = useRouter();
 
+  useEffect(() => {
+    if (!isLoading && data)
+      posthog.capture("hackathon_view", {
+        id: id,
+      });
+  }, [id]);
+
   if (isLoading || isTeamLoading) {
     return (
       <div className="flex h-full w-full items-center justify-center">
         <LoadingSpinner />
       </div>
     );
+  }
+
+  if (!data) {
+    return <div>Hackathon not found</div>;
   }
 
   const {
