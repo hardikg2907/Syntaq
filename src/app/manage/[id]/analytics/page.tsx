@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Bar, BarChart, CartesianGrid, XAxis, Tooltip } from "recharts";
+import { Bar, BarChart, CartesianGrid, XAxis, Tooltip, YAxis } from "recharts";
 import { TrendingUp } from "lucide-react";
 import {
   Card,
@@ -17,15 +17,38 @@ import {
   ChartTooltipContent,
 } from "~/components/ui/chart";
 import Heading from "~/components/Heading";
-import { getHackathonViews } from "~/queries/posthog";
+import {
+  getHackathonRegistrationsAnalytics,
+  getHackathonViews,
+} from "~/queries/posthog";
 
-// Define the types for the fetched data
+const HackathonAnalyticsPage = ({ params }: { params: { id: number } }) => {
+  return (
+    <div className="w-full space-y-4">
+      <Heading>Analytics</Heading>
+      <div className="flex w-full items-center justify-around">
+        <HackathonViewsChart id={params.id} />
+        <HackathonRegistrationsChart id={params.id} />
+      </div>
+    </div>
+  );
+};
+
+export default HackathonAnalyticsPage;
+
 type HackathonView = {
   date: Date;
   hackathon_views: number;
 };
 
-const HackathonAnalyticsPage = ({ params }: { params: { id: number } }) => {
+const viewsChartConfig: ChartConfig = {
+  hackathon_views: {
+    label: "Hackathon Views",
+    color: "#2563eb", // Changed to match the color of the bars
+  },
+} satisfies ChartConfig;
+
+export function HackathonViewsChart({ id }: { id: number }) {
   const [hackathonViews, setHackathonViews] = useState<HackathonView[] | null>(
     null,
   );
@@ -34,13 +57,17 @@ const HackathonAnalyticsPage = ({ params }: { params: { id: number } }) => {
   useEffect(() => {
     const fetchHackathonViews = async () => {
       try {
-        const data = await getHackathonViews(params.id);
-        const formattedData: HackathonView[] = data.map(
-          ([date, count]: [string, number]) => ({
-            date: new Date(date),
-            hackathon_views: count,
-          }),
+        const data: [[Date[], number[]]] = await getHackathonViews(id);
+        // console.log(data);
+        const formattedData: HackathonView[] = data[0][0].map(
+          (date: Date, idx: number) => {
+            return {
+              date: new Date(date),
+              hackathon_views: data[0][1][idx] || 0,
+            };
+          },
         );
+        // console.log(formattedData);
         setHackathonViews(formattedData);
       } catch (error) {
         console.error("Error fetching hackathon views", error);
@@ -49,35 +76,9 @@ const HackathonAnalyticsPage = ({ params }: { params: { id: number } }) => {
       }
     };
     fetchHackathonViews();
-  }, [params.id]);
-
+  }, [id]);
   return (
-    <div className="w-full space-y-4">
-      <Heading>Analytics</Heading>
-      <HackathonViewsChart hackathon_views={hackathonViews} loading={loading} />
-    </div>
-  );
-};
-
-export default HackathonAnalyticsPage;
-
-// Define the chart configuration and labels
-const chartConfig: ChartConfig = {
-  hackathon_views: {
-    label: "Hackathon Views",
-    color: "#2563eb", // Changed to match the color of the bars
-  },
-} satisfies ChartConfig;
-
-export function HackathonViewsChart({
-  hackathon_views,
-  loading,
-}: {
-  hackathon_views: HackathonView[] | null;
-  loading: boolean;
-}) {
-  return (
-    <Card className="w-1/3">
+    <Card className="h-[400px] w-1/3">
       <CardHeader>
         <CardTitle className="flex gap-2">
           Hackathon Views
@@ -85,12 +86,15 @@ export function HackathonViewsChart({
         </CardTitle>
         <CardDescription>Daily views for your hackathon</CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="w-full pl-0">
         {loading ? (
           <p>Loading...</p>
-        ) : hackathon_views ? (
-          <ChartContainer config={chartConfig} className="h-[200px]">
-            <BarChart width={500} height={300} data={hackathon_views}>
+        ) : hackathonViews ? (
+          <ChartContainer
+            config={viewsChartConfig}
+            className="h-[250px] w-full"
+          >
+            <BarChart height={400} data={hackathonViews} width={450}>
               <CartesianGrid vertical={false} strokeDasharray="3 3" />
               <XAxis
                 dataKey="date"
@@ -104,10 +108,19 @@ export function HackathonViewsChart({
                   })
                 }
               />
-              <Tooltip cursor={false} content={<ChartTooltipContent />} />
+              <YAxis
+                tickLine={false}
+                axisLine={false}
+                dataKey="hackathon_views"
+                className="-ml-3"
+              />
+              <Tooltip
+                cursor={false}
+                content={<ChartTooltipContent indicator="dashed" />}
+              />
               <Bar
                 dataKey="hackathon_views"
-                fill={chartConfig.hackathon_views!.color}
+                fill={viewsChartConfig.hackathon_views!.color}
                 radius={4}
               />
             </BarChart>
@@ -118,7 +131,107 @@ export function HackathonViewsChart({
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
         <div className="leading-none text-muted-foreground">
-          Showing total visitors for the last 6 months
+          Showing total visitors for the last week
+        </div>
+      </CardFooter>
+    </Card>
+  );
+}
+
+type HackathonRegistration = {
+  date: Date;
+  registration_count: number;
+};
+const registrationsChartConfig: ChartConfig = {
+  registration_count: {
+    label: "Hackathon Registrations",
+    color: "#e11d48", // Changed to match the color of the bars
+  },
+} satisfies ChartConfig;
+
+export function HackathonRegistrationsChart({ id }: { id: number }) {
+  const [hackathonRegistrations, setHackathonRegistrations] = useState<
+    HackathonRegistration[] | null
+  >(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchHackathonRegistrations = async () => {
+      try {
+        const data: [[Date[], number[]]] =
+          await getHackathonRegistrationsAnalytics(id);
+        // console.log(data);
+        const formattedData: HackathonRegistration[] = data[0][0].map(
+          (date: Date, idx: number) => {
+            return {
+              date: new Date(date),
+              registration_count: data[0][1][idx] || 0,
+            };
+          },
+        );
+        setHackathonRegistrations(formattedData);
+      } catch (error) {
+        console.error("Error fetching hackathon registrations", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchHackathonRegistrations();
+  }, [id]);
+  return (
+    <Card className="h-[400px] w-1/3">
+      <CardHeader>
+        <CardTitle className="flex gap-2">
+          Hackathon Registrations
+          <TrendingUp />
+        </CardTitle>
+        <CardDescription>
+          Daily Registrations for your hackathon
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        {loading ? (
+          <p>Loading...</p>
+        ) : hackathonRegistrations ? (
+          <ChartContainer
+            config={registrationsChartConfig}
+            className="h-[250px] w-full"
+          >
+            <BarChart width={450} height={400} data={hackathonRegistrations}>
+              <CartesianGrid vertical={false} strokeDasharray="3 3" />
+              <XAxis
+                dataKey="date"
+                tickLine={false}
+                tickMargin={10}
+                axisLine={false}
+                tickFormatter={(value: Date) =>
+                  value.toLocaleDateString("en-US", {
+                    month: "short",
+                    day: "numeric",
+                  })
+                }
+              />
+              <YAxis
+                tickLine={false}
+                axisLine={false}
+                dataKey="registration_count"
+                className="-ml-3"
+              />
+              <Tooltip cursor={false} content={<ChartTooltipContent />} />
+              <Bar
+                dataKey="registration_count"
+                fill={registrationsChartConfig.registration_count!.color}
+                radius={4}
+              />
+            </BarChart>
+          </ChartContainer>
+        ) : (
+          <p>No data available</p>
+        )}
+      </CardContent>
+      <CardFooter className="flex-col items-start gap-2 text-sm">
+        <div className="leading-none text-muted-foreground">
+          Showing total Registrations for the last week
         </div>
       </CardFooter>
     </Card>
