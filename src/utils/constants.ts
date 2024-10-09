@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { env } from "~/env";
 
 export namespace JwtUtils {
   export const isJwtExpired = (token: string) => {
@@ -41,6 +42,5 @@ export namespace UrlUtils {
     return url;
   };
 }
-
-export const BACKEND_API_URL: string =
-  process.env.BACKEND_URL! || "http://localhost:8000/api";
+// console.log(process.env.BACKEND_URL);
+export const BACKEND_API_URL: string = env.NEXT_PUBLIC_BACKEND_URL;

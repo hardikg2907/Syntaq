@@ -78,7 +78,7 @@ export function HackathonViewsChart({ id }: { id: number }) {
     fetchHackathonViews();
   }, [id]);
   return (
-    <Card className="h-[400px] w-1/3">
+    <Card className="h-[400px] w-1/2">
       <CardHeader>
         <CardTitle className="flex gap-2">
           Hackathon Views
@@ -179,7 +179,7 @@ export function HackathonRegistrationsChart({ id }: { id: number }) {
     fetchHackathonRegistrations();
   }, [id]);
   return (
-    <Card className="h-[400px] w-1/3">
+    <Card className="h-[400px] w-1/2">
       <CardHeader>
         <CardTitle className="flex gap-2">
           Hackathon Registrations
