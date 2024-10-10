@@ -98,11 +98,8 @@ export const getOrganizedHackathons = async (user: any) => {
     );
     return response?.data;
   } catch (error: any) {
-    console.error(
-      "Error fetching organized hackathons:",
-      error?.response?.data,
-    );
-    throw new Error(error?.response?.data);
+    console.error("Error fetching organized hackathons:", error);
+    // throw new Error(error);
   }
 };
 
@@ -118,11 +115,8 @@ export const getParticipatedHackathons = async (user: any) => {
     );
     return response?.data;
   } catch (error: any) {
-    console.error(
-      "Error fetching participated hackathons:",
-      error?.response?.data,
-    );
-    throw new Error(error?.response?.data);
+    console.error("Error fetching participated hackathons:", error);
+    // throw new Error(error?.response?.data);
   }
 };
 
