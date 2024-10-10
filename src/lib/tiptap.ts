@@ -1,3 +1,4 @@
+"use client";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import Document from "@tiptap/extension-document";
 import TextAlign from "@tiptap/extension-text-align";
@@ -43,6 +44,6 @@ export const generateHTML = (content: string) => {
     Link,
   ]);
 
-  console.log(html);
+  // console.log(html);
   return html;
 };

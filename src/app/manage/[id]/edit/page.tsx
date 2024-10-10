@@ -201,7 +201,7 @@ const EditHackathonForm = ({
       error: "Failed to update hackathon",
     });
   };
-  console.log(hackathon?.description);
+  // console.log(hackathon?.description);
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="mt-5 space-y-8">

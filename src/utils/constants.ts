@@ -43,4 +43,14 @@ export namespace UrlUtils {
   };
 }
 // console.log(process.env.BACKEND_URL);
-export const BACKEND_API_URL: string = env.NEXT_PUBLIC_BACKEND_URL;
+let BACKEND_API_URL: string = "";
+try {
+  if (window !== undefined) {
+    BACKEND_API_URL = env.NEXT_PUBLIC_BACKEND_URL;
+  } else {
+    BACKEND_API_URL = env.BACKEND_URL;
+  }
+} catch (e) {
+  BACKEND_API_URL = env.BACKEND_URL;
+}
+export { BACKEND_API_URL };
