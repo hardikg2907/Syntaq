@@ -12,7 +12,7 @@ const HackathonCardsSection = ({
 }: HackathonCardsSectionProps) => {
   return (
     <div className="mt-2 flex h-full w-full flex-col gap-3">
-      {hackathons.map((hackathon) => {
+      {hackathons?.map((hackathon) => {
         return (
           <HackathonHorizontalCard
             type={type}
