@@ -8,9 +8,9 @@ export const getHackathon = async (id: number, expand: boolean) => {
     const response = await axios.get(
       `${BACKEND_API_URL}/hackathons/${id}/${expand ? "?expand=organizer" : ""}`,
     );
-    return response.data;
+    return response?.data;
   } catch (error: any) {
-    console.error("Error fetching hackathon data:", error?.response.data);
+    console.error("Error fetching hackathon data:", error?.response?.data);
   }
 };
 
@@ -19,9 +19,9 @@ export const getHackathonWithParams = async (id: number, params: string) => {
     const response = await axios.get(
       `${BACKEND_API_URL}/hackathons/${id}?${params}`,
     );
-    return response.data;
+    return response?.data;
   } catch (error: any) {
-    console.error("Error fetching hackathon data:", error?.response.data);
+    console.error("Error fetching hackathon data:", error?.response?.data);
   }
 };
 
@@ -38,10 +38,10 @@ export const createHackathon = async (values: Hackathon, user: Session) => {
         },
       },
     );
-    return response.data;
+    return response?.data;
   } catch (error: any) {
-    console.error("Error creating hackathon:", error?.response.data);
-    throw new Error(error?.response.data);
+    console.error("Error creating hackathon:", error?.response?.data);
+    throw new Error(error?.response?.data);
   }
 };
 
@@ -62,10 +62,10 @@ export const updateHackathon = async (
         },
       },
     );
-    return response.data;
+    return response?.data;
   } catch (error: any) {
-    console.error("Error updating hackathon:", error?.response.data);
-    throw new Error(error?.response.data);
+    console.error("Error updating hackathon:", error?.response?.data);
+    throw new Error(error?.response?.data);
   }
 };
 
@@ -79,7 +79,7 @@ export const getUserTeam = async (id: number, user: any) => {
         },
       },
     );
-    return response.data;
+    return response?.data;
   } catch (error: any) {
     console.error("Error fetching user team data:", error?.response?.data);
     throw new Error(error?.response?.data);
@@ -96,10 +96,13 @@ export const getOrganizedHackathons = async (user: any) => {
         },
       },
     );
-    return response.data;
+    return response?.data;
   } catch (error: any) {
-    console.error("Error fetching organized hackathons:", error?.response.data);
-    throw new Error(error?.response.data);
+    console.error(
+      "Error fetching organized hackathons:",
+      error?.response?.data,
+    );
+    throw new Error(error?.response?.data);
   }
 };
 
@@ -113,7 +116,7 @@ export const getParticipatedHackathons = async (user: any) => {
         },
       },
     );
-    return response.data;
+    return response?.data;
   } catch (error: any) {
     console.error(
       "Error fetching participated hackathons:",
@@ -133,7 +136,7 @@ export const getHackathonRegistrations = async (id: number, user: any) => {
         },
       },
     );
-    return response.data;
+    return response?.data;
   } catch (error: any) {
     console.error(
       "Error fetching hackathon registrations:",

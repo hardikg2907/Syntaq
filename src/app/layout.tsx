@@ -1,4 +1,3 @@
-import { ThemeProvider } from "~/components/themes/theme-provider";
 import "~/styles/globals.css";
 
 import { Inter as FontSans } from "next/font/google";
@@ -10,11 +9,8 @@ import Navbar from "~/components/navbar/navbar";
 import { cn } from "~/lib/utils";
 
 import { ourFileRouter } from "~/app/api/uploadthing/core";
-import NextAuthProvider from "~/components/providers/NextAuthProvider";
-import QueryProvider from "~/components/providers/QueryProvider";
-import { Toaster } from "~/components/ui/sonner";
-import { TooltipProvider } from "~/components/ui/tooltip";
 import Providers from "~/components/providers/Providers";
+import { Toaster } from "~/components/ui/sonner";
 
 const fontSans = FontSans({
   subsets: ["latin"],
