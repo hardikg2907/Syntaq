@@ -1,16 +1,15 @@
+import { ArrowUpRightIcon, PenBoxIcon } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import {
   Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
   CardDescription,
   CardFooter,
+  CardHeader,
+  CardTitle,
 } from "~/components/ui/card";
 import { Hackathon } from "~/utils/types";
 import { buttonVariants } from "./ui/button";
-import Link from "next/link";
-import { ArrowUpRightIcon, PenBoxIcon } from "lucide-react";
 
 interface HackathonHorizontalCardProps {
   hackathon: Hackathon;
@@ -22,7 +21,7 @@ const HackathonHorizontalCard = ({
   type,
 }: HackathonHorizontalCardProps) => {
   return (
-    <Card className="flex flex-row items-center rounded-xl p-4 py-2 transition-shadow duration-150 ease-in-out hover:shadow-md hover:shadow-gray-300 dark:hover:shadow-slate-900">
+    <Card className="flex h-28 flex-row items-center rounded-xl p-4 py-2 transition-shadow duration-150 ease-in-out hover:shadow-md hover:shadow-gray-300 dark:hover:shadow-slate-900">
       <div className="mr-4 flex-shrink-0">
         <Image
           src={hackathon?.photo || "/default_hackathon_image.png"}
