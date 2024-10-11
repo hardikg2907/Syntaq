@@ -71,3 +71,20 @@ export const updateTeam = async (
     throw e;
   }
 };
+
+export const getInvitationsAndMembers = async (team_id: number, user: any) => {
+  try {
+    const res = await axios.get(
+      `${BACKEND_API_URL}/teams/members-and-invitations/${team_id}/`,
+      {
+        headers: {
+          Authorization: `Bearer ${user?.access_token}`,
+        },
+      },
+    );
+
+    return res.data;
+  } catch (e) {
+    throw e;
+  }
+};

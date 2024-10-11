@@ -7,6 +7,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import { getInvitationsAndMembers } from "~/actions/team";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "~/components/ui/dialog";
@@ -45,18 +46,7 @@ const Team = ({
     isFetching,
   } = useQuery({
     queryKey: ["team_members", team_id],
-    queryFn: async () => {
-      const res = await axios.get(
-        `${BACKEND_API_URL}/teams/members-and-invitations/${team_id}/`,
-        {
-          headers: {
-            Authorization: `Bearer ${user?.access_token}`,
-          },
-        },
-      );
-
-      return res.data;
-    },
+    queryFn: async () => await getInvitationsAndMembers(team_id, user),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({

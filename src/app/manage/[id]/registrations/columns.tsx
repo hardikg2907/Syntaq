@@ -4,6 +4,14 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "~/components/ui/badge";
 import { Checkbox } from "~/components/ui/checkbox";
 import { DataTableColumnHeader } from "~/components/ui/data-table";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "~/components/ui/sheet";
 
 // This type is used to define the shape of your registration data.
 export type Registration = {
@@ -59,13 +67,10 @@ export const columns: ColumnDef<Registration>[] = [
       />
     ),
     cell: ({ row }) => (
-      <div
-        title={row.original.name}
-        className="truncate"
-        style={{ maxWidth: "150px" }}
-      >
-        {row.original.name}
-      </div>
+      <TeamNameWithSheet
+        teamId={row.original.id}
+        teamName={row.original.name}
+      />
     ),
     size: 150,
     meta: {
@@ -123,3 +128,31 @@ export const columns: ColumnDef<Registration>[] = [
     size: 150,
   },
 ];
+
+const TeamNameWithSheet = ({
+  teamId,
+  teamName,
+}: {
+  teamId: number;
+  teamName: string;
+}) => {
+  return (
+    <Sheet>
+      <SheetTrigger>
+        <div
+          title={teamName}
+          className="truncate hover:underline"
+          style={{ maxWidth: "150px" }}
+        >
+          {teamName}
+        </div>
+      </SheetTrigger>
+      <SheetContent>
+        <SheetHeader>
+          <SheetTitle>{teamName}</SheetTitle>
+          <SheetDescription>Team Members</SheetDescription>
+        </SheetHeader>
+      </SheetContent>
+    </Sheet>
+  );
+};

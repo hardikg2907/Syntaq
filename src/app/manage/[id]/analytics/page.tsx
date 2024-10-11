@@ -21,12 +21,13 @@ import {
   getHackathonRegistrationsAnalytics,
   getHackathonViews,
 } from "~/queries/posthog";
+import LoadingSpinner from "~/components/LoadingSpinner";
 
 const HackathonAnalyticsPage = ({ params }: { params: { id: number } }) => {
   return (
     <div className="w-full space-y-4">
       <Heading>Analytics</Heading>
-      <div className="flex w-full items-center justify-around">
+      <div className="flex w-full items-center justify-center gap-4">
         <HackathonViewsChart id={params.id} />
         <HackathonRegistrationsChart id={params.id} />
       </div>
@@ -78,7 +79,7 @@ export function HackathonViewsChart({ id }: { id: number }) {
     fetchHackathonViews();
   }, [id]);
   return (
-    <Card className="h-[400px] w-1/2">
+    <Card className="h-[400px] w-2/5">
       <CardHeader>
         <CardTitle className="flex gap-2">
           Hackathon Views
@@ -88,7 +89,9 @@ export function HackathonViewsChart({ id }: { id: number }) {
       </CardHeader>
       <CardContent className="w-full pl-0">
         {loading ? (
-          <p>Loading...</p>
+          <div className="flex h-[250px] w-full items-center justify-center">
+            <LoadingSpinner />
+          </div>
         ) : hackathonViews ? (
           <ChartContainer
             config={viewsChartConfig}
@@ -179,7 +182,7 @@ export function HackathonRegistrationsChart({ id }: { id: number }) {
     fetchHackathonRegistrations();
   }, [id]);
   return (
-    <Card className="h-[400px] w-1/2">
+    <Card className="h-[400px] w-2/5">
       <CardHeader>
         <CardTitle className="flex gap-2">
           Hackathon Registrations
@@ -191,7 +194,9 @@ export function HackathonRegistrationsChart({ id }: { id: number }) {
       </CardHeader>
       <CardContent>
         {loading ? (
-          <p>Loading...</p>
+          <div className="flex h-[250px] w-full items-center justify-center">
+            <LoadingSpinner />
+          </div>
         ) : hackathonRegistrations ? (
           <ChartContainer
             config={registrationsChartConfig}
