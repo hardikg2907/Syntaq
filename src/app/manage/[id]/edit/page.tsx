@@ -188,7 +188,7 @@ const EditHackathonForm = ({
     },
     mode: "onChange",
   });
-  const { mutateAsync: updateHackathonMutateAsync } = useMutation({
+  const { mutateAsync: updateHackathonMutateAsync, isPending } = useMutation({
     mutationFn: async (values: z.infer<typeof formSchema>) =>
       // @ts-ignore
       await updateHackathon(hackathon?.id!, values, user),
@@ -373,7 +373,9 @@ const EditHackathonForm = ({
           )}
         />
 
-        <Button type="submit">Save</Button>
+        <Button type="submit" disabled={isPending}>
+          Save
+        </Button>
       </form>
     </Form>
   );

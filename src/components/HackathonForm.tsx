@@ -99,13 +99,14 @@ const HackathonForm = () => {
   const router = useRouter();
   const { data: user } = useSession();
 
-  const { mutateAsync: createHackathonMutateAsync } = useMutation({
+  const { mutateAsync: createHackathonMutateAsync, isPending } = useMutation({
     mutationFn: async (values: z.infer<typeof formSchema>) =>
       // @ts-ignore
       await createHackathon(values, user),
     onSuccess: (data) => {
       // toast.dismiss("create-hackathon");
       // toast.success("Hackathon created successfully");
+      toast.info("Redirecting to hackathon page...");
       router.push(`/hackathons/${data.id}`);
     },
     onError: (error) => {
@@ -301,7 +302,9 @@ const HackathonForm = () => {
           )}
         />
 
-        <Button type="submit">Submit</Button>
+        <Button type="submit" disabled={isPending}>
+          Submit
+        </Button>
       </form>
     </Form>
   );
