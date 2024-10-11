@@ -19,6 +19,7 @@ const page = async ({ params }: { params: { id: number } }) => {
   await queryClient.prefetchQuery({
     queryKey: ["user-team", params.id],
     queryFn: async () => await getUserTeam(params.id, user),
+    retry: 1,
   });
 
   return (

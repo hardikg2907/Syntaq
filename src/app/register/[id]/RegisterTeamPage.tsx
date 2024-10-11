@@ -43,6 +43,7 @@ const RegisterTeamPage = ({ hackathon_id, user }: RegisterTeamPageProps) => {
   } = useQuery({
     queryKey: ["team", hackathon_id],
     queryFn: async () => getTeam({ hackathon_id, user }),
+    retry: false,
   });
 
   const { data: hackathon } = useQuery({
@@ -51,30 +52,30 @@ const RegisterTeamPage = ({ hackathon_id, user }: RegisterTeamPageProps) => {
       getHackathonWithParams(hackathon_id, "fields=maxTeamSize,minTeamSize"),
   });
 
-  const { mutateAsync: createTeamMutate } = useMutation({
-    mutationFn: async (values: z.infer<typeof formSchema>) =>
-      createTeam(values, user, hackathon_id),
-    onSuccess: async () => {
-      toast.success("Team Created successfully!");
-      await refetch();
-    },
-    onError: (error) => {
-      console.log(error);
-      toast.error(error?.response?.data?.detail);
-    },
-  });
+  const { mutateAsync: createTeamMutate, isPending: createIsPending } =
+    useMutation({
+      mutationFn: async (values: z.infer<typeof formSchema>) =>
+        createTeam(values, user, hackathon_id),
+      onSuccess: async () => {
+        await refetch();
+      },
+      onError: (error) => {
+        console.log(error);
+        toast.error(error?.response?.data?.detail);
+      },
+    });
 
-  const { mutateAsync: updateTeamMutate } = useMutation({
-    mutationFn: async (values: z.infer<typeof formSchema>) =>
-      updateTeam(values, user, hackathon_id, existingTeam?.id),
-    onSuccess: async () => {
-      toast.success("Team Updated successfully!");
-      await refetch();
-    },
-    onError: (error) => {
-      toast.error(error?.response?.data?.detail);
-    },
-  });
+  const { mutateAsync: updateTeamMutate, isPending: updateIsPending } =
+    useMutation({
+      mutationFn: async (values: z.infer<typeof formSchema>) =>
+        updateTeam(values, user, hackathon_id, existingTeam?.id),
+      onSuccess: async () => {
+        await refetch();
+      },
+      onError: (error) => {
+        toast.error(error?.response?.data?.detail);
+      },
+    });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -83,11 +84,17 @@ const RegisterTeamPage = ({ hackathon_id, user }: RegisterTeamPageProps) => {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     let res;
     if (existingTeam) {
-      res = await updateTeamMutate(values);
-      toast.success("Team updated successfully");
+      toast.promise(updateTeamMutate(values), {
+        loading: "Updating Team...",
+        success: "Team updated successfully",
+        error: "Error updating team",
+      });
     } else {
-      res = await createTeamMutate(values);
-      toast.success("Team created successfully");
+      toast.promise(createTeamMutate(values), {
+        loading: "Creating Team...",
+        success: "Team created successfully",
+        error: "Error creating team",
+      });
     }
   }
   const isLeader = existingTeam?.leader === user?.user?.pk;
@@ -140,7 +147,9 @@ const RegisterTeamPage = ({ hackathon_id, user }: RegisterTeamPageProps) => {
             </div>
             <div className="flex w-full justify-between">
               <Button
-                disabled={isLoading || !showForm}
+                disabled={
+                  isLoading || !showForm || createIsPending || updateIsPending
+                }
                 className="w-fit"
                 type="submit"
               >
