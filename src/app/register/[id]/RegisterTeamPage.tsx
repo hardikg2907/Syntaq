@@ -141,6 +141,7 @@ const RegisterTeamPage = ({ hackathon_id, user }: RegisterTeamPageProps) => {
                     team_id={existingTeam?.id}
                     isLeader={isLeader}
                     registration_complete={existingTeam?.registration_complete}
+                    maxTeamSize={hackathon?.maxTeamSize}
                   />
                 )}
               </>

@@ -31,10 +31,12 @@ const Team = ({
   team_id,
   isLeader,
   registration_complete,
+  maxTeamSize,
 }: {
   team_id: number;
   isLeader: boolean;
   registration_complete: boolean;
+  maxTeamSize: number;
 }) => {
   const { data: user } = useSession();
   const [newTeamMember, setNewTeamMember] = useState<boolean>(false);
@@ -161,16 +163,21 @@ const Team = ({
           </form>
         </Form>
       )}
-      {isLeader && !registration_complete && (
-        <Button
-          type="button"
-          variant="outline"
-          className="rounded-2xl bg-transparent"
-          onClick={() => setNewTeamMember(true)}
-        >
-          + Add Team member
-        </Button>
-      )}
+      {isLeader &&
+        !registration_complete &&
+        members &&
+        Array.isArray(members.accepted) &&
+        Array.isArray(members.pending) &&
+        members.accepted.length + members.pending.length < maxTeamSize && (
+          <Button
+            type="button"
+            variant="outline"
+            className="rounded-2xl bg-transparent"
+            onClick={() => setNewTeamMember(true)}
+          >
+            + Add Team member
+          </Button>
+        )}
     </div>
   );
 };

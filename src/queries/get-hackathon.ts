@@ -13,5 +13,6 @@ export const useGetUserTeam = (id: number, user: any) => {
   return useQuery({
     queryKey: ["user-team", id],
     queryFn: async () => await getUserTeam(id, user),
+    retry: 1,
   });
 };
