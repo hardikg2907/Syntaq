@@ -1,6 +1,9 @@
 "use client";
 
+import { useQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
+import axios from "axios";
+import { useState } from "react";
 import { Badge } from "~/components/ui/badge";
 import { Checkbox } from "~/components/ui/checkbox";
 import { DataTableColumnHeader } from "~/components/ui/data-table";
@@ -12,6 +15,8 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "~/components/ui/sheet";
+import { env } from "~/env";
+import { cn } from "~/lib/utils";
 
 // This type is used to define the shape of your registration data.
 export type Registration = {
@@ -136,8 +141,21 @@ const TeamNameWithSheet = ({
   teamId: number;
   teamName: string;
 }) => {
+  const [opened, setOpened] = useState(false);
+  const { data: teamInfo, isLoading } = useQuery({
+    queryKey: ["team", teamId],
+    queryFn: async () => {
+      const response = await axios.get(
+        `${env.NEXT_PUBLIC_BACKEND_URL}/manage/team/${teamId}`,
+      );
+      return response.data;
+    },
+    enabled: opened,
+  });
+  console.log(teamInfo);
+
   return (
-    <Sheet>
+    <Sheet open={opened} onOpenChange={(open) => setOpened(open)}>
       <SheetTrigger>
         <div
           title={teamName}
@@ -147,11 +165,52 @@ const TeamNameWithSheet = ({
           {teamName}
         </div>
       </SheetTrigger>
-      <SheetContent>
+      <SheetContent className="bg-black fill-transparent">
         <SheetHeader>
-          <SheetTitle>{teamName}</SheetTitle>
-          <SheetDescription>Team Members</SheetDescription>
+          <SheetTitle className="flex w-full justify-between">
+            <h1 className="text-2xl font-bold underline">{teamName}</h1>
+            {teamInfo && (
+              <Badge
+                variant={teamInfo.registration_complete ? "green" : "default"}
+              >
+                {teamInfo.registration_complete ? "Registered" : "Incomplete"}
+              </Badge>
+            )}
+          </SheetTitle>
         </SheetHeader>
+        <div className="mt-10">
+          <h2 className="text-lg">Team Members</h2>
+          {isLoading ? (
+            <div>Loading...</div>
+          ) : (
+            <div>
+              {teamInfo?.members.map((member: any) => {
+                const fullName = `${member.userFields.first_name} ${member.userFields.last_name}`;
+                return (
+                  <div
+                    key={member.id}
+                    className="flex w-full items-center justify-between"
+                  >
+                    <div className="truncate">{fullName}</div>
+                    {/* <div>{member.userFields.email}</div> */}
+                    <Badge variant="green">Confirmed</Badge>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+          {teamInfo?.invitations.map((invitation: any) => {
+            return (
+              <div
+                key={invitation.id}
+                className="flex w-full items-center justify-between"
+              >
+                <div className="truncate">{invitation.receiver_email}</div>
+                <Badge variant="default">Invited</Badge>
+              </div>
+            );
+          })}
+        </div>
       </SheetContent>
     </Sheet>
   );
