@@ -32,7 +32,7 @@ export function HackathonPage({ id, user }: HackathonPageProps) {
   //     });
   // }, [id]);
 
-  if (isLoading || isTeamLoading) {
+  if (isLoading) {
     return (
       <div className="flex h-full w-full items-center justify-center">
         <LoadingSpinner />

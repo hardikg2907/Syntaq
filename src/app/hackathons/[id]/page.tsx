@@ -16,12 +16,6 @@ const page = async ({ params }: { params: { id: number } }) => {
     queryFn: async () => await getHackathon(params.id, true),
   });
 
-  await queryClient.prefetchQuery({
-    queryKey: ["user-team", params.id],
-    queryFn: async () => await getUserTeam(params.id, user),
-    retry: 1,
-  });
-
   return (
     <div className="h-full w-full">
       <HydrationBoundary state={dehydrate(queryClient)}>
