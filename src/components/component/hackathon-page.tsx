@@ -25,12 +25,12 @@ export function HackathonPage({ id, user }: HackathonPageProps) {
   const { data: teamData, isLoading: isTeamLoading } = useGetUserTeam(id, user);
   const router = useRouter();
 
-  useEffect(() => {
-    if (!isLoading && data)
-      posthog.capture("hackathon_view", {
-        id: id,
-      });
-  }, [id]);
+  // useEffect(() => {
+  //   if (!isLoading && data)
+  //     posthog.capture("hackathon_view", {
+  //       id: id,
+  //     });
+  // }, [id]);
 
   if (isLoading || isTeamLoading) {
     return (
